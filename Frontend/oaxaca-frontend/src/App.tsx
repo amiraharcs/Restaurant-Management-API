@@ -1,11 +1,18 @@
-import './App.css'
+import './css/App.css'
+import Home from './Home'
+import Menu from './Menu'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
 
 function App() {
 
   return (
-    <main>
-      <h1>This is the page</h1>
-    </main>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/menu" element={<Menu />} />
+    </Routes>
+    </BrowserRouter>
   )
 }
 

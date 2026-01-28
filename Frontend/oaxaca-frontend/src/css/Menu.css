@@ -1,0 +1,72 @@
+.menu_page_title {
+    display: flex;
+    justify-content: center;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.menu_page_title_br {
+    margin-bottom: 0.5rem;
+}
+
+.category_title {
+    text-transform: capitalize;
+    font-size: 2rem;
+}
+
+.menu_items_div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.menu_item {
+    width: 220px;
+    border: 0.1rem solid gainsboro;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu_item_text {
+  padding: 0.6rem 0.7rem 0.75rem;
+}
+
+.menu_item_text h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.menu_item_filters {
+  margin: 0rem 0 0.3rem;
+  color: grey;
+  font-size: 0.8rem;
+}
+
+.menu_item_price {
+    margin-top: 0.5rem;
+    font-weight: 600;
+}
+
+.menu_item:hover {
+    border-color: royalblue;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.menu_item_image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+section {
+    margin-left: 1.2rem;
+    margin-right: 1.2rem;
+    margin-bottom: 1rem;
+}
