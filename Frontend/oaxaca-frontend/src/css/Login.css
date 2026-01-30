@@ -1,0 +1,46 @@
+.loginBox {
+    width: 25%;
+    max-width: 92vw;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 3%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.loginPage {
+    place-items: center;
+    padding: 10%;
+}
+
+.loginTitle {
+    text-align: center;
+    padding: 5%;
+}
+
+.loginForm {
+    display: grid;
+    gap: 14px;
+}
+
+.inputBox {
+    width: 80%;
+    height: 46px;
+    border-radius: 999px;
+    border: 1px solid #ececec;
+    padding: 0 14px 0 44px;
+    outline: none;
+    transition: 0.2s ease;
+    font-size: 15px;
+    cursor: text;
+}
+
+.loginButton {
+    height: 46px;
+    border: none;
+    border-radius: 999px;
+    color: black;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    margin-top: 4px;
+}
