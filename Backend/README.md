@@ -1,1 +1,1 @@
-This folder contains all code and information for the backend
+This folder contains rill code and information for the backend
