@@ -10,6 +10,7 @@ import MenuItem from './data/components/MenuItem';
 export default function Menu() {
 
     const [showItem, setShowItem] = useState(false);
+    const [selectedItem, setSelectedItem] = useState({});
 
     return (
         <main>
@@ -42,7 +43,7 @@ export default function Menu() {
                                             <FaFire className='calorie_icon'/>
                                             <p className='calorie_text'>{item.calories}kcal</p>
                                         </div>
-                                        <div className='menu_item_add' onClick={() => {setShowItem(prevShowItem => !prevShowItem)}}>
+                                        <div className='menu_item_add' onClick={() => {setShowItem(true); setSelectedItem(item);}}>
                                             <p className='menu_item_add_add'>Add</p>
                                             <p className='menu_item_price'>£{item.price}</p>
                                         </div>
@@ -52,7 +53,10 @@ export default function Menu() {
                     </div>
                 </section>
             ) )}
-            {showItem && <MenuItem />}
+            {showItem && <MenuItem item={selectedItem} onClose={() => {
+                setShowItem(false)
+                setSelectedItem({})
+            }}/>}
         </main>
     )
 }

@@ -120,3 +120,50 @@ section {
     margin-right: 1.2rem;
     margin-bottom: 1rem;
 }
+
+/******Menu Item CSS******/
+
+.menu_item_main {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.menu_item_main_backdrop {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(1px);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.menu_item_main_content {
+    position: relative;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    border-radius: 1rem;
+}
+
+.menu_item_main_close {
+     position: absolute;
+    top: 12px;
+    left: 12px;
+    background: transparent;
+    border-radius: 1rem;
+    border-color: rgb(20, 164, 20);
+    padding: 0.1rem 0.4rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: rgb(20, 164, 20);
+}
+
+.menu_item_main_close:hover {
+    transform: scale(1.1);
+    color: rgb(16, 140, 16);
+}
