@@ -22,7 +22,7 @@ export default function Menu() {
                                         <div className='menu_item_title'>
                                             <h3>{item.name}</h3>
                                             <div className='menu_item_filters'>{item.filters.map( (filter, index) => (
-                                            <div>
+                                            <div key={index}>
                                                 {filter === "GlutenFree" && 
                                                      <LuWheatOff />
                                                 }
@@ -36,7 +36,10 @@ export default function Menu() {
                                             <FaFire className='calorie_icon'/>
                                             <p className='calorie_text'>{item.calories}kcal</p>
                                         </div>
-                                        <p className='menu_item_price'>£{item.price}</p>
+                                        <div className='menu_item_add'>
+                                            <p className='menu_item_add_add'>Add</p>
+                                            <p className='menu_item_price'>£{item.price}</p>
+                                        </div>
                                     </div>
                                 </div>)
                         )}
