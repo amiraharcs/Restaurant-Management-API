@@ -1,10 +1,16 @@
 import './css/Menu.css'
 import menu from "./data/menu.json"
+import { useState } from 'react';
 import { FaFire } from 'react-icons/fa';
 import { LuWheatOff } from "react-icons/lu";
 import { SiVega } from "react-icons/si";
+import MenuItem from './data/components/MenuItem';
+
 
 export default function Menu() {
+
+    const [showItem, setShowItem] = useState(false);
+
     return (
         <main>
             <h1 className='menu_page_title'>Menu</h1>
@@ -36,7 +42,7 @@ export default function Menu() {
                                             <FaFire className='calorie_icon'/>
                                             <p className='calorie_text'>{item.calories}kcal</p>
                                         </div>
-                                        <div className='menu_item_add'>
+                                        <div className='menu_item_add' onClick={() => {setShowItem(prevShowItem => !prevShowItem)}}>
                                             <p className='menu_item_add_add'>Add</p>
                                             <p className='menu_item_price'>£{item.price}</p>
                                         </div>
@@ -46,6 +52,7 @@ export default function Menu() {
                     </div>
                 </section>
             ) )}
+            {showItem && <MenuItem />}
         </main>
     )
 }
