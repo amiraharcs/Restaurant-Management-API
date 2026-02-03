@@ -23,13 +23,27 @@
 }
 
 .menu_item {
-    width: 220px;
+    width: 250px;
     border: 0.1rem solid gainsboro;
     border-radius: 1rem;
     overflow: hidden;
     background: white;
     display: flex;
     flex-direction: column;
+}
+
+.menu_item_title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu_item_filters {
+    display: flex;
+    align-items: center;
+    color: rgb(20, 164, 20);
+    gap: 0.4rem;
 }
 
 .menu_item_text {
@@ -42,10 +56,21 @@
   line-height: 1.2;
 }
 
-.menu_item_filters {
-  margin: 0rem 0 0.3rem;
-  color: grey;
-  font-size: 0.8rem;
+.menu_item_calories {
+    margin-top: 0.3rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+    font-size: 0.78rem;
+    align-items: center;
+}
+
+.calorie_icon {
+    color: rgb(20, 164, 20);
+}
+
+.calorie_text {
+    color: rgb(72, 68, 68);
 }
 
 .menu_item_price {
@@ -54,7 +79,7 @@
 }
 
 .menu_item:hover {
-    border-color: royalblue;
+    border-color: rgb(29, 205, 29);
     transform: translateY(-1px);
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
 }
