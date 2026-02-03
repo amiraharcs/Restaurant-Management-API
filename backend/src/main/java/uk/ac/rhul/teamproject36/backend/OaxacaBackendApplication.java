@@ -3,11 +3,25 @@ package uk.ac.rhul.teamproject36.backend;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Main Spring Boot application class for the Oaxaca Backend.
+ */
 @SpringBootApplication
-public class OaxacaBackendApplication {
+public final class OaxacaBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(OaxacaBackendApplication.class, args);
-	}
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private OaxacaBackendApplication() {
+    }
+
+    /**
+     * Main entry point for the Spring Boot application.
+     *
+     * @param args command line arguments
+     */
+    public static void main(final String[] args) {
+        SpringApplication.run(OaxacaBackendApplication.class, args);
+    }
 
 }
