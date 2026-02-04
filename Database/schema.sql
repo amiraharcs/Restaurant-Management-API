@@ -31,3 +31,60 @@ CREATE TABLE IF NOT EXISTS menu_item_allergen (
   allergen_id INT NOT NULL REFERENCES allergen(allergen_id) ON DELETE CASCADE,
   PRIMARY KEY (item_id, allergen_id)
 );
+
+-- =========================
+-- CUSTOMERS
+-- =========================
+CREATE TABLE IF NOT EXISTS customer (
+  customer_id INT PRIMARY KEY,
+  name TEXT NOT NULL,
+  phone_number TEXT DEFAULT 'Not Provided'
+);
+
+CREATE TABLE IF NOT EXISTS customer_order (
+  order_id SERIAL PRIMARY KEY,
+  customer_id INT NOT NULL REFERENCES customer(customer_id),
+  order_time TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE order_item (
+  order_id INT NOT NULL REFERENCES customer_order(order_id) ON DELETE CASCADE,
+  item_id INT NOT NULL REFERENCES menu_item(item_id),
+  quantity INT NOT NULL DEFAULT 1 CHECK (quantity > 0),
+
+  PRIMARY KEY (order_id, item_id)
+);
+
+-- =========================
+-- STAFF
+-- =========================
+CREATE TABLE IF NOT EXISTS waiter (
+  waiter_id INT PRIMARY KEY,
+  name TEXT NOT NULL,
+  is_available BOOLEAN NOT NULL DEFAULT TRUE,
+  unavailable_reason TEXT DEFAULT NULL,
+  CHECK ( 
+    NOT (is_available = TRUE AND unavailable_reason IS NOT NULL)
+  )
+);
+
+CREATE TABLE IF NOT EXISTS kitchen_staff (
+  kitchen_id INT PRIMARY KEY,
+  name TEXT NOT NULL,
+  role TEXT NOT NULL CHECK (role IN ('Chef', 'Prep', 'Cleaner')),
+  is_available BOOLEAN NOT NULL DEFAULT TRUE,
+  unavailable_reason TEXT DEFAULT NULL,
+  CHECK ( 
+    NOT (is_available = TRUE AND unavailable_reason IS NOT NULL)
+  )
+);
+
+CREATE TABLE IF NOT EXISTS kitchen_task (
+  task_id INT PRIMARY KEY,
+  order_id INT NOT NULL REFERENCES customer_order(order_id) ON DELETE CASCADE,
+  kitchen_id INT NOT NULL REFERENCES kitchen_staff(kitchen_id) ON DELETE CASCADE,
+  task_type TEXT NOT NULL CHECK (task_type IN ('Cooking', 'Cleaning', 'Preparing', 'Miscellaneous')),
+  status TEXT NOT NULL CHECK (status IN ('In Progress', 'Ready')),
+  started_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  finished_at TIMESTAMP DEFAULT NULL
+);
