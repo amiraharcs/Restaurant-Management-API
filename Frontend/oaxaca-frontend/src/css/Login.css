@@ -62,3 +62,23 @@
 .inputWrap {
     position: relative;
 }
+
+.showPasswordButton {
+    position: absolute;
+    right: 10px;
+    top: 15%;
+    height: 34px;
+    padding: 0 10px;
+    background: #ffffff;
+    border: 0px;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #6f6f6f
+}
+
+.showPasswordButton:hover {
+    background: #f7f7f7;
+}
