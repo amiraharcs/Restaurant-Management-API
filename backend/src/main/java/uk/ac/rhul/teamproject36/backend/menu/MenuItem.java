@@ -1,9 +1,11 @@
 package uk.ac.rhul.teamproject36.backend.menu;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-@Table(name = "menu_items")
 public class MenuItem {
 
     @Id
@@ -11,16 +13,15 @@ public class MenuItem {
     private Long id;
 
     private String name;
+    private Double price;
 
-    private String description;
+    public MenuItem() {}
 
-    private double price;
+    public Long getId() { return id; }
 
-    private int calories;
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    private String allergens;
-
-    private boolean available = true;
-
-    // getters and setters
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
 }
