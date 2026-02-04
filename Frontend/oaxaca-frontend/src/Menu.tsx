@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FaFire } from 'react-icons/fa';
 import { LuWheatOff } from "react-icons/lu";
 import { SiVega } from "react-icons/si";
+import { FaLeaf } from "react-icons/fa";
 import MenuItem from './data/components/MenuItem';
 
 
@@ -23,7 +24,7 @@ export default function Menu() {
                     <div className='menu_items_div'>
                         {items.map( (item) => 
                                 item.isAvailable && (
-                                <div key={item.name} className='menu_item'>
+                                <div key={item.name} className='menu_item' onClick={() => {setShowItem(true); setSelectedItem(item);}}>
                                     <img className='menu_item_image' src={item.image} alt={item.name} />
                                     <div className='menu_item_text'>
                                         <div className='menu_item_title'>
@@ -36,6 +37,9 @@ export default function Menu() {
                                                 {filter === "Vegan" && 
                                                     <SiVega />
                                                 }
+                                                {filter === "Vegetarian" &&
+                                                    <FaLeaf />
+                                                }
                                             </div>
                                         ))}</div>
                                         </div>
@@ -43,7 +47,7 @@ export default function Menu() {
                                             <FaFire className='calorie_icon'/>
                                             <p className='calorie_text'>{item.calories}kcal</p>
                                         </div>
-                                        <div className='menu_item_add' onClick={() => {setShowItem(true); setSelectedItem(item);}}>
+                                        <div className='menu_item_add'>
                                             <p className='menu_item_add_add'>Add</p>
                                             <p className='menu_item_price'>£{item.price}</p>
                                         </div>
