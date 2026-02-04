@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: oaxaca-db
+    environment:
+      POSTGRES_DB: oaxaca
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - oaxaca_pgdata:/var/lib/postgresql/data
+
+volumes:
+  oaxaca_pgdata:
+
