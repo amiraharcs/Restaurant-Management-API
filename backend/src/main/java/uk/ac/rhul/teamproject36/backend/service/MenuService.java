@@ -7,6 +7,8 @@ import uk.ac.rhul.teamproject36.backend.repository.MenuItemRepository;
 import java.math.BigDecimal;
 import java.util.List;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public final class MenuService {
 
@@ -37,27 +39,34 @@ public final class MenuService {
     /**
      * Data transfer object for menu items.
      *
-     * @param name the item name
+     * @param name        the item name
      * @param description the item description
-     * @param price the item price
-     * @param calories the calorie count
-     * @param allergens the allergens
+     * @param price       the item price
+     * @param calories    the calorie count
+     * @param allergens   the allergens
      */
     public record MenuItemDto(
             String name,
             String description,
             BigDecimal price,
             Integer calories,
-            String allergens
-    ) {
+            String allergens) {
         static MenuItemDto from(final MenuItem item) {
             return new MenuItemDto(
                     item.getName(),
                     item.getDescription(),
                     item.getPrice(),
                     item.getCalories(),
-                    item.getAllergens()
-            );
+                    item.getAllergens());
         }
     }
+
+    public void updateAvailability(final Long id, final boolean available) {
+        MenuItem item = menuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Menu item not found"));
+
+        item.setAvailable(available);
+        menuItemRepository.save(item);
+    }
+
 }
