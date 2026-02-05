@@ -1,4 +1,4 @@
-package uk.ac.rhul.teamproject36.backend.service;
+package main.java.uk.ac.rhul.teamproject36.backend.service;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
