@@ -9,14 +9,25 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class MenuController {
+public final class MenuController {
 
+    /** The menu service for handling menu operations. */
     private final MenuService menuService;
 
-    public MenuController(MenuService menuService) {
-        this.menuService = menuService;
+    /**
+     * Constructs a new MenuController with the given menu service.
+     *
+     * @param service the menu service
+     */
+    public MenuController(final MenuService service) {
+        this.menuService = service;
     }
 
+    /**
+     * Returns the menu items available for customers.
+     *
+     * @return a list of menu item DTOs
+     */
     @GetMapping("/menu")
     public List<MenuService.MenuItemDto> getMenu() {
         return menuService.getMenuForCustomers();

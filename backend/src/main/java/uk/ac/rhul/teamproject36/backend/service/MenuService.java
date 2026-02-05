@@ -8,14 +8,25 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class MenuService {
+public final class MenuService {
 
+    /** The repository for menu item data access. */
     private final MenuItemRepository menuItemRepository;
 
-    public MenuService(MenuItemRepository menuItemRepository) {
-        this.menuItemRepository = menuItemRepository;
+    /**
+     * Constructs a new MenuService with the given repository.
+     *
+     * @param repository the menu item repository
+     */
+    public MenuService(final MenuItemRepository repository) {
+        this.menuItemRepository = repository;
     }
 
+    /**
+     * Returns a list of menu items available for customers.
+     *
+     * @return a list of menu item DTOs
+     */
     public List<MenuItemDto> getMenuForCustomers() {
         return menuItemRepository.findByAvailableTrue()
                 .stream()
@@ -23,6 +34,15 @@ public class MenuService {
                 .toList();
     }
 
+    /**
+     * Data transfer object for menu items.
+     *
+     * @param name the item name
+     * @param description the item description
+     * @param price the item price
+     * @param calories the calorie count
+     * @param allergens the allergens
+     */
     public record MenuItemDto(
             String name,
             String description,
@@ -30,7 +50,7 @@ public class MenuService {
             Integer calories,
             String allergens
     ) {
-        static MenuItemDto from(MenuItem item) {
+        static MenuItemDto from(final MenuItem item) {
             return new MenuItemDto(
                     item.getName(),
                     item.getDescription(),

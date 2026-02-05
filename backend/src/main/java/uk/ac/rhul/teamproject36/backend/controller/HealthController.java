@@ -8,8 +8,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-public class HealthController {
+public final class HealthController {
 
+    /**
+     * Returns the health status of the application.
+     *
+     * @return a map containing the health status
+     */
     @GetMapping("/health")
     public Map<String, String> health() {
         return Map.of("status", "ok");
