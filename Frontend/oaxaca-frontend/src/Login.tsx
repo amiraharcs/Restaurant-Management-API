@@ -46,8 +46,6 @@ export default function Login() {
                             onChange={(p) => setPassword(p.target.value)}
                             required
                             minLength={6}
-                            pattern='(?=.*[0-9])(?=.*[^A-Za-z0-9]).{6,}'
-                            title='Password must be 6 characters long and must include one number and special character (@,&,*,%,$,£,!,#,?)'
                         />
 
                         <button 
