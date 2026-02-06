@@ -14,5 +14,9 @@
 }
 
 .navbar a:hover {
-  text-decoration: underline;
+  border-bottom: 2px white solid;
+}
+
+.navbar a.active {
+  border-bottom: 2px white solid;
 }
