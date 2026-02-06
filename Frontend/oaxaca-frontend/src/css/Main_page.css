@@ -1,22 +1,3 @@
-/* Navigation bar */
-.navbar {
-  background-color: #0b6b4f;
-  height: 80px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.navbar a {
-  color: white;
-  text-decoration: none;
-  font-size: 1.3rem;
-}
-
-.navbar a:hover {
-  text-decoration: underline;
-}
-
 /* Title section */
 .Title {
   height: calc(100vh - 80px);
