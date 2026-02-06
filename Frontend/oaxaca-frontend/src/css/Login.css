@@ -8,8 +8,10 @@
 }
 
 .loginPage {
+    max-height: calc(100vh - 80px);
     place-items: center;
     padding: 12.5%;
+    padding-top: 120px;
 }
 
 .loginTitle {
@@ -38,23 +40,25 @@
     height: 46px;
     border: none;
     border-radius: 999px;
-    color: black;
+    color: white;
     font-weight: 700;
     letter-spacing: 0.5px;
     cursor: pointer;
     margin-top: 4px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    background-color: #0b6b4f;
 }
 
 .loginButton:hover{
     filter: brightness(1.02);
     transform: translateY(-1px);
+    background-color: orange;
 }
 
 .inputIcon {
   position: absolute;
   font-size: 18px;
-  color: #6f6f6f;
+  color: #0b6b4f;
   left: 14px;
   top: 30%;
 }
@@ -76,7 +80,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: #6f6f6f
+    color: #0b6b4f
 }
 
 .showPasswordButton:hover {

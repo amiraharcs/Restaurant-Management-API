@@ -1,5 +1,4 @@
 import './css/App.css'
-import Home from './Home'
 import Menu from './Menu'
 import Login from './Login'
 import MainPage from "./Main_page"
