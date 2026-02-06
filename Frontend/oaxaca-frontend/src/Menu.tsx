@@ -5,6 +5,7 @@ import { FaFire } from 'react-icons/fa';
 import { LuWheatOff } from "react-icons/lu";
 import { SiVega } from "react-icons/si";
 import { FaLeaf } from "react-icons/fa";
+import { GiMeat } from "react-icons/gi";
 import MenuItem from './data/components/MenuItem';
 
 
@@ -39,6 +40,9 @@ export default function Menu() {
                                                 }
                                                 {filter === "Vegetarian" &&
                                                     <FaLeaf />
+                                                }
+                                                {filter === "Meat" &&
+                                                    <GiMeat className="meatIcon"/>
                                                 }
                                             </div>
                                         ))}</div>

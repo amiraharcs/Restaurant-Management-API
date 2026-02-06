@@ -48,6 +48,10 @@
     gap: 0.4rem;
 }
 
+.meatIcon {
+    font-size: 22px;
+}
+
 .menu_item_text {
   padding: 0.7rem 0.7rem 0.7rem;
 }
@@ -188,6 +192,8 @@ section {
 
 .menu_item_main_img {
     width: 270px;
+    height: 250px;
+    object-fit: cover;
     border-radius: 1rem;
 }
 

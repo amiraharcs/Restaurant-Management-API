@@ -3,6 +3,7 @@ import { FaFire } from 'react-icons/fa';
 import { LuWheatOff } from "react-icons/lu";
 import { SiVega } from "react-icons/si";
 import { FaLeaf } from "react-icons/fa";
+import { GiMeat } from "react-icons/gi";
 
 export default function MenuItem({item, onClose}: any) {
     return (
@@ -32,6 +33,9 @@ export default function MenuItem({item, onClose}: any) {
                             }
                             {filter === "Vegetarian" &&
                                 <FaLeaf />
+                            }
+                            {filter === "Meat" &&
+                                <GiMeat className="meatIcon" />
                             }
                         </div>
                     ))}</div>
