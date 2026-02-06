@@ -20,7 +20,7 @@
 /* Title section */
 .Title {
   height: calc(100vh - 80px);
-  background-image: url("/image/");
+  background-image: url("/public/images/main/mexican_background.jpg");
   background-size: cover;
   background-position: center;
   display: flex;
