@@ -9,7 +9,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.requestMatchers("apiMenuPlaceholder").hasAnyRole("rolesPlaceHolder").anyRequest().authenticated()).httpBasic();
+    http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/api/menu").permitAll().requestMatchers(HttpMethod.PATCH, "/api/menu/*/avaliability").hasAnyRole("STAFF", "ADMIN").anyRequest().authenticated()).httpBasic();
     
     return http.build();
   }
@@ -29,7 +29,7 @@ public class SecurityConfig {
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowedOriginPatterns(Arrays.asList("*"));
     config.setAllowedHeaders(Arrays.asList("*"));
-    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"));
     config.setAllowCredentials(false);
     //config.applyPermitDefaultValues();
 
