@@ -1,7 +1,7 @@
 import "../../css/NavBarWaiter.css";
 import { NavLink } from "react-router-dom";
 
-export default function NavBar() {
+export default function NavBarWaiter() {
   return (
     <div>
       <nav className="navbar">

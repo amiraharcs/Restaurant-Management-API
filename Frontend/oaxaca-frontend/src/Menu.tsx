@@ -7,6 +7,7 @@ import { SiVega } from "react-icons/si";
 import { FaLeaf } from "react-icons/fa";
 import { GiMeat } from "react-icons/gi";
 import MenuItem from './data/components/MenuItem';
+import NavBar from "./data/components/NavBar";
 
 
 export default function Menu() {
@@ -16,6 +17,8 @@ export default function Menu() {
 
     return (
         <main>
+            <NavBar />
+
             <h1 className='menu_page_title'>Menu</h1>
             <hr className='menu_page_title_br' />
             {Object.entries(menu).map( ([category, items]) => (
