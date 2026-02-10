@@ -14,7 +14,7 @@ export default function Login() {
         e.preventDefault();
 
         console.log("Login:", username, password);
-        navigate("/menu");
+        navigate("/waiter");
     }
 
     return (
