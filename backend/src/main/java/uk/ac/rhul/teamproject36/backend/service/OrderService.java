@@ -70,4 +70,26 @@ public class OrderService {
     public static class NotFoundException extends RuntimeException {
         public NotFoundException(String msg) { super(msg); }
     }
+    
+    
+    public record OrderItemDto(Long menuItemId, String name, Integer quantity) {}
+    public record OrderDto(Long id, OrderStatus status, java.time.Instant createdAt, List<OrderItemDto> items) {}
+
+    @Transactional(readOnly = true)
+    public OrderDto getOrder(Long id) {
+        CustomerOrder order = orderRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+        List<OrderItemDto> items = new ArrayList<>();
+        for (var it : order.getItems()) {
+            items.add(new OrderItemDto(
+                    it.getMenuItem().getId(),
+                    it.getMenuItem().getName(),
+                    it.getQuantity()
+            ));
+        }
+
+        return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
+    }
+
 }
