@@ -1,19 +1,22 @@
 import './css/App.css'
-import Home from './Home'
 import Menu from './Menu'
 import Login from './Login'
+import MainPage from "./Main_page"
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Waiter from './Waiter'
 
 
 function App() {
 
   return (
+
     <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/menu" element={<Menu />} />
-      <Route path="/login" element={<Login />} />
-    </Routes>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/waiter" element={<Waiter />} />
+      </Routes>
     </BrowserRouter>
   )
 }

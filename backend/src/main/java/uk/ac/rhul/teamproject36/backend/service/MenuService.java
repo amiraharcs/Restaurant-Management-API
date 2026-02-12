@@ -61,12 +61,18 @@ public final class MenuService {
         }
     }
 
-    public void updateAvailability(final Long id, final boolean available) {
-        MenuItem item = menuItemRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Menu item not found"));
+/**
+ * Updates the availability of a menu item.
+ *
+ * @param id the menu item id
+ * @param available the new availability value
+ * @throws EntityNotFoundException if the item does not exist
+ */
+public void updateAvailability(final Long id, final boolean available) {
+    final MenuItem item = menuItemRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Menu item not found"));
 
-        item.setAvailable(available);
-        menuItemRepository.save(item);
-    }
-
+    item.setAvailable(available);
+    menuItemRepository.save(item);
+}
 }

@@ -1,0 +1,50 @@
+/* Title section */
+.Title {
+  height: calc(100vh - 80px);
+  background-image: url("/public/images/main/mexican_background.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.Title::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.Title-content {
+  position: relative;
+  color: #e60026;
+}
+
+.Title-content h1 {
+  font-size: 6rem;
+  letter-spacing: 0.2rem;
+  font-family: "Times New Roman", serif;
+}
+
+.Title-content p {
+  /*font-family: ;*/  
+  margin-top: 10px;
+  font-size: 1.3rem;
+  font-style: italic;
+  color: #ff4d4d;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 15px 0;
+  }
+
+  .Title-content h1 {
+    font-size: 3.5rem;
+  }
+}

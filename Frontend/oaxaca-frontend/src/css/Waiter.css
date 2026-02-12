@@ -1,0 +1,36 @@
+.waiterPage {
+    padding: 2.5%;
+}
+
+.orderTabs {
+    display: flex;
+    gap: 2%;
+    width: 100%;
+    margin-bottom: 1.5%;
+}
+
+.orderTab {
+    flex: 1;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background: #e5e7eb;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    text-align: center;
+}
+
+.orderTab:hover {
+    background: #d1d5db
+}
+
+.orderTab.active {
+    background: #0b6b4f;
+    color: white;
+}
+
+.orderTitle {
+    background: #f9fafb;
+    border-radius: 14px;
+}

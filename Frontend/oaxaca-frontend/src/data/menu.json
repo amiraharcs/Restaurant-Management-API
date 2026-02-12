@@ -16,7 +16,7 @@
         "Herbs"
       ],
       "allergens": ["Gluten"],
-      "filters": [],
+      "filters": ["Meat"],
       "image": "/images/menu/spaghetti-bolognese.jpg"
     },
     {
@@ -34,7 +34,7 @@
         "Garlic"
       ],
       "allergens": ["Gluten", "Milk"],
-      "filters": [],
+      "filters": ["Meat"],
       "image": "/images/menu/chicken-alfredo.jpg"
     }
   ],
@@ -74,7 +74,7 @@
         "Caffeine"
       ],
       "allergens": [],
-      "filters": [],
+      "filters": ["Vegan", "Vegetarian", "GlutenFree"],
       "image": "/images/menu/coca-cola.jpg"
     },
     {
@@ -85,7 +85,7 @@
       "isAvailable": true,
       "ingredients": ["Carbonated water"],
       "allergens": [],
-      "filters": ["Vegan", "GlutenFree"],
+      "filters": ["Vegan", "Vegetarian", "GlutenFree"],
       "image": "/images/menu/sparkling-water.jpg"
     }
   ]
