@@ -33,4 +33,9 @@ public class OrderController {
     }
 
     public record ErrorResponse(String error) {}
+    
+    @GetMapping("/orders/{id}")
+    public OrderService.OrderDto getOrder(@PathVariable Long id) {
+        return orderService.getOrder(id);
+    }
 }
