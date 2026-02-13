@@ -1,4 +1,7 @@
+import "./css/Order.css"
 import { useLocation } from "react-router-dom"
+import { FaLock } from "react-icons/fa";
+import NavBar from "./data/components/NavBar";
 
 export default function Order() {
 
@@ -22,12 +25,90 @@ export default function Order() {
     const location = useLocation();
     const basket = location.state?.basket;
 
+    const total = basket.reduce((sum : number, basketItem : BasketItem) => 
+        sum + (basketItem.item.price * basketItem.quantity), 0
+    )
+
+    function submitOrder(formData : FormData) {
+        const name = formData.get("name")
+        const phoneNumber = formData.get("phoneNumber")
+        const tableNumber = formData.get("tableNumber")
+    }
+
     return (
-        <div>
-            <p>Hello, this is the order page</p>
-            <p>{basket.map((basketItem : BasketItem) => (
-                <p>{basketItem.item.name}</p>
-            ))}</p>
+        <div className="order">
+            <NavBar />
+            <div className="order_header">
+                <h1>Order</h1>
+                <FaLock className="order_header_lock"/>
+            </div>
+
+
+            <div className="order_main">
+                <div className="order_left">
+                    <h3 className="order_left_title">Your Details</h3>
+                    <form className='order_form' onSubmit={(e) => {
+                        e.preventDefault()
+                        const formData = new FormData(e.currentTarget)
+                        submitOrder(formData)
+                    }}>
+                        <div className='inputWrap'>
+                            <input 
+                                className='input_box'
+                                type='text'
+                                placeholder='Firstname'
+                                name="name"
+                                required
+                                minLength={1}
+                            />    
+                        </div>
+                        <div>
+                            <input 
+                            className="input_box"
+                            type="tel"
+                            placeholder="Phone Number"
+                            name="phoneNumber"
+                            required
+                            pattern="(07[0-9]{9}|\\+447[0-9]{9})"
+                            title="Enter a valid UK mobile number"
+                            />
+                        </div>
+                        <div>
+                            <input 
+                            className="input_box"
+                            type="number"
+                            placeholder="Table Number"
+                            name="tableNumber"
+                            required
+                            min={1}
+                            />
+                        </div>
+
+                    <button className="order_button">Order</button>
+                    </form>
+                    
+                </div>
+                <div className="order_right">
+                    <div>
+                        <h3 className="order_right_title">Your Order</h3>
+                        <div className="order_right_items">
+                            {basket.map( (basketItem : BasketItem, i : number) => 
+                            <div className="order_right_item">
+                                 <img src={basketItem.item.image} alt={basketItem.item.name} className='order_right_item_image'/>
+                                <div className="order_right_item_text">
+                                    <div className="order_right_item_text_details">
+                                        <p className="order_right_item_name">{basketItem.item.name}</p>
+                                        <p className="order_right_item_quantity">Quantity: {basketItem.quantity}</p>
+                                    </div>
+                                    <p className="order_right_item_price">£{(basketItem.item.price * basketItem.quantity).toFixed(2)}</p>
+                                </div>
+                            </div>
+                            )}
+                            <p className="order_right_total">Total: <span className="order_right_total_span">£{total.toFixed(2)}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
