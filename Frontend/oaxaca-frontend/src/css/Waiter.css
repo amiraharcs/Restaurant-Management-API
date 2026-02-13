@@ -1,12 +1,24 @@
+.orderContainer {
+    background-color: #FFFFFF;
+    border-radius: 18px;
+    margin-top: 12px;
+}
+
+.welcomeText {
+    margin-left: 10px;
+    font-weight: 500;
+}
+
 .waiterPage {
-    padding: 2.5%;
+    padding: 2%;
+    background-color: #e7e7e7;
 }
 
 .orderTabs {
     display: flex;
     gap: 2%;
-    width: 100%;
-    margin-bottom: 1.5%;
+    width: 97.2%;
+    padding: 20px;
 }
 
 .orderTab {
@@ -31,6 +43,7 @@
 }
 
 .orderTitle {
-    background: #f9fafb;
+    background: #FFFFFF;
     border-radius: 14px;
+    margin-left: 20px;
 }
