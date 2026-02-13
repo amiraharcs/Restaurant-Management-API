@@ -19,7 +19,7 @@ export default function NavBarWaiter() {
                 <NavLink to="/waiter">Orders</NavLink>
 
                 <div className="requestDropdownWrap">
-                    <NavLink to="/waiter">Customer Help</NavLink>
+                    <NavLink to="/alerts">Alerts</NavLink>
                 </div>
 
                 <NavLink to="/" end>Logout</NavLink>
