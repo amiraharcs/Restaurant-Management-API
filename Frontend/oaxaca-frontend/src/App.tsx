@@ -4,7 +4,6 @@ import Login from './Login'
 import MainPage from "./Main_page"
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Waiter from './Waiter'
-import Order from './order'
 
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
         <Route path="/menu" element={<Menu />} />
         <Route path="/login" element={<Login />} />
         <Route path="/waiter" element={<Waiter />} />
-        <Route path='/order' element={<Order />} />
       </Routes>
     </BrowserRouter>
   )
