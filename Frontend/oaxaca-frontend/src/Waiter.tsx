@@ -14,6 +14,20 @@ type Order = {
     items: { name: string; qty: number }[];
 };
 
+function pendingItemsSum(items : { qty: number }[]) {
+    let count = 0;
+    Object.values(items).forEach((item) => count += item.qty)
+    return count;
+}
+
+function calculatePlacedAt(ms : number) {
+    const mins = Math.floor(ms / 60000);
+    if (mins < 1){
+        return "Placed <1 minute ago"
+    }
+    return `Placed ${mins} minutes ago`
+}
+
 export default function Waiter() {
     const [activeTab, setActiveTab] = useState<status>("new");
 
@@ -23,12 +37,6 @@ export default function Waiter() {
     function filterOrders(tab : status) {
         const activeOrders = orders.filter((order) => order.status === tab);
         return activeOrders;
-    }
-    
-    function pendingItemsSum(items : { qty: number }[]) {
-        let count = 0;
-        Object.values(items).forEach((item) => count += item.qty)
-        return count;
     }
 
     function calculateTabs() {
@@ -42,6 +50,9 @@ export default function Waiter() {
         }
         return count;
     }
+
+    const [now, setNow] = useState(Date.now())
+    setInterval(() => setNow(Date.now()), 1000);
 
     return (
         <main>
@@ -76,6 +87,9 @@ export default function Waiter() {
                         {filterOrders(activeTab).length === 0 && <div className='emptyList'> No orders in this section </div> }
 
                         {filterOrders(activeTab).map((order) => {
+                            const placedMs = new Date(order.placedAt).getTime();
+                            const ageMs = now - placedMs;
+
                             return (
                                 <div key={order.orderId} className='orderRow' role='button'>
                                     <div className='orderLeft'>
@@ -88,7 +102,8 @@ export default function Waiter() {
                                     <div className='orderLine' />
 
                                     <div className='orderMiddle'>
-                                        <div className='orderTableNo'>Table No. {order.tableNo}</div> 
+                                        <div className='orderTableNo'>Table No. {order.tableNo}</div>
+                                        <div className='orderPlacedAt'>{calculatePlacedAt(ageMs)}</div>
                                     </div>
                                     
                                     <div className='orderLine' />
