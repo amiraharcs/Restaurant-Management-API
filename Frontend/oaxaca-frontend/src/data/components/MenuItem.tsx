@@ -5,7 +5,24 @@ import { SiVega } from "react-icons/si";
 import { FaLeaf } from "react-icons/fa";
 import { GiMeat } from "react-icons/gi";
 
-export default function MenuItem({item, onClose}: any) {
+    type MenuItem = {
+        name: string;
+        description: string;
+        price: number;
+        calories: number;
+        isAvailable: boolean;
+        ingredients: string[];
+        allergens: string[];
+        filters: string[];
+        image: string;
+    };
+
+    type BasketItem = {
+        item : MenuItem;
+        quantity: number;
+    }
+
+export default function MenuItem({item, setBasket, onClose}: any) {
     return (
         <div className="menu_item_main">
             <div className="menu_item_main_backdrop">
@@ -62,7 +79,21 @@ export default function MenuItem({item, onClose}: any) {
                         </div>
                     </div>
 
-                    <div className='menu_item_main_add'>
+                    <div className='menu_item_main_add' onClick={() => {
+                            setBasket( (prevBasket : BasketItem[]) => {
+                                const existingItem = prevBasket.find( (basketItem) => 
+                                    basketItem.item.name === item.name
+                                )
+
+                                if (existingItem) {
+                                    return prevBasket.map( (basketItem) => 
+                                    basketItem.item.name === existingItem.item.name ? {...basketItem, quantity: basketItem.quantity + 1} : basketItem
+                                    )
+                                }
+                                return [...prevBasket, {item, quantity: 1}]
+                            })
+                        }}
+                        >
                         <p className='menu_item__main_add_add'>Add</p>
                         <p className='menu_item__main_price'>£{item.price}</p>
                     </div>

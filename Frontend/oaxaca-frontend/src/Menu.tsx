@@ -1,7 +1,6 @@
 import './css/Menu.css'
 import menu from "./data/menu.json"
 import { useState } from 'react';
-import { useMemo } from 'react';
 import { FaFire } from 'react-icons/fa';
 import { LuWheatOff } from "react-icons/lu";
 import { SiVega } from "react-icons/si";
@@ -10,6 +9,7 @@ import { GiMeat } from "react-icons/gi";
 import { IoFilter } from "react-icons/io5";
 import MenuItem from './data/components/MenuItem';
 import NavBar from "./data/components/NavBar";
+import Basket from './data/components/Basket';
 
 
 export default function Menu() {
@@ -17,6 +17,13 @@ export default function Menu() {
     const [showItem, setShowItem] = useState(false);
     const [selectedItem, setSelectedItem] = useState({});
     const [showFilter, setShowFilter] = useState(false);
+
+    type BasketItem = {
+        item: MenuItem;
+        quantity: number;
+    }
+
+    const [basket, setBasket] = useState<BasketItem[]>([])
 
     type MenuItem = {
         name: string;
@@ -78,7 +85,7 @@ export default function Menu() {
     })
 
     return (
-        <main>
+        <main className='menu_main'>
             <NavBar />
 
             <div className='menu_header'>
@@ -87,53 +94,73 @@ export default function Menu() {
                 <hr className='menu_page_title_br'/>
             </div>
             
-            {Object.entries(filteredProducts).map( ([category, items]) => (
-                <section>
-                    <h2 className='category_title'>{category}</h2>
-    
-                    {items.length === 0 && (
-                        <div>No items available</div>
-                    )}
+            <div className='menu_layout'>
+                <div className='menu_content'>
+                    {Object.entries(filteredProducts).map( ([category, items]) => (
+                        <section>
+                            <h2 className='category_title'>{category}</h2>
+                            {items.length === 0 && (
+                                <div>No items available</div>
+                            )}
+                            <div className='menu_items_div'>
+                                {items.map( (item) =>
+                                        item.isAvailable && (
+                                        <div key={item.name} className='menu_item' onClick={() => {setShowItem(true); setSelectedItem(item);}}>
+                                            <img className='menu_item_image' src={item.image} alt={item.name} />
+                                            <div className='menu_item_text'>
+                                                <div className='menu_item_title'>
+                                                    <h3>{item.name}</h3>
+                                                    <div className='menu_item_filters'>{item.filters.map( (filter, index) => (
+                                                    <div key={index}>
+                                                        {filter === "GlutenFree" &&
+                                                             <LuWheatOff />
+                                                        }
+                                                        {filter === "Vegan" &&
+                                                            <SiVega />
+                                                        }
+                                                        {filter === "Vegetarian" &&
+                                                            <FaLeaf />
+                                                        }
+                                                        {filter === "Meat" &&
+                                                            <GiMeat className="meatIcon"/>
+                                                        }
+                                                    </div>
+                                                ))}</div>
+                                                </div>
+                                                <div className='menu_item_calories'>
+                                                    <FaFire className='calorie_icon'/>
+                                                    <p className='calorie_text'>{item.calories}kcal</p>
+                                                </div>
+                                                <div className='menu_item_add' onClick={(e) => {
+                                                    e.stopPropagation(); (
+                                                        setBasket( prevBasket => {
+                                                            const existingItem = prevBasket.find( (basketItem) => 
+                                                                basketItem.item.name === item.name 
+                                                            )
 
-                    <div className='menu_items_div'>
-                        {items.map( (item) => 
-                                item.isAvailable && (
-                                <div key={item.name} className='menu_item' onClick={() => {setShowItem(true); setSelectedItem(item);}}>
-                                    <img className='menu_item_image' src={item.image} alt={item.name} />
-                                    <div className='menu_item_text'>
-                                        <div className='menu_item_title'>
-                                            <h3>{item.name}</h3>
-                                            <div className='menu_item_filters'>{item.filters.map( (filter, index) => (
-                                            <div key={index}>
-                                                {filter === "GlutenFree" && 
-                                                     <LuWheatOff />
-                                                }
-                                                {filter === "Vegan" && 
-                                                    <SiVega />
-                                                }
-                                                {filter === "Vegetarian" &&
-                                                    <FaLeaf />
-                                                }
-                                                {filter === "Meat" &&
-                                                    <GiMeat className="meatIcon"/>
-                                                }
+                                                            if (existingItem) {
+                                                                return prevBasket.map( (basketItem) => 
+                                                                basketItem.item.name === item.name ? {...basketItem, quantity: basketItem.quantity + 1} 
+                                                                : basketItem
+                                                                )
+                                                            }
+
+                                                            return [...prevBasket, {item, quantity: 1}]
+                                                        } ))
+                                                    }}>
+                                                    <p className='menu_item_add_add'>Add</p>
+                                                    <p className='menu_item_price'>£{item.price}</p>
+                                                </div>
                                             </div>
-                                        ))}</div>
-                                        </div>
-                                        <div className='menu_item_calories'>
-                                            <FaFire className='calorie_icon'/>
-                                            <p className='calorie_text'>{item.calories}kcal</p>
-                                        </div>
-                                        <div className='menu_item_add'>
-                                            <p className='menu_item_add_add'>Add</p>
-                                            <p className='menu_item_price'>£{item.price}</p>
-                                        </div>
-                                    </div>
-                                </div>)
-                        )}
-                    </div>
-                </section>
-            ) )}
+                                        </div>)
+                                )}
+                            </div>
+                        </section>
+                    ) )}
+                </div>
+
+                <Basket basket ={basket} setBasket={setBasket}/>
+            </div>
             {showFilter && 
             <div className='filter' onClick={() => (setShowFilter(false))}>
                 <button className="filter_close" onClick={() => (setShowFilter(false))}>x</button>
@@ -179,7 +206,7 @@ export default function Menu() {
             </div>
             }
 
-            {showItem && <MenuItem item={selectedItem} onClose={() => {
+            {showItem && <MenuItem item={selectedItem} setBasket ={setBasket} onClose={() => {
                 setShowItem(false)
                 setSelectedItem({})
             }}/>}
