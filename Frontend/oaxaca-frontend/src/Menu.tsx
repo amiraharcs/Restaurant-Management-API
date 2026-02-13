@@ -149,7 +149,7 @@ export default function Menu() {
                                                         } ))
                                                     }}>
                                                     <p className='menu_item_add_add'>Add</p>
-                                                    <p className='menu_item_price'>£{item.price}</p>
+                                                    <p className='menu_item_price'>£{item.price.toFixed(2)}</p>
                                                 </div>
                                             </div>
                                         </div>)

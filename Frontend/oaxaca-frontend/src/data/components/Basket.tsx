@@ -50,7 +50,7 @@ export default function Basket({basket, setBasket} : any ) {
                                 <div className="basket_item_text">
                                     <p className="basket_item_name">{basketItem.item.name}</p>
                                     <div className="basket_item_price_quantity_div">
-                                        <p className="basket_item_price">£{basketItem.item.price * basketItem.quantity}</p>
+                                        <p className="basket_item_price">£{(basketItem.item.price * basketItem.quantity).toFixed(2)}</p>
                                         <div className="basket_item_quantity_div">
                                             <button className='basket_item_quantity_change' onClick={() => {setBasket( (prevBasket : BasketItem[]) => {
                                                 return prevBasket.map( (prevBasketItem : BasketItem) =>
@@ -72,7 +72,7 @@ export default function Basket({basket, setBasket} : any ) {
                                 </div>
                             </div>
                             ))}
-                            <p className="basket_total">Total: <span className="basket_total_span">£{total}</span></p>
+                            <p className="basket_total">Total: <span className="basket_total_span">£{total.toFixed(2)}</span></p>
                             <button className="basket_checkout" onClick={() => {navigate("/order", {state: { basket } })}}>Checkout</button>
                         </div>
                     )}
