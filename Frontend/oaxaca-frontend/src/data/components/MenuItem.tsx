@@ -95,7 +95,7 @@ export default function MenuItem({item, setBasket, onClose}: any) {
                         }}
                         >
                         <p className='menu_item__main_add_add'>Add</p>
-                        <p className='menu_item__main_price'>£{item.price}</p>
+                        <p className='menu_item__main_price'>£{item.price.toFixed(2)}</p>
                     </div>
                 </div>
             </div>
