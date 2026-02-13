@@ -4,28 +4,42 @@ import NavBarWaiter from "./data/components/NavBarWaiter";
 import orderData from "./data/waiter.json";
 import { LuChevronRight } from 'react-icons/lu';
 
-type status = "new" | "preparing" | "ready" ;
+type status = "new" | "preparing" | "ready";
+type Order = {
+    orderId: string;
+    customerName: string;
+    tableNo: number;
+    placedAt: string;
+    status: status;
+    items: { name: string; qty: number }[];
+};
 
 export default function Waiter() {
     const [activeTab, setActiveTab] = useState<status>("new");
 
-    const orders = orderData.orders;
-
-    // dummy data for amount of orders shown on the tabs
-    const count = {
-        requests: 2,
-        preparing: 1,
-        completed: 0,
-    };
+    // dummy data from waiter.json
+    const orders = (orderData as { orders: Order[]}).orders;
 
     function filterOrders(tab : status) {
         const activeOrders = orders.filter((order) => order.status === tab);
         return activeOrders;
     }
     
-    function pendingItemsSum(items : { name: string ;qty: number }[]) {
+    function pendingItemsSum(items : { qty: number }[]) {
         let count = 0;
         Object.values(items).forEach((item) => count += item.qty)
+        return count;
+    }
+
+    function calculateTabs() {
+        const count = {
+            new: 0,
+            preparing: 0,
+            ready: 0
+        };
+        for ( const s of orders ) {
+            count[s.status] += 1;
+        }
         return count;
     }
 
@@ -40,15 +54,15 @@ export default function Waiter() {
                 <div className='orderContainer'>
                     <div className='orderTabs'>
                         <button className={`orderTab ${activeTab === "new" ? "active" : ""}`} onClick={() => setActiveTab("new")}>
-                            New ({count.requests})
+                            New ({calculateTabs().new})
                         </button>
 
                         <button className={`orderTab ${activeTab === "preparing" ? "active" : ""}`} onClick={() => setActiveTab("preparing")}>
-                            Preparing ({count.preparing})
+                            Preparing ({calculateTabs().preparing})
                         </button>
 
                         <button className={`orderTab ${activeTab === "ready" ? "active" : ""}`} onClick={() => setActiveTab("ready")}>
-                            Ready ({count.completed})
+                            Ready ({calculateTabs().ready})
                         </button>
                     </div>
 
@@ -56,8 +70,10 @@ export default function Waiter() {
                         <h2>{activeTab.toUpperCase()} ORDERS</h2>
                     </div>
 
+                    <div className='topDivider' />
+
                     <div className='orderList'>
-                        {filterOrders(activeTab).length === 0 && <div className='emptyList'> No orders in this section </div>}
+                        {filterOrders(activeTab).length === 0 && <div className='emptyList'> No orders in this section </div> }
 
                         {filterOrders(activeTab).map((order) => {
                             return (
@@ -87,7 +103,6 @@ export default function Waiter() {
                                     </div>
                                 </div>
                             )
-
                         })}
 
                     </div>

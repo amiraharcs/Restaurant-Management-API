@@ -91,6 +91,43 @@
         { "name": "Chicken Alfredo Pasta", "qty": 2 },
         { "name": "Chocolate Brownie", "qty": 1 }
       ]
+    },
+    {
+      "orderId": "011",
+      "customerName": "Future",
+      "tableNo": 10,
+      "status": "new",
+      "placedAt": "2026-02-13T19:31:15.000Z",
+      "items": [
+        { "name": "Chicken Alfredo Pasta", "qty": 2 },
+        { "name": "Chocolate Brownie", "qty": 2 }
+      ]
+    },
+    {
+      "orderId": "012",
+      "customerName": "Future",
+      "tableNo": 4,
+      "status": "preparing",
+      "placedAt": "2026-02-13T19:15:02.000Z",
+      "items": [
+        { "name": "Spaghetti Bolognese", "qty": 1 },
+        { "name": "Chicken Alfredo Pasta", "qty": 1 },
+        { "name": "Coca-Cola", "qty": 1 }
+      ]
+    },
+    {
+      "orderId": "014",
+      "customerName": "Druski",
+      "tableNo": 4,
+      "status": "preparing",
+      "placedAt": "2026-02-13T19:15:02.000Z",
+      "items": [
+        { "name": "Spaghetti Bolognese", "qty": 2 },
+        { "name": "Chicken Alfredo Pasta", "qty": 2 },
+        { "name": "Chocolate Brownie", "qty": 2 },
+        { "name": "Coca-Cola", "qty": 2 },
+        { "name": "Sparkling Water", "qty": 1 }
+      ]
     }
   ]
 }
