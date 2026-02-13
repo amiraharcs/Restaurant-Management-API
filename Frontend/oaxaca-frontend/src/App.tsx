@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Waiter from './Waiter'
 import Kitchen from './Kitchen'
 import Alerts from './Alerts'
+import Order from './Order'
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/waiter" element={<Waiter />} />
         <Route path="/kitchen" element={<Kitchen />} />
         <Route path="/alerts" element={<Alerts />} />
+        <Route path='/order' element={<Order />} />
       </Routes>
     </BrowserRouter>
   )
