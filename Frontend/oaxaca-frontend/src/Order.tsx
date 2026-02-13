@@ -1,9 +1,15 @@
 import "./css/Order.css"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { FaLock } from "react-icons/fa";
 import NavBar from "./data/components/NavBar";
+import { useState } from "react";
 
 export default function Order() {
+
+    const location = useLocation();
+    const basket = location.state?.basket;
+    
+    const navigate = useNavigate();
 
     type MenuItem = {
         name: string;
@@ -22,8 +28,7 @@ export default function Order() {
         quantity: number;
     }
 
-    const location = useLocation();
-    const basket = location.state?.basket;
+    const [confirmedOrder, showConfirmedOrder] = useState(false)
 
     const total = basket.reduce((sum : number, basketItem : BasketItem) => 
         sum + (basketItem.item.price * basketItem.quantity), 0
@@ -33,6 +38,8 @@ export default function Order() {
         const name = formData.get("name")
         const phoneNumber = formData.get("phoneNumber")
         const tableNumber = formData.get("tableNumber")
+
+        showConfirmedOrder(true)
     }
 
     return (
@@ -84,7 +91,7 @@ export default function Order() {
                             />
                         </div>
 
-                    <button className="order_button">Order</button>
+                    <button type="submit" className="order_button">Order</button>
                     </form>
                     
                 </div>
@@ -109,6 +116,22 @@ export default function Order() {
                     </div>
                 </div>
             </div>
+
+            {confirmedOrder && 
+            <div className="confirm_order_main">
+                <div className="confirm_order_main_backdrop">
+
+                </div>
+                <div className="confirm_order_main_content">
+                    <button className="confirm_order_main_close" onClick={() => {showConfirmedOrder(false); navigate("/");}}>x</button>
+                    <h3 className="confirm_order_main_title">Order Confirmed!</h3>
+                    <p>Thank you for ordering with us.</p>
+                    <p>Your food will be ready soon.</p>
+                </div>
+            </div>
+
+            }
+
         </div>
     )
 }

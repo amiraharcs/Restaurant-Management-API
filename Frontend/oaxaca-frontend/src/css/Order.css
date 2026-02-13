@@ -156,3 +156,64 @@
 .order_right_total_span {
     color: #0b6b4f;
 }
+
+/*****Confirmed Order Popup*****/
+
+.confirm_order_main {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.confirm_order_main_backdrop {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(1px);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.confirm_order_main_content {
+    position: relative;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    padding: 0rem 2rem 1rem 2rem;
+}
+
+.confirm_order_main_title {
+    margin-top: 2rem;
+}
+
+.confirm_order_main_close {
+     position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+    border: 2px solid #0b6b4f;
+    border-radius: 50%;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: #0b6b4f;
+    z-index: 2;
+
+}
+
+.confirm_order_main_close:hover {
+    transform: scale(1.05);
+    color: rgb(16, 140, 16);
+}
