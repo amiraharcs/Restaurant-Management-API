@@ -1,0 +1,36 @@
+.alertsPage {
+    padding: 2.5%;
+}
+
+.alertTabs {
+    display: flex;
+    gap: 2%;
+    width: 100%;
+    margin-bottom: 1.5%;
+}
+
+.alertTab {
+    flex: 1;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background: #e5e7eb;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    text-align: center;
+}
+
+.alertTab:hover {
+    background: #d1d5db
+}
+
+.alertTab.active {
+    background: #0b6b4f;
+    color: white;
+}
+
+.alertTitle {
+    background: #f9fafb;
+    border-radius: 14px;
+}
