@@ -1,6 +1,7 @@
 import './css/Menu.css'
 import menu from "./data/menu.json"
 import { useState } from 'react';
+import { useMemo } from 'react';
 import { FaFire } from 'react-icons/fa';
 import { LuWheatOff } from "react-icons/lu";
 import { SiVega } from "react-icons/si";
@@ -16,6 +17,41 @@ export default function Menu() {
     const [showItem, setShowItem] = useState(false);
     const [selectedItem, setSelectedItem] = useState({});
     const [showFilter, setShowFilter] = useState(false);
+
+    type MenuItem = {
+        name: string;
+        description: string;
+        price: number;
+        calories: number;
+        isAvailable: boolean;
+        ingredients: string[];
+        allergens: string[];
+        filters: string[];
+        image: string;
+    };
+
+    type MenuData = Record<string, MenuItem[]>; //string = cateogyr name, menuitem = items
+
+    const products = menu as MenuData
+    const [selectedAllergen, setSelectedAllergen] = useState<string>("");
+    const [selectedDietFilter, setSelectedDietFilter] = useState<string>("");
+
+    function filterProducts(products: MenuData, selectedAllergen: string, selectedDietFilter: string): MenuData {
+        const result: MenuData = {};
+
+        Object.entries(products).forEach( ([category, items]) => {
+            result[category] = items.filter( (item) => {
+                const filterSelectedAllergen = !item.allergens.includes(selectedAllergen)
+                const filterSelectedDietFilter = !item.filters.includes(selectedDietFilter)
+                return filterSelectedAllergen && filterSelectedDietFilter
+            })
+        })
+
+        return result;
+    }
+
+    const filteredProducts = filterProducts(products, selectedAllergen, selectedDietFilter);
+
 
     const allergensArray: string[] = [];
 
@@ -51,10 +87,14 @@ export default function Menu() {
                 <hr className='menu_page_title_br'/>
             </div>
             
-            {Object.entries(menu).map( ([category, items]) => (
+            {Object.entries(filteredProducts).map( ([category, items]) => (
                 <section>
                     <h2 className='category_title'>{category}</h2>
     
+                    {items.length === 0 && (
+                        <div>No items available</div>
+                    )}
+
                     <div className='menu_items_div'>
                         {items.map( (item) => 
                                 item.isAvailable && (
@@ -95,41 +135,48 @@ export default function Menu() {
                 </section>
             ) )}
             {showFilter && 
-            <div className='filter'>
+            <div className='filter' onClick={() => (setShowFilter(false))}>
                 <button className="filter_close" onClick={() => (setShowFilter(false))}>x</button>
-                <div className='filter_container'>
+                <div className='filter_container' onClick={(e) => (e.stopPropagation())}>
                     <div className='filter_title'>
                         <p>Filter</p>
                         <IoFilter />
                     </div>
-                    <form action="" className=''>
+                    <form>
                         <div>
-                            <label htmlFor="" className='filtern_title'>Have any allergens?</label>
-                            <select name="allergens">
-                            <option value="" className='fitler_option'>None</option>
-                            {allergensArray.map( (allergen) => (
-                                <option value={allergen} className='fitler_option'>{allergen}</option>
-                                )
-                            )}
-                            </select>
-                            <label htmlFor="" className='filtern_title'>Dietary Requirements</label>
-                            <select name="allergens">
-                            <option value="" className='fitler_option'>None</option>
-                            {filtersArray.map( (filter) => (
-                                <option value={filter} className='fitler_option'>{filter}</option>
-                                )
-                            )}
-                            </select>
-                        </div>
+                            <div>
+                                <label className='filtern_title'>Have any allergens?</label>
+                                <select
+                                value={selectedAllergen}
+                                onChange={(e) => setSelectedAllergen(e.target.value)}
+                                >
+                                <option value="">None</option>
+                                {allergensArray.map((allergen) => (
+                                    <option key={allergen} value={allergen}>
+                                    {allergen}
+                                    </option>
+                                ))}
+                                </select>
+                            </div>
 
-                        <div className='filter_apply_box'>
-                            <button className='filter_apply'>Apply</button>
+                            <div>
+                                <label className='filtern_title'>Dietary Requirements</label>
+                                <select
+                                value={selectedDietFilter}
+                                onChange={(e) => setSelectedDietFilter(e.target.value)}
+                                >
+                                <option value="">None</option>
+                                {filtersArray.map((filter) => (
+                                    <option key={filter} value={filter}>
+                                    {filter}
+                                    </option>
+                                ))}
+                                </select>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
-
-
             }
 
             {showItem && <MenuItem item={selectedItem} onClose={() => {
