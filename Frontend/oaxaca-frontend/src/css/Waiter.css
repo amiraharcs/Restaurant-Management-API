@@ -12,6 +12,7 @@
 .waiterPage {
     padding: 2%;
     background-color: #e7e7e7;
+    min-height: 80vh;
 }
 
 .orderTabs {
@@ -34,7 +35,7 @@
 }
 
 .orderTab:hover {
-    background: #d1d5db
+    background: #d1d5db;
 }
 
 .orderTab.active {
@@ -46,4 +47,100 @@
     background: #FFFFFF;
     border-radius: 14px;
     margin-left: 20px;
+}
+
+.orderList {
+    padding: 0 20px 20px;
+    box-sizing: border-box;
+}
+
+.emptyList {
+    padding: 18px;
+    color: #555;
+    border-radius: 12px;
+    background: #f9fafb;
+    border: 1px solid #ececec;
+}
+
+.orderRow {
+    display: grid;
+    grid-template-columns: 20% 1px 30% 0.5px 25% auto;
+    align-items: center;
+    gap: 18px;
+    background: #e5e7eb;
+    border: 1px solid #e2e2e2;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin: 14px 0;
+    cursor: pointer;
+}
+
+.orderRow:hover {
+    background: #d1d5db
+}
+
+.orderLeft {
+    display: grid;
+    gap: 10px;
+}
+
+.orderTopLeft {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.orderId {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.orderCustomerName {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.orderLine {
+    width: 1px;
+    height: 55px;
+    background: black;
+    justify-self: center;
+}
+
+.orderMiddle {
+    display: grid;
+    gap: 10px;
+    justify-content: center;
+    text-align: center;
+}
+
+.orderTableNo {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.orderRight {
+    display: grid;
+    gap: 15px;
+    justify-content: center;
+    text-align: center;
+}
+
+.orderPendingText {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.orderPendingItems {
+    font-weight: 700;
+    font-size: 28px;
+}
+
+.orderArrow {
+    font-size: 36px;
+    display: flex;
+    align-items: right;
+    justify-content: right;
+    padding-right: 16px;
 }
