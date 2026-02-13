@@ -4,6 +4,8 @@ import Login from './Login'
 import MainPage from "./Main_page"
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Waiter from './Waiter'
+import Kitchen from './Kitchen'
+import Alerts from './Alerts'
 
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
         <Route path="/menu" element={<Menu />} />
         <Route path="/login" element={<Login />} />
         <Route path="/waiter" element={<Waiter />} />
+        <Route path="/kitchen" element={<Kitchen />} />
+        <Route path="/alerts" element={<Alerts />} />
       </Routes>
     </BrowserRouter>
   )
