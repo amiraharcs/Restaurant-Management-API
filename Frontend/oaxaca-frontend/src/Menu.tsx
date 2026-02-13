@@ -206,7 +206,7 @@ export default function Menu() {
             </div>
             }
 
-            {showItem && <MenuItem item={selectedItem} onClose={() => {
+            {showItem && <MenuItem item={selectedItem} setBasket ={setBasket} onClose={() => {
                 setShowItem(false)
                 setSelectedItem({})
             }}/>}

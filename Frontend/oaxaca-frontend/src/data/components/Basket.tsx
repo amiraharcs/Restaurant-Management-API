@@ -19,6 +19,10 @@ import { FaBasketShopping } from "react-icons/fa6";
 
 export default function Basket({basket, setBasket} : any ) {
 
+    const total = basket.reduce((sum : number, basketItem : BasketItem) => 
+    sum + basketItem.item.price * basketItem.quantity, 0
+    );
+
     return (
         <aside className="basket">
             <div className='basket_main'>
@@ -65,6 +69,7 @@ export default function Basket({basket, setBasket} : any ) {
                                 </div>
                             </div>
                             ))}
+                            <p className="basket_total">Total: <span className="basket_total_span">£{total}</span></p>
                             <button className="basket_checkout">Checkout</button>
                         </div>
                     )}

@@ -132,7 +132,7 @@
     background-color: #0b6b4f;
     color: #ffffff;
     padding: 0.25rem 0;
-    font-weight: 600;
+    font-weight: 600;;
 }
 
 .menu_item_add_add {
@@ -427,6 +427,7 @@ select {
     color: #ffffff;
     padding: 0.4rem 0;
     font-weight: 600;
+    cursor: pointer
 }
 
 .menu_item_main_add:hover {
@@ -532,13 +533,13 @@ select {
 }
 
 .basket_item_price {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #0b6b4f;    
 }
 
 .basket_item_quantity {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #0b6b4f;
 }
@@ -553,8 +554,8 @@ select {
 }
 
 .basket_item_quantity_change {
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
 
     display: flex;
     align-items: center;
@@ -563,6 +564,8 @@ select {
     background-color: #f7f7f7;
     border: 2px solid #0b6b4f;
     border-radius: 0.5rem;
+    font-size: 1.3rem;
+    color: #0b6b4f;
 
     cursor: pointer;
 }
@@ -573,7 +576,7 @@ select {
 }
 
 .basket_checkout {
-    margin-top: 30px;
+    margin-top: 0px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -588,5 +591,15 @@ select {
 
 .basket_checkout:hover {
     background-color: orange;
+}
+
+.basket_total {
+    margin-top: 0.7rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.basket_total_span {
+    color: #0b6b4f;
 }
 
