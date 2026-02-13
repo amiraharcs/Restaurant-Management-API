@@ -14,6 +14,16 @@
     margin-bottom: 2rem;
 }
 
+.menu_layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.menu_content {
+  flex: 1;
+}
+
 .menu_header {
     position: relative;
 }
@@ -434,15 +444,16 @@ select {
 /******Basket*******/
 
 .basket {
-    position: absolute;
-    right: 20px;
-    top: 200px;
-    background-color: #ffffff;
-    width: 320px;
-    max-width: 320px;
+    top: 50px;
+    right: 25px;
+    background-color: #f7f7f7;
+    width: 350px;
+    max-width: 350px;
+    flex-shrink: 0;
+    position: sticky;
     padding: 25px;
     border-radius: 1rem;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 14px 24px;
 }
 
 .basket_main {
@@ -461,18 +472,74 @@ select {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-top: 0.8rem;
+    margin-top: 0.9rem;
 }
 
 .basket_item {
     display: flex;
-    flex: row;
     gap: 0.5rem;
-    border: solid 2px #959191;
+    background-color: #ffffff;
+    border: solid 2px #f0f0f0;
     border-radius: 1rem;
+}
+
+.basket_item_text {
+    padding: 5px 10px 5px 2px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .basket_item_image {
     width: 80px;
     border-radius: 1rem;
 }
+
+.basket_item_name {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #444;
+}
+
+.basket_item_price_quantity_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.basket_item_price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0b6b4f;    
+}
+
+.basket_item_quantity {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0b6b4f;
+}
+
+.basket_item_quantity_div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #ffffff;
+
+}
+
+.basket_item_quantity_change {
+    width: 26px;
+    height: 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #f7f7f7;
+    border: 2px solid #0b6b4f;
+    border-radius: 0.5rem;
+
+    cursor: pointer;
+}
+

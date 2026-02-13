@@ -12,9 +12,12 @@ import { FaBasketShopping } from "react-icons/fa6";
         image: string;
     };
 
-    type BasketType = {basket: MenuItem[]};
+    type BasketItem = {
+        item : MenuItem;
+        quantity: number;
+    }
 
-export default function Basket({basket}:BasketType) {
+export default function Basket({basket, setBasket} : any ) {
 
     return (
         <aside className="basket">
@@ -26,10 +29,25 @@ export default function Basket({basket}:BasketType) {
                 <div className="basket_items">
                     {basket.length === 0 ? ( <p>Empty</p>) : 
                     (
-                        basket.map((item, i) => (
+                        basket.map((basketItem : BasketItem, i : number) => (
                         <div className='basket_item'>
-                            <img src={item.image} alt={item.name} className='basket_item_image'/>
-                            <p>{item.name}</p>
+                            <img src={basketItem.item.image} alt={basketItem.item.name} className='basket_item_image'/>
+                            <div className="basket_item_text">
+                                <p className="basket_item_name">{basketItem.item.name}</p>
+                                <div className="basket_item_price_quantity_div">
+                                    <p className="basket_item_price">{basketItem.item.price}</p>
+                                    <div className="basket_item_quantity_div">
+                                        <button className='basket_item_quantity_change' onClick={() => {setBasket( (prevBasket : BasketItem[]) => {
+                                            return prevBasket.map( (prevBasketItem : BasketItem) => 
+                                            prevBasketItem.item.name === basketItem.item.name ? {...prevBasketItem, quantity: prevBasketItem.quantity - 1} : prevBasketItem
+                                            )
+                                        })}}
+                                        >-</button>
+                                        <p className="basket_item_quantity">{basketItem.quantity}</p>
+                                        <button className='basket_item_quantity_change'>+</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         ))
                     )}
