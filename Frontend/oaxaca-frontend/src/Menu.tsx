@@ -43,7 +43,10 @@ export default function Menu() {
     const [selectedAllergen, setSelectedAllergen] = useState<string>("");
     const [selectedDietFilter, setSelectedDietFilter] = useState<string>("");
 
-    function filterProducts(products: MenuData, selectedAllergen: string, selectedDietFilter: string): MenuData {
+    const [minPrice, setMinPrice] = useState<number | undefined >(undefined)
+    const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined)
+
+    function filterProducts(products: MenuData, selectedAllergen: string, selectedDietFilter: string, minPrice: any, maxPrice: any): MenuData {
         const result: MenuData = {};
 
         Object.entries(products).forEach( ([category, items]) => {
@@ -51,14 +54,19 @@ export default function Menu() {
                 const filterSelectedAllergen = !selectedAllergen || selectedAllergen === "None" || !item.allergens.includes(selectedAllergen)
 
                 const filterSelectedDietFilter = !selectedDietFilter || selectedDietFilter === "None" || item.filters.includes(selectedDietFilter)
-                return filterSelectedAllergen && filterSelectedDietFilter
+
+                const filterMinPrice = minPrice == null || item.price >= minPrice
+
+                const filterMaxPrice = maxPrice == null || item.price <= maxPrice
+
+                return filterSelectedAllergen && filterSelectedDietFilter && filterMinPrice && filterMaxPrice
             })
         })
 
         return result;
     }
 
-    const filteredProducts = filterProducts(products, selectedAllergen, selectedDietFilter);
+    const filteredProducts = filterProducts(products, selectedAllergen, selectedDietFilter, minPrice, maxPrice);
 
 
     const allergensArray: string[] = [];
@@ -200,6 +208,16 @@ export default function Menu() {
                                     </option>
                                 ))}
                                 </select>
+                            </div>
+                            <div>
+                                <label className='filter_prompt'>Price (£)</label>
+                                <div className='filter_price_inputs'>
+                                    <input type="number" value={minPrice} className='filter_price_box' placeholder='Min' 
+                                    onChange={(e) => {const v = e.target.value; setMinPrice(v === "" ? undefined : Number(v))}}
+                                    />
+                                    <input type="number" value={maxPrice} className='filter_price_box' placeholder='Max' 
+                                    onChange={(e) => {const v = e.target.value; setMaxPrice(v === "" ? undefined : Number(v))}}/>
+                                </div>
                             </div>
                         </div>
                     </form>

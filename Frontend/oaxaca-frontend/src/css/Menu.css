@@ -250,28 +250,20 @@ select {
     padding: 7px;
 }
 
-.filter_apply_box {
+.filter_price_inputs {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    gap: 1rem;
 }
 
-.filter_apply {
-    position: absolute;
-    bottom: 3rem;
-    display: flex;
-    width: 80%;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0.3rem;
-    border: none;
-    background-color: #0b6b4f;
-    color: #ffffff;
-    padding: 0.7rem 0;
-    font-weight: 600;
-}
-
-.filter_apply:hover {
-    background-color: orange;
+.filter_price_box {
+    margin-top: 0.4rem;
+    width: 30%;
+    height: 30px;
+    border-radius: 0.5rem;
+    padding: 5px;
+    font-size: 14px;
+    border: 3px solid #0b6b4f;
 }
 
 /******Menu Item CSS******/
