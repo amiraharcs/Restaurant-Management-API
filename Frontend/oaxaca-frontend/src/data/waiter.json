@@ -1,0 +1,133 @@
+{
+  "orders": [
+    {
+      "orderId": "003",
+      "customerName": "Jason Statham",
+      "tableNo": 5,
+      "status": "new",
+      "placedAt": "2026-02-13T15:10:00.000Z",
+      "items": [
+        { "name": "Spaghetti Bolognese", "qty": 2 },
+        { "name": "Coca-Cola", "qty": 1 },
+        { "name": "Chocolate Brownie", "qty": 2 }
+      ]
+    },
+    {
+      "orderId": "004",
+      "customerName": "Dwayne Johnson",
+      "tableNo": 5,
+      "status": "new",
+      "placedAt": "2026-02-13T15:12:30.000Z",
+      "items": [
+        { "name": "Chicken Alfredo Pasta", "qty": 2 },
+        { "name": "Sparkling Water", "qty": 2 },
+        { "name": "Chocolate Brownie", "qty": 3 }
+      ]
+    },
+    {
+      "orderId": "001",
+      "customerName": "Barack Obama",
+      "tableNo": 1,
+      "status": "preparing",
+      "placedAt": "2026-02-13T15:02:10.000Z",
+      "items": [
+        { "name": "Spaghetti Bolognese", "qty": 1 },
+        { "name": "Sparkling Water", "qty": 1 }
+      ]
+    },
+    {
+      "orderId": "010",
+      "customerName": "Mona Lisa",
+      "tableNo": 2,
+      "status": "ready",
+      "placedAt": "2026-02-13T15:55:00.000Z",
+      "items": [
+        { "name": "Chicken Alfredo Pasta", "qty": 1 },
+        { "name": "Coca-Cola", "qty": 1 }
+      ]
+    },
+    {
+      "orderId": "002",
+      "customerName": "Lil Pump",
+      "tableNo": 7,
+      "status": "preparing",
+      "placedAt": "2026-02-13T15:08:40.000Z",
+      "items": [
+        { "name": "Spaghetti Bolognese", "qty": 1 },
+        { "name": "Coca-Cola", "qty": 2 },
+        { "name": "Sparkling Water", "qty": 1 }
+      ]
+    },
+    {
+      "orderId": "006",
+      "customerName": "Drizzy Drake",
+      "tableNo": 3,
+      "status": "new",
+      "placedAt": "2026-02-13T15:13:05.000Z",
+      "items": [
+        { "name": "Chocolate Brownie", "qty": 1 },
+        { "name": "Sparkling Water", "qty": 1 }
+      ]
+    },
+    {
+      "orderId": "008",
+      "customerName": "John Wick",
+      "tableNo": 2,
+      "status": "ready",
+      "placedAt": "2026-02-13T15:30:20.000Z",
+      "items": [
+        { "name": "Spaghetti Bolognese", "qty": 1 },
+        { "name": "Chicken Alfredo Pasta", "qty": 1 },
+        { "name": "Coca-Cola", "qty": 1 }
+      ]
+    },
+    {
+      "orderId": "009",
+      "customerName": "Emma Watson",
+      "tableNo": 9,
+      "status": "new",
+      "placedAt": "2026-02-13T15:31:15.000Z",
+      "items": [
+        { "name": "Chicken Alfredo Pasta", "qty": 2 },
+        { "name": "Chocolate Brownie", "qty": 1 }
+      ]
+    },
+    {
+      "orderId": "011",
+      "customerName": "Future",
+      "tableNo": 10,
+      "status": "new",
+      "placedAt": "2026-02-13T19:31:15.000Z",
+      "items": [
+        { "name": "Chicken Alfredo Pasta", "qty": 2 },
+        { "name": "Chocolate Brownie", "qty": 2 }
+      ]
+    },
+    {
+      "orderId": "012",
+      "customerName": "Cardi B",
+      "tableNo": 4,
+      "status": "preparing",
+      "placedAt": "2026-02-13T19:15:02.000Z",
+      "items": [
+        { "name": "Spaghetti Bolognese", "qty": 1 },
+        { "name": "Chicken Alfredo Pasta", "qty": 1 },
+        { "name": "Coca-Cola", "qty": 1 }
+      ]
+    },
+    {
+      "orderId": "014",
+      "customerName": "Druski",
+      "tableNo": 4,
+      "status": "preparing",
+      "placedAt": "2026-02-13T19:15:02.000Z",
+      "items": [
+        { "name": "Spaghetti Bolognese", "qty": 2 },
+        { "name": "Chicken Alfredo Pasta", "qty": 2 },
+        { "name": "Chocolate Brownie", "qty": 2 },
+        { "name": "Coca-Cola", "qty": 2 },
+        { "name": "Sparkling Water", "qty": 1 }
+      ]
+    }
+  ]
+}

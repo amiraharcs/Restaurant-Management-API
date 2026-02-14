@@ -1,12 +1,25 @@
+.orderContainer {
+    background-color: #FFFFFF;
+    border-radius: 18px;
+    margin-top: 12px;
+}
+
+.welcomeText {
+    margin-left: 10px;
+    font-weight: 500;
+}
+
 .waiterPage {
-    padding: 2.5%;
+    padding: 2%;
+    background-color: #e7e7e7;
+    min-height: 80vh;
 }
 
 .orderTabs {
     display: flex;
     gap: 2%;
-    width: 100%;
-    margin-bottom: 1.5%;
+    width: 97.2%;
+    padding: 20px;
 }
 
 .orderTab {
@@ -22,7 +35,7 @@
 }
 
 .orderTab:hover {
-    background: #d1d5db
+    background: #d1d5db;
 }
 
 .orderTab.active {
@@ -31,6 +44,302 @@
 }
 
 .orderTitle {
-    background: #f9fafb;
+    background: #FFFFFF;
     border-radius: 14px;
+    margin-left: 20px;
+}
+
+.orderList {
+    padding: 10px 20px 20px;
+    box-sizing: border-box;
+}
+
+.emptyList {
+    margin-top: 18px;
+    padding: 18px;
+    color: #555;
+    border-radius: 12px;
+    background: #f9fafb;
+    border: 1px solid #ececec;
+}
+
+.orderRow {
+    display: grid;
+    grid-template-columns: 20% 1px 30% 0.5px 25% auto;
+    align-items: center;
+    gap: 18px;
+    background: #e5e7eb;
+    border: 1px solid #e2e2e2;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin: 14px 0;
+    cursor: pointer;
+}
+
+.orderRow:hover {
+    background: #d1d5db
+}
+
+.orderLeft {
+    display: grid;
+    gap: 10px;
+}
+
+.orderTopLeft {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.orderId {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.orderCustomerName {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.orderLine {
+    width: 1px;
+    height: 55px;
+    background: black;
+    justify-self: center;
+}
+
+.orderMiddle {
+    display: grid;
+    gap: 10px;
+    justify-content: center;
+    text-align: center;
+}
+
+.orderTableNo {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.orderRight {
+    display: grid;
+    gap: 15px;
+    justify-content: center;
+    text-align: center;
+}
+
+.orderPendingText {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.orderPendingItems {
+    font-weight: 700;
+    font-size: 28px;
+}
+
+.orderArrow {
+    font-size: 36px;
+    display: flex;
+    align-items: right;
+    justify-content: right;
+    padding-right: 16px;
+}
+
+.topDivider {
+    margin-top: 10px;
+    width: 100%;
+    height: 1px;
+    background: black;
+    justify-self: center;
+    opacity: 0.2;
+}
+
+.orderDetailsMain {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.orderDetailsBackdrop {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(1px);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.orderDetailsContent {
+    box-shadow: 0px 18px 50px rgba(0, 0, 0, 0.6);
+    position: relative;
+    width: 40%;
+    background-color: #e7e7e7;
+    display: flex;
+    flex-direction: row;
+    border-radius: 16px;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.orderDetailsClose {
+    position: absolute;
+    top: 20%;
+    right: 10px;
+    height: 36px;
+    width: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: white;
+}
+
+.orderDetailsClose:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: orange;
+}
+
+.orderDetailsHeader {
+    height: 56px;
+    width: 100%;
+    background: #0b6b4f;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}
+
+.orderDetailsTitle {
+    font-weight: 900;
+    font-size: 20px;
+    color: white
+}
+
+.orderDetailsMainBody {
+    padding: 14px 16px 16px;
+    display: grid;
+    gap: 10px;
+}
+
+.orderDetailsInfo {
+    border-radius: 14px;
+    padding: 12px 12px;
+    border: 1px solid #eeeeee;
+    text-align: left;
+    background-color: #ffffff;
+}
+
+.infoRow {
+    display: flex;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 14px;
+}
+
+.infoKey {
+    font-weight: 600;
+    min-width: 80px;
+}
+
+.infoValue {
+    font-weight: 400;
+}
+
+.orderDetailsItems {
+    border-radius: 14px;
+    padding: 12px 12px;
+    border: 1px solid #eeeeee;
+    text-align: left;
+    background-color: #ffffff;
+}
+
+.itemsTitle {
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.itemsList {
+    display: grid;
+    gap: 4px;
+}
+
+.itemsRow {
+    background: #d9d9d9;
+    border-radius: 10px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.itemQuantity {
+    min-width: 26px;
+}
+
+.orderDetailsButtons {
+    display: flex;
+    gap: 12px;
+    margin-top: 6px;
+    justify-content: center;
+    align-items: center;
+}
+
+.popupBtn {
+    width: auto;
+    min-width: 130px;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-weight: 900;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.deliveredBtn,
+.confirmBtn {
+    background: #0b6b4f;
+    color: #ffffff;
+}
+
+.deliveredBtn:hover,
+.confirmBtn:hover {
+    background: orange;
+}
+
+.cancelBtn {
+    background: red;
+    color: #ffffff;
+}
+
+.cancelBtn:hover {
+    background: orange;
+}
+
+.popupBtn:disabled,
+.popupBtn.disabled {
+    background: #cfcfcf;
+    color: grey;
+    cursor: not-allowed;
+    filter: none;
+    opacity: 1;
+}
+
+.buttonIcons {
+    font-size: 18px;
 }
