@@ -3,6 +3,7 @@ import './css/Waiter.css';
 import NavBarWaiter from "./data/components/NavBarWaiter";
 import orderData from "./data/waiter.json";
 import { LuChevronRight } from 'react-icons/lu';
+import OrderDetails from './data/components/showOrderDetails';
 
 type status = "new" | "preparing" | "ready";
 type Order = {
@@ -23,9 +24,9 @@ function pendingItemsSum(items : { qty: number }[]) {
 function calculatePlacedAt(ms : number) {
     const mins = Math.floor(ms / 60000);
     if (mins < 1){
-        return "Placed <1 minute ago"
+        return "<1 minute ago"
     }
-    return `Placed ${mins} minutes ago`
+    return `${mins} minutes ago`
 }
 
 export default function Waiter() {
@@ -53,6 +54,10 @@ export default function Waiter() {
 
     const [now, setNow] = useState(Date.now())
     setInterval(() => setNow(Date.now()), 1000);
+
+    const [showOrderDetails, setShowOrderDetails] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState({});
+    const [orderDetailsPlacedAt, setorderDetailsPlacedAt] = useState("");
 
     return (
         <main>
@@ -91,7 +96,7 @@ export default function Waiter() {
                             const ageMs = now - placedMs;
 
                             return (
-                                <div key={order.orderId} className='orderRow' role='button'>
+                                <div key={order.orderId} className='orderRow' role='button' onClick={() => {setShowOrderDetails(true); setSelectedOrder(order); setorderDetailsPlacedAt(calculatePlacedAt(ageMs));}}>
                                     <div className='orderLeft'>
                                         <div className='orderTopLeft'>
                                             <div className='orderId'>Order #{order.orderId}</div>
@@ -103,7 +108,7 @@ export default function Waiter() {
 
                                     <div className='orderMiddle'>
                                         <div className='orderTableNo'>Table No. {order.tableNo}</div>
-                                        <div className='orderPlacedAt'>{calculatePlacedAt(ageMs)}</div>
+                                        <div className='orderPlacedAt'>Placed {calculatePlacedAt(ageMs)}</div>
                                     </div>
                                     
                                     <div className='orderLine' />
@@ -123,6 +128,10 @@ export default function Waiter() {
                     </div>
                 </div>
             </div>
+            {showOrderDetails && <OrderDetails order={selectedOrder} placedAtTime={orderDetailsPlacedAt} onClose={() => {
+                setShowOrderDetails(false)
+                setSelectedOrder({})
+            }}/>}
         </main>
     )
 }
