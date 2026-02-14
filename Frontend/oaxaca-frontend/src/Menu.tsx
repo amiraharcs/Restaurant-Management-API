@@ -48,8 +48,9 @@ export default function Menu() {
 
         Object.entries(products).forEach( ([category, items]) => {
             result[category] = items.filter( (item) => {
-                const filterSelectedAllergen = !item.allergens.includes(selectedAllergen)
-                const filterSelectedDietFilter = !item.filters.includes(selectedDietFilter)
+                const filterSelectedAllergen = !selectedAllergen || selectedAllergen === "None" || !item.allergens.includes(selectedAllergen)
+
+                const filterSelectedDietFilter = !selectedDietFilter || selectedDietFilter === "None" || item.filters.includes(selectedDietFilter)
                 return filterSelectedAllergen && filterSelectedDietFilter
             })
         })
