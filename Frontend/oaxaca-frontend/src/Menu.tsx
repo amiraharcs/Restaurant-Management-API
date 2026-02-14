@@ -172,7 +172,7 @@ export default function Menu() {
                     <form>
                         <div>
                             <div>
-                                <label className='filtern_title'>Have any allergens?</label>
+                                <label className='filter_prompt'>Have any allergens?</label>
                                 <select
                                 value={selectedAllergen}
                                 onChange={(e) => setSelectedAllergen(e.target.value)}
@@ -187,7 +187,7 @@ export default function Menu() {
                             </div>
 
                             <div>
-                                <label className='filtern_title'>Dietary Requirements</label>
+                                <label className='filter_prompt'>Dietary Requirements</label>
                                 <select
                                 value={selectedDietFilter}
                                 onChange={(e) => setSelectedDietFilter(e.target.value)}
