@@ -10,7 +10,7 @@ CREATE TABLE
       calories IS NULL
       OR calories >= 0
     ),
-    price INT NOT NULL CHECK (price >= 0),
+    price FLOAT NOT NULL CHECK (price >= 0),
     image_url TEXT,
     is_available BOOLEAN NOT NULL DEFAULT TRUE,
     is_vegetarian BOOLEAN NOT NULL DEFAULT FALSE,
