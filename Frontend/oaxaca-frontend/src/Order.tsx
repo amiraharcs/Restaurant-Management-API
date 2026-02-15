@@ -66,7 +66,9 @@ export default function Order() {
                                 placeholder='Firstname'
                                 name="name"
                                 required
+                                pattern="[A-Za-z ]+"
                                 minLength={1}
+                                title="Enter a name"
                             />    
                         </div>
                         <div>
@@ -76,7 +78,7 @@ export default function Order() {
                             placeholder="Phone Number"
                             name="phoneNumber"
                             required
-                            pattern="(07[0-9]{9}|\\+447[0-9]{9})"
+                            pattern="(07[0-9]{9}|\+447[0-9]{9})"
                             title="Enter a valid UK mobile number"
                             />
                         </div>
@@ -88,6 +90,8 @@ export default function Order() {
                             name="tableNumber"
                             required
                             min={1}
+                            max={10}
+                            title="There are only 10 tables"
                             />
                         </div>
 
