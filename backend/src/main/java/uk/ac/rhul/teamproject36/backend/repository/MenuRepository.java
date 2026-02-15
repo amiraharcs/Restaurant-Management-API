@@ -6,14 +6,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
 
-public interface MenuRepository extends JpaRepository<MenuItem, Long> { // ← MenuItem
+public interface MenuRepository extends JpaRepository<MenuItem, Long> {
 
   @Query("""
           SELECT m FROM MenuItem m
           WHERE (:category IS NULL OR LOWER(m.category) = LOWER(:category))
             AND (:vegetarian IS NULL OR m.vegetarian = :vegetarian)
             AND (:glutenFree IS NULL OR m.glutenFree = :glutenFree)
+            AND (:maxCalories IS NULL OR m.calories <= :maxCalories)
+            AND (:allergen IS NULL OR LOWER(m.allergens) LIKE LOWER(CONCAT('%', :allergen, '%')))
       """)
   List<MenuItem> findFiltered(@Param("category") String category,
-      @Param("vegetarian") Boolean vegetarian, @Param("glutenFree") Boolean glutenFree);
+      @Param("vegetarian") Boolean vegetarian, @Param("glutenFree") Boolean glutenFree,
+      @Param("maxCalories") Integer maxCalories, @Param("allergen") String allergen);
 }
