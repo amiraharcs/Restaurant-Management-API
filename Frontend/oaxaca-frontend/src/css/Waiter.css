@@ -176,14 +176,24 @@
     box-shadow: 0px 18px 50px rgba(0, 0, 0, 0.6);
     position: relative;
     width: 40%;
+    max-width: 500px;
+    min-width: 320px;
     background-color: #e7e7e7;
     display: flex;
-    flex-direction: row;
-    border-radius: 16px;
-    overflow: hidden;
     flex-direction: column;
+    border-radius: 16px;
+    overflow: visible;
+    padding-bottom: 24px;
 }
 
+.orderDetailsButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 18px;
+    margin-bottom: 0;
+}
 .orderDetailsClose {
     position: absolute;
     top: 20%;

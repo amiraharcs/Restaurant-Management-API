@@ -1,0 +1,36 @@
+{
+  "mockCallWaiterAlerts": [
+    { "id": 1, "tableNumber": 5, "customerName": "Jason Statham", "message": "Need extra napkins", "createdAt": "2026-02-16T14:20:00Z", "handled": false },
+    { "id": 2, "tableNumber": 3, "customerName": "Emma Watson", "message": "Requesting bill", "createdAt": "2026-02-16T14:22:00Z", "handled": false },
+    { "id": 3, "tableNumber": 7, "customerName": "Bruce Wayne", "message": "More water please", "createdAt": "2026-02-16T14:23:00Z", "handled": false },
+    { "id": 4, "tableNumber": 1, "customerName": "Clark Kent", "message": "Allergic to peanuts", "createdAt": "2026-02-16T14:24:00Z", "handled": false },
+    { "id": 5, "tableNumber": 6, "customerName": "Diana Prince", "message": "Extra spicy", "createdAt": "2026-02-16T14:25:00Z", "handled": false },
+    { "id": 6, "tableNumber": 2, "customerName": "Peter Parker", "message": "No onions", "createdAt": "2026-02-16T14:26:00Z", "handled": false },
+    { "id": 7, "tableNumber": 8, "customerName": "Tony Stark", "message": "Birthday cake soon", "createdAt": "2026-02-16T14:27:00Z", "handled": false },
+    { "id": 8, "tableNumber": 4, "customerName": "Natasha Romanoff", "message": "Gluten free bread", "createdAt": "2026-02-16T14:28:00Z", "handled": false },
+    { "id": 9, "tableNumber": 9, "customerName": "Steve Rogers", "message": "Refill drinks", "createdAt": "2026-02-16T14:29:00Z", "handled": false },
+    { "id": 10, "tableNumber": 10, "customerName": "Wanda Maximoff", "message": "Kids menu", "createdAt": "2026-02-16T14:30:00Z", "handled": false },
+    { "id": 11, "tableNumber": 11, "customerName": "Barry Allen", "message": "Quick service please", "createdAt": "2026-02-16T14:31:00Z", "handled": false },
+    { "id": 12, "tableNumber": 12, "customerName": "Arthur Curry", "message": "Seafood allergy", "createdAt": "2026-02-16T14:32:00Z", "handled": false },
+    { "id": 13, "tableNumber": 13, "customerName": "Hal Jordan", "message": "Dim the lights", "createdAt": "2026-02-16T14:33:00Z", "handled": false },
+    { "id": 14, "tableNumber": 14, "customerName": "Victor Stone", "message": "Wheelchair access", "createdAt": "2026-02-16T14:34:00Z", "handled": false },
+    { "id": 15, "tableNumber": 15, "customerName": "Selina Kyle", "message": "Window seat", "createdAt": "2026-02-16T14:35:00Z", "handled": false }
+  ],
+  "mockOrdersReady": [
+    { "id": "010", "customerName": "Mona Lisa", "tableNumber": 2, "placedAt": "2026-02-13T08:56:00.000Z", "status": "READY", "items": [ { "name": "Chicken Alfredo Pasta", "qty": 1 }, { "name": "Coca-Cola", "qty": 1 } ], "handled": false },
+    { "id": "008", "customerName": "John Wick", "tableNumber": 2, "placedAt": "2026-02-13T08:31:20.000Z", "status": "READY", "items": [ { "name": "Spaghetti Bolognese", "qty": 1 }, { "name": "Chicken Alfredo Pasta", "qty": 1 }, { "name": "Coca-Cola", "qty": 1 } ], "handled": false },
+    { "id": "011", "customerName": "Bruce Wayne", "tableNumber": 7, "placedAt": "2026-02-13T09:00:00.000Z", "status": "READY", "items": [ { "name": "Steak", "qty": 1 } ], "handled": false },
+    { "id": "012", "customerName": "Clark Kent", "tableNumber": 1, "placedAt": "2026-02-13T09:05:00.000Z", "status": "READY", "items": [ { "name": "Salad", "qty": 2 } ], "handled": false },
+    { "id": "013", "customerName": "Diana Prince", "tableNumber": 6, "placedAt": "2026-02-13T09:10:00.000Z", "status": "READY", "items": [ { "name": "Soup", "qty": 1 }, { "name": "Bread", "qty": 1 } ], "handled": false },
+    { "id": "014", "customerName": "Peter Parker", "tableNumber": 2, "placedAt": "2026-02-13T09:15:00.000Z", "status": "READY", "items": [ { "name": "Burger", "qty": 1 } ], "handled": false },
+    { "id": "015", "customerName": "Tony Stark", "tableNumber": 8, "placedAt": "2026-02-13T09:20:00.000Z", "status": "READY", "items": [ { "name": "Pizza", "qty": 2 } ], "handled": false },
+    { "id": "016", "customerName": "Natasha Romanoff", "tableNumber": 4, "placedAt": "2026-02-13T09:25:00.000Z", "status": "READY", "items": [ { "name": "Fish", "qty": 1 } ], "handled": false },
+    { "id": "017", "customerName": "Steve Rogers", "tableNumber": 9, "placedAt": "2026-02-13T09:30:00.000Z", "status": "READY", "items": [ { "name": "Chicken", "qty": 1 }, { "name": "Juice", "qty": 1 } ], "handled": false },
+    { "id": "018", "customerName": "Wanda Maximoff", "tableNumber": 10, "placedAt": "2026-02-13T09:35:00.000Z", "status": "READY", "items": [ { "name": "Pasta", "qty": 1 } ], "handled": false },
+    { "id": "019", "customerName": "Barry Allen", "tableNumber": 11, "placedAt": "2026-02-13T09:40:00.000Z", "status": "READY", "items": [ { "name": "Sandwich", "qty": 1 } ], "handled": false },
+    { "id": "020", "customerName": "Arthur Curry", "tableNumber": 12, "placedAt": "2026-02-13T09:45:00.000Z", "status": "READY", "items": [ { "name": "Seafood Platter", "qty": 1 } ], "handled": false },
+    { "id": "021", "customerName": "Hal Jordan", "tableNumber": 13, "placedAt": "2026-02-13T09:50:00.000Z", "status": "READY", "items": [ { "name": "Veggie Wrap", "qty": 1 } ], "handled": false },
+    { "id": "022", "customerName": "Victor Stone", "tableNumber": 14, "placedAt": "2026-02-13T09:55:00.000Z", "status": "READY", "items": [ { "name": "Fruit Bowl", "qty": 1 } ], "handled": false },
+    { "id": "023", "customerName": "Selina Kyle", "tableNumber": 15, "placedAt": "2026-02-13T10:00:00.000Z", "status": "READY", "items": [ { "name": "Coffee", "qty": 2 } ], "handled": false }
+  ]
+}
