@@ -1,0 +1,75 @@
+.createAccountPage {
+    display: grid;
+    justify-items: center;
+    padding: 48px 16px 140px;
+}
+
+.createAccountTitle {
+    margin: 0 0 36px;
+    text-align: center;
+    font-size: clamp(40px, 7vw, 92px);
+    font-weight: 800;
+    line-height: 1.05;
+}
+
+.createAccountBox {
+    width: min(460px, 92vw);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: #ffffff;
+    padding: 28px 26px;
+}
+
+.createAccountForm {
+    display: grid;
+    gap: 14px;
+}
+
+.createAccountLabel {
+    color: #2f2f2f;
+    font-size: 17px;
+    line-height: 1.2;
+}
+
+.createAccountInput,
+.createAccountSelect {
+    width: 100%;
+    height: 58px;
+    border-radius: 14px;
+    border: 1px solid #cfcfcf;
+    background: #ffffff;
+    padding: 0 16px;
+    color: #202020;
+    box-sizing: border-box;
+}
+
+.createAccountInput,
+.createAccountSelect,
+.createAccountInput::placeholder,
+.createAccountButton {
+    font-size: 16px;
+}
+
+.createAccountInput::placeholder {
+    color: #b3b3b3;
+}
+
+.createAccountSelect {
+    margin-top: 8px;
+    text-align: center;
+    text-align-last: center;
+}
+
+.createAccountButton {
+    margin-top: 8px;
+    height: 58px;
+    border: none;
+    border-radius: 12px;
+    background: #29292e;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.createAccountButton:hover {
+    filter: brightness(1.05);
+}
