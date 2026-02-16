@@ -4,6 +4,7 @@ import AlertDetails from "./data/components/AlertDetails";
 import "./css/Alerts.css";
 
 import mockAlertsData from "./data/mockAlertsData.json";
+import { getTotalNotifications } from "./data/notificationCount.ts";
 
 type CallWaiterAlert = {
   id: number;
@@ -61,9 +62,12 @@ export default function Alerts() {
     // TODO: PATCH /api/alerts/{id}/ack when backend is ready
   };
 
-  const totalNotifications =
-    callWaiterAlerts.filter((a) => !a.handled).length +
-    ordersReady.filter((a) => !a.handled).length;
+  const unhandledCallWaiterAlerts = callWaiterAlerts.filter((a) => !a.handled);
+  const unhandledOrdersReady = ordersReady.filter((a) => !a.handled);
+  const totalNotifications = getTotalNotifications(
+    unhandledCallWaiterAlerts,
+    unhandledOrdersReady,
+  );
 
   return (
     <main>
@@ -78,23 +82,21 @@ export default function Alerts() {
               onClick={() => setActiveTab("callWaiter")}
             >
               Customer Requests (
-              {callWaiterAlerts.filter((a) => !a.handled).length})
+              {unhandledCallWaiterAlerts.length})
             </button>
             <button
               className={`alertTab ${activeTab === "ordersReady" ? "active" : ""}`}
               onClick={() => setActiveTab("ordersReady")}
             >
-              Orders Ready ({ordersReady.filter((a) => !a.handled).length})
+              Orders Ready ({unhandledOrdersReady.length})
             </button>
           </div>
           {activeTab === "callWaiter" && (
             <div className="alertList">
-              {callWaiterAlerts.filter((a) => !a.handled).length === 0 ? (
+              {unhandledCallWaiterAlerts.length === 0 ? (
                 <div className="emptyList">No new customer requests.</div>
               ) : (
-                callWaiterAlerts
-                  .filter((a) => !a.handled)
-                  .map((alert) => (
+                unhandledCallWaiterAlerts.map((alert) => (
                     <div
                       key={alert.id}
                       className="alertCard"
@@ -133,12 +135,10 @@ export default function Alerts() {
           )}
           {activeTab === "ordersReady" && (
             <div className="alertList">
-              {ordersReady.filter((a) => !a.handled).length === 0 ? (
+              {unhandledOrdersReady.length === 0 ? (
                 <div className="emptyList">No orders ready for pickup.</div>
               ) : (
-                ordersReady
-                  .filter((a) => !a.handled)
-                  .map((order) => (
+                unhandledOrdersReady.map((order) => (
                     <div
                       key={order.id}
                       className="alertCard"

@@ -38,18 +38,24 @@ export default function NavBarWaiter({
 
   return (
     <main>
-      <nav className={`navbar${show ? "" : " navbar--hidden"}`}>
-        <NavLink to="/waiter">Orders</NavLink>
-
-        <div className="requestDropdownWrap">
-          <NavLink to="/alerts">Alerts</NavLink>
-        </div>
-
-        <NavLink to="/" end>
-          Logout
+      <nav className={`waiterNavbar${show ? "" : " waiterNavbar--hidden"}`}>
+        <NavLink to="/waiter" className="waiterNavbar__brand">
+          OAXACA
         </NavLink>
 
-        <div className="navRight">
+        <div className="waiterNavbar__center">
+          <NavLink to="/waiter" className="waiterNavbar__link" end>
+            ORDERS
+          </NavLink>
+          <NavLink to="/alerts" className="waiterNavbar__link">
+            ALERTS
+          </NavLink>
+          <NavLink to="/" className="waiterNavbar__link" end>
+            LOGOUT
+          </NavLink>
+        </div>
+
+        <div className="waiterNavbar__right">
           <button type="button" className="rightIconsButton" onClick={toAlerts}>
             <LuBell className="rightIcons" />
             {notificationCount > 0 && (
