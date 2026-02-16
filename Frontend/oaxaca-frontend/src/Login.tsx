@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import './css/Login.css'
 import { LuUser, LuLock, LuEye, LuEyeOff } from 'react-icons/lu'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavBar from "./data/components/NavBar";
+import StaffFooter from "./data/components/StaffFooter";
 
 export default function Login() {
     let navigate = useNavigate();
@@ -62,9 +63,16 @@ export default function Login() {
                         </div>
 
                         <button className='loginButton' type='submit'> LOGIN </button>
+
+                        <div className='loginLinks'>
+                            <Link className='loginLink' to='/reset-password'>Forgot password?</Link>
+                            <Link className='loginLink' to='/create-account'>Create new Account</Link>
+                        </div>
                     </form>
                 </div>   
             </div>
+
+            <StaffFooter />
         </main>
     )
 }

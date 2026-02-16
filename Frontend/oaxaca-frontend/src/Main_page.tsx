@@ -15,7 +15,7 @@ export default function Home() {
             <p>authentic Mexican street food</p>
             <div className="main-buttons">
               <Link to="/menu" className="main-btn order-btn">Order Now</Link>
-              <button className="main-btn track-btn">Track Order</button>
+              <Link to="/track-order" className="main-btn track-btn">Track Order</Link>
             </div>
           </div>
         </section>

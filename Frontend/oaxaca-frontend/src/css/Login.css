@@ -11,7 +11,8 @@
     max-height: calc(100vh - 80px);
     place-items: center;
     padding: 12.5%;
-    padding-top: 120px;
+    padding-top: 220px;
+    padding-bottom: 250px;
 }
 
 .loginTitle {
@@ -85,4 +86,21 @@
 
 .showPasswordButton:hover {
     background: #f7f7f7;
+}
+
+.loginLinks {
+    display: grid;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.loginLink {
+    color: #2b2b2b;
+    font-size: 15px;
+    text-decoration: underline;
+    width: fit-content;
+}
+
+.loginLink:hover {
+    opacity: 0.8;
 }
