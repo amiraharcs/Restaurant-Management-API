@@ -1,18 +1,26 @@
-/* Title section */
+
+
 .Title {
-  height: calc(100vh - 80px);
+  min-height: 100vh;
+  width: 100%;
   display: flex;
   justify-content: flex-start;
-  padding-left: 9%;
   align-items: center;
   position: relative;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .Title::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background-image: url("/public/images/main/mexican_background.jpg");
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/images/main/mexican_background.jpg");
   background-size: cover;
   background-position: center;
   transform: scaleX(-1);
@@ -23,11 +31,13 @@
   position: relative;
   color: #b01c09;
   z-index: 1;
-  text-align: left;
+  text-align: center;
+  margin-left: 5vw;
+  padding: 8%;
 }
 
 .Title-content h1 {
-  font-size: 6rem;
+  font-size: 11rem;
   letter-spacing: 0.15rem;
   font-family: "Cinzel", serif;
 }
@@ -35,8 +45,40 @@
 .Title-content p {
   font-family: "Raleway", sans-serif; 
   margin-top: 15px;
-  font-size: 1.4rem;
+  font-size: 2.4rem;
 }
+
+.main-buttons {
+  display: flex;
+  gap: 2rem;
+  margin-top: 7rem;
+  margin-left: 15%;
+}
+
+.main-btn {
+  background: #17684a;
+  color: #fff;
+  border: none;
+  border-radius: 3rem;
+  padding: 1rem 3.5rem;
+  font-size: 1.8rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.main-btn:hover {
+  background: #168968;
+  transform: translateY(-1px) scale(1.02);
+}
+.main-btn.track-btn {
+  background: #17684a69;
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {
