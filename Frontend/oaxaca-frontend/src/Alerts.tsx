@@ -61,9 +61,13 @@ export default function Alerts() {
     // TODO: PATCH /api/alerts/{id}/ack when backend is ready
   };
 
+  const totalNotifications =
+    callWaiterAlerts.filter((a) => !a.handled).length +
+    ordersReady.filter((a) => !a.handled).length;
+
   return (
     <main>
-      <NavBarWaiter />
+      <NavBarWaiter notificationCount={totalNotifications} />
 
       <div className="alertsPage">
         <h2 className="welcomeText"> Welcome, John Doe </h2>
