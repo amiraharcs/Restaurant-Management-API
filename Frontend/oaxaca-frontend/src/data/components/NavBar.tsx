@@ -34,10 +34,10 @@ export default function NavBar() {
           <NavLink to="/menu" className="mainNavbar__link">
             MENU
           </NavLink>
-          <NavLink to="/order" className="mainNavbar__link">
+          <NavLink to="/track-order" className="mainNavbar__link">
             TRACK ORDER
           </NavLink>
-          <NavLink to="/about_us" end className="mainNavbar__link">
+          <NavLink to="/about-us" end className="mainNavbar__link">
             ABOUT US
           </NavLink>
         </div>
