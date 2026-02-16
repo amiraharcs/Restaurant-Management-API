@@ -11,7 +11,8 @@
     max-height: calc(100vh - 80px);
     place-items: center;
     padding: 12.5%;
-    padding-top: 120px;
+    padding-top: 220px;
+    padding-bottom: 250px;
 }
 
 .loginTitle {

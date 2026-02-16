@@ -3,6 +3,7 @@ import './css/Login.css'
 import { LuUser, LuLock, LuEye, LuEyeOff } from 'react-icons/lu'
 import { useNavigate } from "react-router-dom";
 import NavBar from "./data/components/NavBar";
+import StaffFooter from "./data/components/StaffFooter";
 
 export default function Login() {
     let navigate = useNavigate();
@@ -65,6 +66,8 @@ export default function Login() {
                     </form>
                 </div>   
             </div>
+
+            <StaffFooter />
         </main>
     )
 }
