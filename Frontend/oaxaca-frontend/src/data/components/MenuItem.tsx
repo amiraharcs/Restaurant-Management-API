@@ -24,12 +24,12 @@ import { GiMeat } from "react-icons/gi";
 
 export default function MenuItem({item, setBasket, onClose}: any) {
     return (
-        <div className="menu_item_main">
+        <div className="menu_item_main" onClick={onClose}>
             <div className="menu_item_main_backdrop">
 
             </div>
             <div className="menu_item_main_content">
-                <button className="menu_item_main_close" onClick={onClose}>x</button>
+                
                 <div className="menu_item_main_left">
                     
                     <img src={item.image} alt="" className="menu_item_main_img"/>
@@ -40,6 +40,7 @@ export default function MenuItem({item, setBasket, onClose}: any) {
 
                 </div>
                 <div className="menu_item_main_right">
+                    <button className="menu_item_main_close" onClick={onClose}>x</button>
                     <div className='menu_item_main_filters'>{item.filters.map( (filter: String, index: number) => (
                         <div key={index}>
                             {filter === "GlutenFree" && 

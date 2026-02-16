@@ -297,7 +297,7 @@ select {
 .menu_item_main_close {
      position: absolute;
     top: 6px;
-    left: 6px;
+    right: 6px;
     width: 22px;
     height: 22px;
 
