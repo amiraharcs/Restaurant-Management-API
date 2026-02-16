@@ -1,0 +1,22 @@
+.manageMenuPage {
+  padding: 7% 15%;
+  background: #e7e7e7;
+  min-height: 80vh;
+}
+
+.manageMenuTitle {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.manageMenuPlaceholder {
+  margin: 12px 0 0;
+  color: #374151;
+  font-size: 1rem;
+}
+
+@media (max-width: 900px) {
+  .manageMenuPage {
+    padding: 110px 16px 20px;
+  }
+}

@@ -23,6 +23,8 @@ export default function NavBarWaiter({
     navigate("/alerts");
   }
 
+
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY.current && window.scrollY > 60) {
@@ -49,6 +51,9 @@ export default function NavBarWaiter({
           </NavLink>
           <NavLink to="/alerts" className="waiterNavbar__link">
             ALERTS
+          </NavLink>
+          <NavLink to="/manage-menu" className="waiterNavbar__link" end>
+            MANAGE MENU
           </NavLink>
           <NavLink to="/" className="waiterNavbar__link" end>
             LOGOUT

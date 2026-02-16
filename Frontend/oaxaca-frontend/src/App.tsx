@@ -9,6 +9,8 @@ import Alerts from './Alerts'
 import Order from './Order'
 import TrackOrder from './TrackOrder'
 import AboutUs from './AboutUs'
+import ManageMenu from './ManageMenu'
+import PastOrder from './PastOrder'
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
         <Route path='/order' element={<Order />} />
         <Route path='/track-order' element={<TrackOrder />} />
         <Route path='/about-us' element={<AboutUs />} />
+        <Route path='/manage-menu' element={<ManageMenu />} />
+        <Route path='/past-order' element={<PastOrder />} />
       </Routes>
     </BrowserRouter>
   )
