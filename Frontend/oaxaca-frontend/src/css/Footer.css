@@ -1,0 +1,19 @@
+.footer {
+  width: 100%;
+  background: #013525;
+  color: #fff;
+  text-align: center;
+  padding: 18px 0;
+  position: static;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+.footer-content {
+  font-size: 1rem;
+}
+
+.footer-content p {
+  margin: 4px 0;
+}

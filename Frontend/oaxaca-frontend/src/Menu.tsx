@@ -10,6 +10,8 @@ import { IoFilter } from "react-icons/io5";
 import MenuItem from './data/components/MenuItem';
 import NavBar from "./data/components/NavBar";
 import Basket from './data/components/Basket';
+import HelpWidget from "./data/components/Help_widget";
+import Footer from "./data/components/Footer";
 
 
 export default function Menu() {
@@ -229,6 +231,9 @@ export default function Menu() {
                 setShowItem(false)
                 setSelectedItem({})
             }}/>}
+            <HelpWidget />
+            <Footer />
         </main>
+        
     )
 }
