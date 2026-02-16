@@ -5,6 +5,7 @@ import { LuChevronRight } from "react-icons/lu";
 import orderData from "./data/waiter.json";
 import NavBarKitchen from "./data/components/NavBarKitchen";
 import OrderDetails from "./data/components/showOrderDetails";
+import StaffFooter from "./data/components/StaffFooter";
 
 type KitchenStatus = "new" | "preparing" | "ready";
 
@@ -163,6 +164,8 @@ export default function Kitchen() {
                     }}
                 />
             )}
+
+            <StaffFooter />
         </main>
     );
 }

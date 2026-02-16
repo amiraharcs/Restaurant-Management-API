@@ -5,6 +5,8 @@ import orderData from "./data/waiter.json";
 import mockAlertsData from "./data/mockAlertsData.json";
 import { getTotalNotifications } from "./data/notificationCount.ts";
 import { LuChevronRight } from 'react-icons/lu';
+import OrderDetails from './data/components/showOrderDetails';
+import StaffFooter from "./data/components/StaffFooter";
 
 type status = "new" | "preparing" | "ready";
 type Order = {
@@ -138,6 +140,8 @@ export default function Waiter() {
                 setShowOrderDetails(false)
                 setSelectedOrder({})
             }}/>}
+
+            <StaffFooter />
         </main>
     )
 }

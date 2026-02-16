@@ -1,0 +1,17 @@
+.staffFooter {
+  width: 100%;
+  background: #013525;
+  color: #fff;
+  text-align: center;
+  padding: 14px 0;
+  margin-top: 18px;
+}
+
+.staffFooter__content {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.staffFooter__content p {
+  margin: 0;
+}
