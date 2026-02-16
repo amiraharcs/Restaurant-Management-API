@@ -1,17 +1,16 @@
 package uk.ac.rhul.teamproject36.backend.controller;
 
+import java.util.List;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.rhul.teamproject36.backend.service.MenuService;
-
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
+import uk.ac.rhul.teamproject36.backend.service.MenuService;
 
 @RestController
 @RequestMapping("/api")
@@ -30,12 +29,24 @@ public final class MenuController {
     }
 
     /**
-     * Returns the menu items available to customers.
+     * Returns the menu items available to customers, with optional filters.
      *
-     * @return list of available menu items
+     * @param category filter by category (optional)
+     * @param vegetarian show only vegetarian items (optional)
+     * @param glutenFree show only gluten-free items (optional)
+     * @return filtered list of available menu items
      */
     @GetMapping("/menu")
-    public List<MenuService.MenuItemDto> getMenu() {
+    public List<MenuService.MenuItemDto> getMenu(@RequestParam(required = false) String category,
+        @RequestParam(required = false) Boolean vegetarian,
+        @RequestParam(required = false, name = "gluten_free") Boolean glutenFree,
+        @RequestParam(required = false) Integer maxCalories,
+        @RequestParam(required = false) String allergen) {
+
+      if (vegetarian != null || glutenFree != null || category != null || maxCalories != null
+          || allergen != null) {
+        return menuService.getFilteredMenu(category, vegetarian, glutenFree, maxCalories, allergen);
+      }
         return menuService.getMenuForCustomers();
     }
 
@@ -78,5 +89,4 @@ public final class MenuController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }
