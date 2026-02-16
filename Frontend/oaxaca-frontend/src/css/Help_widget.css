@@ -1,3 +1,20 @@
+.close-popup {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  color: #888;
+  cursor: pointer;
+  z-index: 101;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.close-popup:hover {
+  color: #b01c09;
+}
 .help-button {
   position: fixed;
   bottom: 20px;
@@ -8,12 +25,30 @@
   background-color: #ff6b6b;
   color: white;
   font-size: 24px;
+  width: 100px;
+  height: 100px;
+  background: transparent;
+  border: none;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   cursor: pointer;
   z-index: 100;
+  animation: floatUpDown 2.2s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .popup {
@@ -21,9 +56,11 @@
   bottom: 100px;
   right: 20px;
   width: 300px;
+  width: 320px;
   background: white;
   color: black;
   padding: 20px;
+  padding: 24px 20px;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 100;
@@ -38,15 +75,21 @@
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .popup input,
 .popup textarea {
   width:100%;
   padding: 8px;
+  width: 100%;
+  padding: 8px 12px;
   border-radius: 4px;
   border:1px #ccc;
+  border: 1px solid #ccc;
   font-size: 15px;
+  box-sizing: border-box;
 }
 
 .popup textarea {
@@ -66,6 +109,7 @@
 
 .popup button[type="submit"]:hover {
   background-color: #e55a5a;
+  background-color: #cb2929;
 }
 
 .char_count {
