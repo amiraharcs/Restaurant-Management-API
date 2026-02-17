@@ -1,3 +1,5 @@
+package uk.ac.rhul.teamprojects36.backend.config;
+
 import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+
 
 /**
  * Cross-origin resource sharing configuration.
@@ -30,7 +35,7 @@ public class SecurityConfig {
    */
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/api/menu").permitAll().requestMatchers(HttpMethod.PATCH, "/api/menu/*/availability").hasAnyRole("STAFF", "ADMIN").anyRequest().authenticated()).httpBasic(Customizer.withDefaults());
+    http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll().requestMatchers(HttpMethod.GET, "/api/menu").permitAll().requestMatchers(HttpMethod.PATCH, "/api/menu/*/avaliability").hasAnyRole("STAFF", "ADMIN").anyRequest().authenticated());
     
     return http.build();
   }
@@ -62,5 +67,10 @@ public class SecurityConfig {
     source.registerCorsConfiguration("/**", config);
 
     return source;
+  }
+  
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception{
+    return authConfig.getAuthenticationManager();
   }
 }
