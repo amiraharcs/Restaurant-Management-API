@@ -1,3 +1,22 @@
+/*Alerts for requested Cards*/
+
+.requestCard{
+    position: relative;
+    background: linear-gradient(180deg, #eceef1 0%, #e5e7eb 100%);
+    border: 1px solid #e2e2e2;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin: 14px 0;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.requestCard:hover {
+    background: linear-gradient(180deg, #e1e4e8 0%, #d6dae0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 24px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
 /* Style only the Delivered button in the Alerts page order ready tab */
 .alertList .popupBtn.confirmBtn {
     background: #0b6b4f;
@@ -13,14 +32,96 @@
     justify-content: center;
     gap: 10px;
     min-width: 130px;
-    margin-left: 12px;
+    margin-left: 0;
+    justify-self: end;
 }
 
 .alertList .popupBtn.confirmBtn:hover {
     background: orange;
     color: #fff;
 }
+.info-btn {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    color: #0b6b4f;
+}
 
+.requestCardBox {
+    display: grid;
+    gap: 12px;
+}
+
+.requestHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.requestContent {
+    display: grid;
+    gap: 10px;
+}
+
+.requestTable {
+    font-size: 24px;
+    font-weight: 700;
+    color: #222;
+}
+
+.requestCustomerName {
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+    line-height: 1.2;
+}
+
+.requestMessage {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 500;
+    color: #2f2f2f;
+    line-height: 1.2;
+    padding: 15px 0px 5px 0px;
+    
+}
+
+.requestAge {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4b5563;
+    padding: 10px 0px 5px 0px;
+}
+
+.dismiss-btn {
+    width: fit-content;
+    background: #0b6b4f;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-weight: 900;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 25px;
+}
+
+.dismiss-btn:hover {
+    background: orange;
+}
+
+.requestCloseBtn {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    border: none;
+    background: transparent;
+    color: #6b7280;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
 .alertsPage {
     padding: 7% 15%;
     background-color: #e7e7e7;
@@ -71,19 +172,23 @@
 
 .alertCard {
     display: grid;
-    grid-template-columns: 30% 1px 30% 0.5px 25% auto;
+    grid-template-columns: minmax(0, 1.2fr) 1px minmax(0, 1fr) 1px minmax(0, 0.8fr) minmax(120px, auto);
     align-items: center;
     gap: 18px;
-    background: #e5e7eb;
+    background: linear-gradient(180deg, #eceef1 0%, #e5e7eb 100%);
     border: 1px solid #e2e2e2;
     border-radius: 14px;
-    padding: 18px 8% 18px 20px;
+    padding: 18px 20px;
     margin: 14px 0;
     cursor: pointer;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .alertCard:hover {
-    background: #d1d5db;
+    background: linear-gradient(180deg, #e1e4e8 0%, #d6dae0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 24px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
 .timestamp {
@@ -106,5 +211,61 @@
 
 .handleBtn:hover {
     background: #095c42;
+}
+
+@media (max-width: 1100px) {
+    .alertCard {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        column-gap: 14px;
+        row-gap: 12px;
+    }
+
+    .orderLine {
+        display: none;
+    }
+
+    .orderLeft {
+        grid-column: 1 / 2;
+    }
+
+    .orderMiddle {
+        grid-column: 2 / 3;
+        justify-content: flex-start;
+        text-align: left;
+    }
+
+    .orderRight {
+        grid-column: 1 / 2;
+        justify-content: flex-start;
+        text-align: left;
+    }
+
+    .alertList .popupBtn.confirmBtn {
+        grid-column: 2 / 3;
+        justify-self: end;
+    }
+}
+
+@media (max-width: 700px) {
+    .alertCard {
+        grid-template-columns: 1fr;
+    }
+
+    .orderLeft,
+    .orderMiddle,
+    .orderRight,
+    .alertList .popupBtn.confirmBtn {
+        grid-column: 1 / -1;
+    }
+
+    .orderMiddle,
+    .orderRight {
+        justify-content: flex-start;
+        text-align: left;
+    }
+
+    .alertList .popupBtn.confirmBtn {
+        justify-self: start;
+    }
 }
 

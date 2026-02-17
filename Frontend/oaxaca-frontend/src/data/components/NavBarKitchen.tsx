@@ -41,7 +41,7 @@ export default function NavBarKitchen() {
           <NavLink to="/past-order" className="kitchenNavbar__link">
             PAST ORDERS
           </NavLink>
-          <NavLink to="/" className="kitchenNavbar__link" end>
+          <NavLink to="/login" className="kitchenNavbar__link" end>
             LOGOUT
           </NavLink>
         </div>
