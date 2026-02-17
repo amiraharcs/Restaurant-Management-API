@@ -1,8 +1,17 @@
 package uk.ac.rhul.teamproject36.backend.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import uk.ac.rhul.teamproject36.backend.service.OrderService;
+import uk.ac.rhul.teamproject36.backend.service.OrderService.OrderDto;
 
 @RestController
 @RequestMapping("/api")
@@ -38,4 +47,13 @@ public class OrderController {
     public OrderService.OrderDto getOrder(@PathVariable Long id) {
         return orderService.getOrder(id);
     }
+
+    /**
+     * Confirms a customer order (waiter action). Changes PLACED → CONFIRMED.
+     */
+    @PatchMapping("/orders/{id}/confirm")
+    public OrderDto confirmOrder(@PathVariable Long id) {
+      return orderService.confirmOrder(id);
+    }
+
 }
