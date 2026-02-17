@@ -1,5 +1,7 @@
 package uk.ac.rhul.teamproject36.backend.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
@@ -8,10 +10,6 @@ import uk.ac.rhul.teamproject36.backend.order.OrderItem;
 import uk.ac.rhul.teamproject36.backend.order.OrderStatus;
 import uk.ac.rhul.teamproject36.backend.repository.MenuItemRepository;
 import uk.ac.rhul.teamproject36.backend.repository.OrderRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderService {
