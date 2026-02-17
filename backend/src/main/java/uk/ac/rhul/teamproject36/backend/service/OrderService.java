@@ -1,5 +1,7 @@
 package uk.ac.rhul.teamproject36.backend.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
@@ -8,10 +10,6 @@ import uk.ac.rhul.teamproject36.backend.order.OrderItem;
 import uk.ac.rhul.teamproject36.backend.order.OrderStatus;
 import uk.ac.rhul.teamproject36.backend.repository.MenuItemRepository;
 import uk.ac.rhul.teamproject36.backend.repository.OrderRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -90,6 +88,33 @@ public class OrderService {
         }
 
         return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
+    }
+
+    /**
+     * Confirms order if status is PLACED (waiter action).
+     */
+    @Transactional
+    public OrderDto confirmOrder(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getStatus() != OrderStatus.PLACED) {
+        throw new BadRequestException("Invalid status transition: " + order.getStatus());
+      }
+
+      order.setStatus(OrderStatus.CONFIRMED);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
+
+    private OrderDto toOrderDto(CustomerOrder order) {
+      List<OrderItemDto> items = new ArrayList<>();
+      for (var it : order.getItems()) {
+        items.add(new OrderItemDto(it.getMenuItem().getId(), it.getMenuItem().getName(),
+            it.getQuantity()));
+      }
+      return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
     }
 
 }
