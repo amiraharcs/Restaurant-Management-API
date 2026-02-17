@@ -90,4 +90,30 @@ public class OrderService {
         return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
     }
 
+    private OrderDto toOrderDto(CustomerOrder order) {
+      List<OrderItemDto> items = new ArrayList<>();
+      for (var it : order.getItems()) {
+        items.add(new OrderItemDto(it.getMenuItem().getId(), it.getMenuItem().getName(),
+            it.getQuantity()));
+      }
+      return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
+    }
+
+    /**
+     * Accepts order if status is PLACED (kitchen action).
+     */
+    @Transactional
+    public OrderDto acceptOrder(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getStatus() != OrderStatus.PLACED) {
+        throw new BadRequestException("Invalid status transition: " + order.getStatus());
+      }
+
+      order.setStatus(OrderStatus.PREPARING);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
 }
