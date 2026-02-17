@@ -37,17 +37,19 @@ public final class MenuController {
      * @return filtered list of available menu items
      */
     @GetMapping("/menu")
-    public List<MenuService.MenuItemDto> getMenu(@RequestParam(required = false) String category,
-        @RequestParam(required = false) Boolean vegetarian,
-        @RequestParam(required = false, name = "gluten_free") Boolean glutenFree,
-        @RequestParam(required = false) Integer maxCalories,
-        @RequestParam(required = false) String allergen) {
+    public java.util.Map<String, List<MenuService.MenuItemDto>> getMenu(
+        @RequestParam(required = false) final String category,
+        @RequestParam(required = false) final Boolean vegetarian,
+        @RequestParam(required = false, name = "gluten_free") final Boolean glutenFree,
+        @RequestParam(required = false) final Integer maxCalories,
+        @RequestParam(required = false) final String allergen) {
 
-      if (vegetarian != null || glutenFree != null || category != null || maxCalories != null
-          || allergen != null) {
-        return menuService.getFilteredMenu(category, vegetarian, glutenFree, maxCalories, allergen);
-      }
-        return menuService.getMenuForCustomers();
+        if (vegetarian != null || glutenFree != null || category != null || maxCalories != null
+            || allergen != null) {
+            return menuService.getFilteredMenuGrouped(category, vegetarian, glutenFree, maxCalories, allergen);
+        }
+
+        return menuService.getMenuGroupedForCustomers();
     }
 
     /**
