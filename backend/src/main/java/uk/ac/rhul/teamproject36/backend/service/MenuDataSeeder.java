@@ -1,4 +1,4 @@
-package main.java.uk.ac.rhul.teamproject36.backend.service;
+package uk.ac.rhul.teamproject36.backend.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
