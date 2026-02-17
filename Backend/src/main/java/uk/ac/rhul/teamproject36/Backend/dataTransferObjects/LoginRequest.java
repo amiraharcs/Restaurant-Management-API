@@ -1,0 +1,27 @@
+package uk.ac.rhul.teamprojects36.backend.dataTransferObjects;
+
+public final class LoginRequest {
+  
+  private String username;
+  private String password;
+  
+  public LoginRequest() {
+    
+  }
+  
+  public String getUsername() {
+    return this.username;
+  }
+  
+  public void setUsername(final String username) {
+    this.username = username;
+  }
+  
+  public String getPassword() {
+    return password;
+  }
+  
+  public void setPassword(final String password) {
+    this.password = password;
+  }
+}
