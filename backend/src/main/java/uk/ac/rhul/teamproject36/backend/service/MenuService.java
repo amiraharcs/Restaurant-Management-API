@@ -59,11 +59,13 @@ public final class MenuService {
      * @param allergen allergen filter (string)
      * @return grouped filtered menu items
      */
-    public Map<String, List<MenuItemDto>> getFilteredMenuGrouped(final String category,
-        final Boolean vegetarian, final Boolean glutenFree, final Integer maxCalories,
-        final String allergen) {
+    public Map<String, List<MenuItemDto>> getFilteredMenuGrouped(final ItemType itemType,
+    	    final Boolean vegetarian, final Boolean halal, final Integer maxCalories,
+    	    final String allergen)
+ {
 
-        return group(menuRepository.findFiltered(category, vegetarian, glutenFree, maxCalories, allergen));
+    	return group(menuRepository.findFiltered(itemType, vegetarian, halal, maxCalories, allergen));
+
     }
 
     private Map<String, List<MenuItemDto>> group(final List<MenuItem> items) {
