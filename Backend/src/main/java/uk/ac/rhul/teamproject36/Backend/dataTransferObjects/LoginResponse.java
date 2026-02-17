@@ -3,7 +3,8 @@ package uk.ac.rhul.teamproject36.Backend.dataTransferObjects;
 /**
  * Data Transfer Object (DTO) for successful login response.
  *
- * This is returned to the client following a successful login authentication.
+ * This is returned to the client following a.
+ * Successful login authentication.
  */
 public final class LoginResponse {
 

@@ -3,7 +3,8 @@ package uk.ac.rhul.teamproject36.Backend.dataTransferObjects;
 /**
  * Data Transfer Object (DTO) for a login request.
  *
- * Contains the credentials to be authenticated by the {@code POST /api/auth/login}.
+ * Contains the credentials to be authenticated.
+ * By the {@code POST /api/auth/login}.
  */
 public final class LoginRequest {
 

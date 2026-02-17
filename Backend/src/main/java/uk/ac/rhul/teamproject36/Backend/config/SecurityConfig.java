@@ -23,7 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
   /**
-   * Http security.
+   * HTTP security.
    *
    * @param http local-host web-page
    * @return built local-host
@@ -31,12 +31,19 @@ public class SecurityConfig {
    */
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll().requestMatchers(HttpMethod.GET, "/api/menu").permitAll().requestMatchers(HttpMethod.PATCH, "/api/menu/*/avaliability").hasAnyRole("STAFF", "ADMIN").anyRequest().authenticated());
+    http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(
+        auth -> auth
+        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+        .requestMatchers(HttpMethod.GET, "/api/menu").permitAll()
+        .requestMatchers(HttpMethod.PATCH, "/api/menu/*/avaliability")
+        .hasAnyRole("STAFF", "ADMIN")
+        .anyRequest()
+        .authenticated());
     return http.build();
   }
 
   /**
-   * Allows password encoding for hashing and validating passwords
+   * Allows password encoding for hashing and validating passwords.
    *
    * @return a PasswordEncoder using BCrypt encoding
    */
@@ -69,9 +76,7 @@ public class SecurityConfig {
    * Validates user credentials during login.
    *
    * @param authConfig Spring-boot security authentication configuration
-   *
    * @return authentication manager for login request authentication
-   *
    * @throws Exception if authenticationManager creation fails
    */
   @Bean

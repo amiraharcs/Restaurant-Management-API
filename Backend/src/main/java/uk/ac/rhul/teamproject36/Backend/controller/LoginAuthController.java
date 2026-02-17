@@ -15,8 +15,8 @@ import uk.ac.rhul.teamproject36.Backend.dataTransferObjects.LoginResponse;
 /**
  * REST controller for user authentication. (replaces default http.basic())
  *
- * Exposes the end-point for client login and authentication. Submits credentials and receives
- * authenticated users.
+ * Exposes the end-point for client login and authentication.
+ * Submits credentials and receives authenticated users.
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -44,7 +44,11 @@ public class LoginAuthController {
   @PostMapping("/login")
   public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
     Authentication authentication = authManager.authenticate(
-        new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        new UsernamePasswordAuthenticationToken(
+            request.getUsername(),
+            request.getPassword()
+            )
+        );
 
     UserDetails user = (UserDetails) authentication.getPrincipal();
 
