@@ -1,4 +1,4 @@
-package uk.ac.rhul.teamprojects36.backend.dataTransferObjects;
+package uk.ac.rhul.teamproject36.Backend.dataTransferObjects;
 
 public final class LoginRequest {
   

@@ -1,4 +1,4 @@
-package uk.ac.rhul.teamprojects36.backend.config;
+package uk.ac.rhul.teamproject36.Backend.config;
 
 import java.util.Arrays;
 import org.springframework.context.annotation.Bean;

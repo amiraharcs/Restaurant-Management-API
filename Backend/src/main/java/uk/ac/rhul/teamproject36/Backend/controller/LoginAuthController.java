@@ -1,4 +1,4 @@
-package uk.ac.rhul.teamproject36.backend.controller;
+package uk.ac.rhul.teamproject36.Backend.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import uk.ac.rhul.teamproject36.backend.dataTransferObjects.LoginRequest;
-import uk.ac.rhul.teamproject36.backend.dataTransferObjects.LoginResponse;
+import uk.ac.rhul.teamproject36.Backend.dataTransferObjects.LoginRequest;
+import uk.ac.rhul.teamproject36.Backend.dataTransferObjects.LoginResponse;
 
 
 @RestController
@@ -25,9 +25,10 @@ public class LoginAuthController{
   
   @PostMapping("/login")
   public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-    Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticaionToken(request.getUserName(), request.getPassword()));
+    Authentication authentication = authManager.authenticate(
+        new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
   
-    UserDetails user = (UserDetails) authentication.getPrinciple();
+    UserDetails user = (UserDetails) authentication.getPrincipal();
     
     String role = user.getAuthorities().iterator().next().getAuthority();
     
