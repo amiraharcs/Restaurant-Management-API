@@ -38,19 +38,19 @@ public final class MenuController {
      */
     @GetMapping("/menu")
     public java.util.Map<String, List<MenuService.MenuItemDto>> getMenu(
-        @RequestParam(required = false) final String category,
+        @RequestParam(required = false, name = "item_type") final uk.ac.rhul.teamproject36.backend.menu.ItemType itemType,
         @RequestParam(required = false) final Boolean vegetarian,
-        @RequestParam(required = false, name = "gluten_free") final Boolean glutenFree,
+        @RequestParam(required = false) final Boolean halal,
         @RequestParam(required = false) final Integer maxCalories,
         @RequestParam(required = false) final String allergen) {
 
-        if (vegetarian != null || glutenFree != null || category != null || maxCalories != null
-            || allergen != null) {
-            return menuService.getFilteredMenuGrouped(category, vegetarian, glutenFree, maxCalories, allergen);
+        if (itemType != null || vegetarian != null || halal != null || maxCalories != null || allergen != null) {
+            return menuService.getFilteredMenuGrouped(itemType, vegetarian, halal, maxCalories, allergen);
         }
 
         return menuService.getMenuGroupedForCustomers();
     }
+
 
     /**
      * Request body for updating a menu item's availability.
