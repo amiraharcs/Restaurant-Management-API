@@ -2,6 +2,8 @@ package uk.ac.rhul.teamproject36.backend.menu;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +21,9 @@ public final class MenuItem {
     /** Precision for the price column. */
     private static final int PRICE_PRECISION = 10;
 
+    /** Scale for the price column. */
+    private static final int PRICE_SCALE = 2;
+
     /** The unique identifier for the menu item. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,19 +38,39 @@ public final class MenuItem {
     private String description;
 
     /** The price of the menu item. */
-    @Column(nullable = false, precision = PRICE_PRECISION, scale = 2)
+    @Column(nullable = false, precision = PRICE_PRECISION, scale = PRICE_SCALE)
     private BigDecimal price;
 
     /** The calorie count of the menu item. */
     private Integer calories;
 
-    /** The allergens present in the menu item. */
+    /**
+     * Allergens stored as TEXT for now.
+     * Later this will be replaced with a join table (ManyToMany).
+     */
     @Column(columnDefinition = "TEXT")
     private String allergens;
 
     /** Whether the menu item is currently available. */
-    @Column(nullable = false)
+    @Column(name = "is_available", nullable = false)
     private boolean available = true;
+
+    /** Image URL for the menu item. */
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    /** Whether the item is vegetarian. */
+    @Column(name = "is_vegetarian")
+    private boolean vegetarian;
+
+    /** Whether the item is halal. */
+    @Column(name = "is_halal")
+    private boolean halal;
+
+    /** The item type (FOOD, DESSERT, DRINK). */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "item_type")
+    private ItemType itemType;
 
     /**
      * Default constructor for JPA.
@@ -167,5 +192,77 @@ public final class MenuItem {
      */
     public void setAvailable(final boolean newAvailable) {
         this.available = newAvailable;
+    }
+
+    /**
+     * Returns the image URL.
+     *
+     * @return the image URL
+     */
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    /**
+     * Sets the image URL.
+     *
+     * @param newImageUrl the new image URL
+     */
+    public void setImageUrl(final String newImageUrl) {
+        this.imageUrl = newImageUrl;
+    }
+
+    /**
+     * Returns whether the item is vegetarian.
+     *
+     * @return true if vegetarian, false otherwise
+     */
+    public boolean isVegetarian() {
+        return vegetarian;
+    }
+
+    /**
+     * Sets whether the item is vegetarian.
+     *
+     * @param newVegetarian new vegetarian flag
+     */
+    public void setVegetarian(final boolean newVegetarian) {
+        this.vegetarian = newVegetarian;
+    }
+
+    /**
+     * Returns whether the item is halal.
+     *
+     * @return true if halal, false otherwise
+     */
+    public boolean isHalal() {
+        return halal;
+    }
+
+    /**
+     * Sets whether the item is halal.
+     *
+     * @param newHalal new halal flag
+     */
+    public void setHalal(final boolean newHalal) {
+        this.halal = newHalal;
+    }
+
+    /**
+     * Returns the item type.
+     *
+     * @return the item type
+     */
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    /**
+     * Sets the item type.
+     *
+     * @param newItemType the new item type
+     */
+    public void setItemType(final ItemType newItemType) {
+        this.itemType = newItemType;
     }
 }
