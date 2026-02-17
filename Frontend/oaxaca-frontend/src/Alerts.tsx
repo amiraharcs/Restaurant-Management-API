@@ -5,6 +5,7 @@ import "./css/Alerts.css";
 
 import mockAlertsData from "./data/mockAlertsData.json";
 import { getTotalNotifications } from "./data/notificationCount.ts";
+import StaffFooter from "./data/components/StaffFooter.tsx";
 
 type CallWaiterAlert = {
   id: number;
@@ -25,19 +26,37 @@ type OrderReady = {
   handled: boolean;
 };
 
-function timeAgo(iso: string) {
-  const now = new Date();
-  const created = new Date(iso);
-  const mins = Math.floor((now.getTime() - created.getTime()) / 60000);
-  return mins <= 0 ? "Just now" : `${mins} minute${mins > 1 ? "s" : ""} ago`;
+function timeAgo(iso: string, nowMs = Date.now()) {
+  const createdMs = new Date(iso).getTime();
+  const mins = Math.max(0, Math.floor((nowMs - createdMs) / 60000));
+
+  if (mins < 1) return "Just now";
+  if (mins < 60) return `${mins} minute${mins > 1 ? "s" : ""} ago`;
+
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) {
+    const remainingMins = mins % 60;
+    return remainingMins === 0
+      ? `${hours} hour${hours > 1 ? "s" : ""} ago`
+      : `${hours}h ${remainingMins}m ago`;
+  }
+
+  const days = Math.floor(hours / 24);
+  const remainingHours = hours % 24;
+  return remainingHours === 0
+    ? `${days} day${days > 1 ? "s" : ""} ago`
+    : `${days}d ${remainingHours}h ago`;
 }
 
 export default function Alerts() {
-  const [activeTab, setActiveTab] = useState("callWaiter");
+  const [activeTab, setActiveTab] = useState<"callWaiter" | "ordersReady">(
+    "callWaiter",
+  );
   const [callWaiterAlerts, setCallWaiterAlerts] = useState<CallWaiterAlert[]>(
     [],
   );
   const [ordersReady, setOrdersReady] = useState<OrderReady[]>([]);
+  const [nowMs, setNowMs] = useState(Date.now());
   const [showDetails, setShowDetails] = useState(false);
   const [selectedAlert, setSelectedAlert] = useState<
     CallWaiterAlert | OrderReady | null
@@ -49,6 +68,14 @@ export default function Alerts() {
       setCallWaiterAlerts(mockAlertsData.mockCallWaiterAlerts || []);
       setOrdersReady(mockAlertsData.mockOrdersReady || []);
     }
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setNowMs(Date.now());
+    }, 30000);
+
+    return () => window.clearInterval(timer);
   }, []);
 
   const handleMarkHandled = (id: number | string) => {
@@ -81,8 +108,7 @@ export default function Alerts() {
               className={`alertTab ${activeTab === "callWaiter" ? "active" : ""}`}
               onClick={() => setActiveTab("callWaiter")}
             >
-              Customer Requests (
-              {unhandledCallWaiterAlerts.length})
+              Customer Requests ({unhandledCallWaiterAlerts.length})
             </button>
             <button
               className={`alertTab ${activeTab === "ordersReady" ? "active" : ""}`}
@@ -97,39 +123,44 @@ export default function Alerts() {
                 <div className="emptyList">No new customer requests.</div>
               ) : (
                 unhandledCallWaiterAlerts.map((alert) => (
-                    <div
-                      key={alert.id}
-                      className="alertCard"
-                      onClick={() => {
-                        setShowDetails(true);
-                        setSelectedAlert(alert);
+                  <div key={alert.id} className="requestCard">
+                    <button
+                      className="requestCloseBtn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleMarkHandled(alert.id);
                       }}
                     >
-                      <div className="orderLeft">
-                        <div className="orderTopLeft">
-                          <div className="orderId">
-                            Table {alert.tableNumber}
+                      ×
+                    </button>
+                    <div className="requestCardBox">
+                      <div className="requestHeader">
+                        <span className="info-btn">ⓘ</span>
+                        <div className="requestContent">
+                          <span className="requestTable">
+                            Table number: {alert.tableNumber}
+                          </span>
+                          <div className="requestCustomerName">
+                            {alert.customerName}
+                          </div>
+                          <p className="requestMessage">{alert.message}</p>
+                          <div className="requestAge">
+                            Requested {timeAgo(alert.createdAt, nowMs)}
                           </div>
                         </div>
-                        <div className="orderCustomerName">
-                          {alert.customerName}
-                        </div>
                       </div>
-                      <div className="orderLine" />
-                      <div className="orderMiddle">
-                        <div className="orderPlacedAt">
-                          Created {timeAgo(alert.createdAt)}
-                        </div>
-                        <div className="orderMessage">{alert.message}</div>
-                      </div>
-                      <div className="orderLine" />
-                      <div className="orderRight">
-                        <div className="orderPendingText">Pending</div>
-                        <div className="orderPendingItems">1</div>
-                      </div>
-                      <div className="orderArrow">&gt;</div>
+                      <button
+                        className="dismiss-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleMarkHandled(alert.id);
+                        }}
+                      >
+                        Dismiss
+                      </button>
                     </div>
-                  ))
+                  </div>
+                ))
               )}
             </div>
           )}
@@ -139,49 +170,49 @@ export default function Alerts() {
                 <div className="emptyList">No orders ready for pickup.</div>
               ) : (
                 unhandledOrdersReady.map((order) => (
-                    <div
-                      key={order.id}
-                      className="alertCard"
-                      onClick={() => {
-                        setShowDetails(true);
-                        setSelectedAlert(order);
+                  <div
+                    key={order.id}
+                    className="alertCard"
+                    onClick={() => {
+                      setShowDetails(true);
+                      setSelectedAlert(order);
+                    }}
+                  >
+                    <div className="orderLeft">
+                      <div className="orderTopLeft">
+                        <div className="orderId">Order #{order.id}</div>
+                      </div>
+                      <div className="orderCustomerName">
+                        {order.customerName}
+                      </div>
+                    </div>
+                    <div className="orderLine" />
+                    <div className="orderMiddle">
+                      <div className="orderTableNo">
+                        Table No. {order.tableNumber}
+                      </div>
+                      <div className="orderPlacedAt">
+                        Placed {timeAgo(order.placedAt, nowMs)}
+                      </div>
+                    </div>
+                    <div className="orderLine" />
+                    <div className="orderRight">
+                      <div className="orderPendingText">Items</div>
+                      <div className="orderPendingItems">
+                        {order.items.length}
+                      </div>
+                    </div>
+                    <button
+                      className="popupBtn confirmBtn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleMarkHandled(order.id);
                       }}
                     >
-                      <div className="orderLeft">
-                        <div className="orderTopLeft">
-                          <div className="orderId">Order #{order.id}</div>
-                        </div>
-                        <div className="orderCustomerName">
-                          {order.customerName}
-                        </div>
-                      </div>
-                      <div className="orderLine" />
-                      <div className="orderMiddle">
-                        <div className="orderTableNo">
-                          Table No. {order.tableNumber}
-                        </div>
-                        <div className="orderPlacedAt">
-                          Placed {timeAgo(order.placedAt)}
-                        </div>
-                      </div>
-                      <div className="orderLine" />
-                      <div className="orderRight">
-                        <div className="orderPendingText">Items</div>
-                        <div className="orderPendingItems">
-                          {order.items.length}
-                        </div>
-                      </div>
-                      <button
-                        className="popupBtn confirmBtn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleMarkHandled(order.id);
-                        }}
-                      >
-                        Delivered
-                      </button>
-                    </div>
-                  ))
+                      Delivered
+                    </button>
+                  </div>
+                ))
               )}
             </div>
           )}
@@ -198,6 +229,7 @@ export default function Alerts() {
           )}
         </div>
       </div>
+      <StaffFooter />
     </main>
   );
 }
