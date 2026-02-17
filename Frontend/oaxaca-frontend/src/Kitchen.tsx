@@ -1,6 +1,5 @@
 import { useState } from "react";
-import "./css/Waiter.css";
-import "./css/Alerts.css";
+import "./css/Kitchen.css";
 import { LuChevronRight } from "react-icons/lu";
 import orderData from "./data/waiter.json";
 import NavBarKitchen from "./data/components/NavBarKitchen";

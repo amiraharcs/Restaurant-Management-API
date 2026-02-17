@@ -191,27 +191,6 @@
     box-shadow: 0 14px 24px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
-.timestamp {
-    font-size: 13px;
-    color: #888;
-    text-align: center;
-}
-
-.handleBtn {
-    background: #0b6b4f;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 15px;
-    margin-left: 10px;
-}
-
-.handleBtn:hover {
-    background: #095c42;
-}
 
 @media (max-width: 1100px) {
     .alertCard {
