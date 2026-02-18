@@ -161,3 +161,26 @@ CREATE TABLE IF NOT EXISTS menu_item_ingredient (
   ingredient_id INT NOT NULL REFERENCES ingredient(ingredient_id) ON DELETE CASCADE,
   PRIMARY KEY (item_id, ingredient_id)
 );
+
+-- =========================
+-- diet filters
+-- =========================
+
+CREATE TABLE IF NOT EXISTS dietary_filter (
+  filter_id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS menu_item_filter (
+  item_id INT NOT NULL REFERENCES menu_item(item_id) ON DELETE CASCADE,
+  filter_id INT NOT NULL REFERENCES dietary_filter(filter_id) ON DELETE CASCADE,
+  PRIMARY KEY (item_id, filter_id)
+);
+
+-- Remove old boolean columns
+ALTER TABLE menu_item
+DROP COLUMN IF EXISTS is_vegetarian;
+
+ALTER TABLE menu_item
+DROP COLUMN IF EXISTS is_halal;
+
