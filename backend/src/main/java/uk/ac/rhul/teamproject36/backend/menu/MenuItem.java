@@ -1,10 +1,10 @@
 package uk.ac.rhul.teamproject36.backend.menu;
+
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,9 +12,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-
-import java.math.BigDecimal;
 
 /**
  * Entity representing a menu item in the restaurant.
@@ -32,6 +33,7 @@ public final class MenuItem {
     /** The unique identifier for the menu item. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_id")
     private Long id;
 
     /** The name of the menu item. */
@@ -56,7 +58,6 @@ public final class MenuItem {
     @Column(columnDefinition = "TEXT")
     private String allergens;
 
-  
     /** Whether the menu item is currently available. */
     @Column(name = "is_available", nullable = false)
     private boolean available = true;
@@ -77,130 +78,75 @@ public final class MenuItem {
     @Enumerated(EnumType.STRING)
     @Column(name = "item_type")
     private ItemType itemType;
-    
-   
+
+    /** Whether the item is vegan. */
     @Column(name = "is_vegan")
     private boolean vegan;
 
+    /** Whether the item is gluten-free. */
     @Column(name = "is_gluten_free")
     private boolean glutenFree;
-    
+
     /**
      * Ingredients of the menu item.
      */
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "menu_item_ingredient",
-        joinColumns = @JoinColumn(name = "menu_item_id"),
+        joinColumns = @JoinColumn(name = "item_id"),
         inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private Set<Ingredient> ingredients = new HashSet<>();
-
-
 
     /**
      * Default constructor for JPA.
      */
     public MenuItem() { }
 
-    /**
-     * Returns the unique identifier.
-     *
-     * @return the id
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * Returns the name.
-     *
-     * @return the name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Sets the name.
-     *
-     * @param newName the new name
-     */
     public void setName(final String newName) {
         this.name = newName;
     }
 
-    /**
-     * Returns the description.
-     *
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * Sets the description.
-     *
-     * @param newDescription the new description
-     */
     public void setDescription(final String newDescription) {
         this.description = newDescription;
     }
 
-    /**
-     * Returns the price.
-     *
-     * @return the price
-     */
     public BigDecimal getPrice() {
         return price;
     }
 
-    /**
-     * Sets the price.
-     *
-     * @param newPrice the new price
-     */
     public void setPrice(final BigDecimal newPrice) {
         this.price = newPrice;
     }
 
-    /**
-     * Returns the calories.
-     *
-     * @return the calories
-     */
     public Integer getCalories() {
         return calories;
     }
 
-    /**
-     * Sets the calories.
-     *
-     * @param newCalories the new calorie count
-     */
     public void setCalories(final Integer newCalories) {
         this.calories = newCalories;
     }
 
-    /**
-     * Returns the allergens.
-     *
-     * @return the allergens
-     */
     public String getAllergens() {
         return allergens;
     }
 
-    /**
-     * Sets the allergens.
-     *
-     * @param newAllergens the new allergens
-     */
     public void setAllergens(final String newAllergens) {
         this.allergens = newAllergens;
     }
+
     public boolean isAvailable() {
         return available;
     }
@@ -209,79 +155,38 @@ public final class MenuItem {
         this.available = newAvailable;
     }
 
-
-    /**
-     * Returns the image URL.
-     *
-     * @return the image URL
-     */
     public String getImageUrl() {
         return imageUrl;
     }
 
-    /**
-     * Sets the image URL.
-     *
-     * @param newImageUrl the new image URL
-     */
     public void setImageUrl(final String newImageUrl) {
         this.imageUrl = newImageUrl;
     }
 
-    /**
-     * Returns whether the item is vegetarian.
-     *
-     * @return true if vegetarian, false otherwise
-     */
     public boolean isVegetarian() {
         return vegetarian;
     }
 
-    /**
-     * Sets whether the item is vegetarian.
-     *
-     * @param newVegetarian new vegetarian flag
-     */
     public void setVegetarian(final boolean newVegetarian) {
         this.vegetarian = newVegetarian;
     }
 
-    /**
-     * Returns whether the item is halal.
-     *
-     * @return true if halal, false otherwise
-     */
     public boolean isHalal() {
         return halal;
     }
 
-    /**
-     * Sets whether the item is halal.
-     *
-     * @param newHalal new halal flag
-     */
     public void setHalal(final boolean newHalal) {
         this.halal = newHalal;
     }
 
-    /**
-     * Returns the item type.
-     *
-     * @return the item type
-     */
     public ItemType getItemType() {
         return itemType;
     }
 
-    /**
-     * Sets the item type.
-     *
-     * @param newItemType the new item type
-     */
     public void setItemType(final ItemType newItemType) {
         this.itemType = newItemType;
     }
-    
+
     public boolean isVegan() {
         return vegan;
     }
@@ -297,7 +202,7 @@ public final class MenuItem {
     public void setGlutenFree(final boolean newGlutenFree) {
         this.glutenFree = newGlutenFree;
     }
-    
+
     public Set<Ingredient> getIngredients() {
         return ingredients;
     }
@@ -305,6 +210,4 @@ public final class MenuItem {
     public void setIngredients(final Set<Ingredient> newIngredients) {
         this.ingredients = newIngredients;
     }
-
-
 }
