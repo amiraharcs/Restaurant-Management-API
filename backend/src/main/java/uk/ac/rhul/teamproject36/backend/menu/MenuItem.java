@@ -1,4 +1,9 @@
 package uk.ac.rhul.teamproject36.backend.menu;
+import java.util.HashSet;
+import java.util.Set;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,9 +56,10 @@ public final class MenuItem {
     @Column(columnDefinition = "TEXT")
     private String allergens;
 
+  
     /** Whether the menu item is currently available. */
     @Column(name = "is_available", nullable = false)
-    private boolean is_available = true;
+    private boolean available = true;
 
     /** Image URL for the menu item. */
     @Column(name = "image_url")
@@ -78,6 +84,18 @@ public final class MenuItem {
 
     @Column(name = "is_gluten_free")
     private boolean glutenFree;
+    
+    /**
+     * Ingredients of the menu item.
+     */
+    @ManyToMany
+    @JoinTable(
+        name = "menu_item_ingredient",
+        joinColumns = @JoinColumn(name = "menu_item_id"),
+        inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private Set<Ingredient> ingredients = new HashSet<>();
+
 
 
     /**
@@ -183,24 +201,14 @@ public final class MenuItem {
     public void setAllergens(final String newAllergens) {
         this.allergens = newAllergens;
     }
-
-    /**
-     * Returns whether the item is available.
-     *
-     * @return true if available, false otherwise
-     */
     public boolean isAvailable() {
-        return is_available;
+        return available;
     }
 
-    /**
-     * Sets the availability.
-     *
-     * @param newAvailable the new availability status
-     */
     public void setAvailable(final boolean newAvailable) {
-        this.is_available = newAvailable;
+        this.available = newAvailable;
     }
+
 
     /**
      * Returns the image URL.
@@ -289,5 +297,14 @@ public final class MenuItem {
     public void setGlutenFree(final boolean newGlutenFree) {
         this.glutenFree = newGlutenFree;
     }
+    
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(final Set<Ingredient> newIngredients) {
+        this.ingredients = newIngredients;
+    }
+
 
 }
