@@ -35,7 +35,9 @@ public final class MenuDataSeeder implements CommandLineRunner {
         }
 
         final List<MenuItem> items = List.of(
-            // ===== main =====
+            // =========================
+            // MAIN (FOOD)
+            // =========================
             item(
                 ItemType.FOOD,
                 "Spaghetti Bolognese",
@@ -59,7 +61,9 @@ public final class MenuDataSeeder implements CommandLineRunner {
                 List.of("Meat")
             ),
 
-            // ===== dessert =====
+            // =========================
+            // DESSERT
+            // =========================
             item(
                 ItemType.DESSERT,
                 "Chocolate Brownie",
@@ -72,7 +76,9 @@ public final class MenuDataSeeder implements CommandLineRunner {
                 List.of("Vegetarian")
             ),
 
-            // ===== drinks =====
+            // =========================
+            // DRINKS
+            // =========================
             item(
                 ItemType.DRINK,
                 "Coca-Cola",
@@ -129,7 +135,7 @@ public final class MenuDataSeeder implements CommandLineRunner {
     }
 
     private void applyFilters(final MenuItem item, final List<String> filters) {
-        // Defaults
+        // Default values
         item.setVegetarian(false);
         item.setVegan(false);
         item.setGlutenFree(false);
@@ -150,7 +156,7 @@ public final class MenuDataSeeder implements CommandLineRunner {
                 case "GlutenFree" -> item.setGlutenFree(true);
                 case "Halal" -> item.setHalal(true);
                 default -> {
-                    // ignore (e.g. "Meat" is just a UI label)
+                    // Ignore things like "Meat" (UI label only).
                 }
             }
         }
