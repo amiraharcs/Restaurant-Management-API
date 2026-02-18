@@ -218,20 +218,29 @@ public final class MenuService {
 
             final List<String> filters = new ArrayList<>();
 
-            if (item.isVegetarian()) {
-                filters.add("is_vegetarian");
-            }
+            final boolean vegetarian = item.isVegetarian();
+            final boolean vegan = item.isVegan();
 
-            if (item.isVegan()) {
-                filters.add("is_vegan");
+            // Frontend expects: Vegetarian / Vegan / GlutenFree / Halal / Meat
+            if (vegan) {
+                filters.add("Vegan");
+                // Many frontends treat vegan as vegetarian as well
+                if (!vegetarian) {
+                    filters.add("Vegetarian");
+                }
+            } else if (vegetarian) {
+                filters.add("Vegetarian");
+            } else {
+                // Not vegetarian and not vegan => Meat
+                filters.add("Meat");
             }
 
             if (item.isGlutenFree()) {
-                filters.add("is_gluten_free");
+                filters.add("GlutenFree");
             }
 
             if (item.isHalal()) {
-                filters.add("is_halal");
+                filters.add("Halal");
             }
 
             return filters;
