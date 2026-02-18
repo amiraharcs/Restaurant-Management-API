@@ -90,13 +90,14 @@ public final class MenuItem {
     /**
      * Ingredients of the menu item.
      */
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany
     @JoinTable(
         name = "menu_item_ingredient",
-        joinColumns = @JoinColumn(name = "item_id"),
+        joinColumns = @JoinColumn(name = "menu_item_id"),
         inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private Set<Ingredient> ingredients = new HashSet<>();
+
 
     /**
      * Default constructor for JPA.
