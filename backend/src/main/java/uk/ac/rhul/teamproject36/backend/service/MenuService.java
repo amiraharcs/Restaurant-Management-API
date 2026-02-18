@@ -64,22 +64,33 @@ public final class MenuService {
      */
     public Map<String, List<MenuItemDto>> getFilteredMenuGrouped(
             final ItemType itemType,
-            final Boolean vegetarian,
-            final Boolean halal,
-            final Boolean vegan,
-            final Boolean glutenFree,
+            final List<String> filters,
             final Integer maxCalories,
             final String allergen) {
 
-        final List<String> activeFilters =
-                buildActiveFilters(vegetarian, halal, vegan, glutenFree);
+        final boolean vegetarian =
+                filters != null && filters.contains("is_vegetarian");
 
-        // Repository logic remains unchanged
+        final boolean halal =
+                filters != null && filters.contains("is_halal");
+
+        final boolean vegan =
+                filters != null && filters.contains("is_vegan");
+
+        final boolean glutenFree =
+                filters != null && filters.contains("is_gluten_free");
+
         final List<MenuItem> items =
-                menuRepository.findFiltered(itemType, vegetarian, halal, maxCalories, allergen);
+                menuRepository.findFiltered(
+                        itemType,
+                        vegetarian,
+                        halal,
+                        maxCalories,
+                        allergen);
 
         return group(items);
     }
+
 
     /**
      * Builds a list of active filter names based on Boolean values.
@@ -180,7 +191,10 @@ public final class MenuService {
                     item.getPrice(),
                     item.getCalories(),
                     item.isAvailable(),
-                    List.of(),
+                    item.getIngredients()
+                    .stream()
+                    .map(ingredient -> ingredient.getName())
+                    .toList(),
                     splitCsv(item.getAllergens()),
                     buildFilters(item),
                     item.getImageUrl(),

@@ -42,37 +42,26 @@ public final class MenuController {
      */
     @GetMapping("/menu")
     public java.util.Map<String, List<MenuService.MenuItemDto>> getMenu(
-        @RequestParam(required = false, name = "item_type")
-        final uk.ac.rhul.teamproject36.backend.menu.ItemType itemType,
-        @RequestParam(required = false) final Boolean vegetarian,
-        @RequestParam(required = false) final Boolean halal,
-        @RequestParam(required = false) final Boolean vegan,
-        @RequestParam(required = false, name = "gluten_free")
-        final Boolean glutenFree,
-        @RequestParam(required = false) final Integer maxCalories,
-        @RequestParam(required = false) final String allergen) {
+    	    @RequestParam(required = false, name = "item_type")
+    	    final uk.ac.rhul.teamproject36.backend.menu.ItemType itemType,
+    	    @RequestParam(required = false) final List<String> filters,
+    	    @RequestParam(required = false) final Integer maxCalories,
+    	    @RequestParam(required = false) final String allergen) {
 
-        if (itemType != null
-            || vegetarian != null
-            || halal != null
-            || vegan != null
-            || glutenFree != null
-            || maxCalories != null
-            || allergen != null) {
+    	    if (itemType != null
+    	        || filters != null
+    	        || maxCalories != null
+    	        || allergen != null) {
 
-            return menuService.getFilteredMenuGrouped(
-                itemType,
-                vegetarian,
-                halal,
-                vegan,
-                glutenFree,
-                maxCalories,
-                allergen);
-        }
+    	        return menuService.getFilteredMenuGrouped(
+    	            itemType,
+    	            filters,
+    	            maxCalories,
+    	            allergen);
+    	    }
 
-        return menuService.getMenuGroupedForCustomers();
-    }
-
+    	    return menuService.getMenuGroupedForCustomers();
+    	}
     /**
      * Request body for updating a menu item's availability.
      */
