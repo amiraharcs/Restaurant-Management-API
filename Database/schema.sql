@@ -146,3 +146,18 @@ ALTER COLUMN price TYPE NUMERIC(10,2);
 -- get rid of prev ingredients table
 ALTER TABLE menu_item
 DROP COLUMN IF EXISTS ingredients;
+
+-- =========================
+-- New ingredients table 
+-- =========================
+
+CREATE TABLE IF NOT EXISTS ingredient (
+  ingredient_id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS menu_item_ingredient (
+  item_id INT NOT NULL REFERENCES menu_item(item_id) ON DELETE CASCADE,
+  ingredient_id INT NOT NULL REFERENCES ingredient(ingredient_id) ON DELETE CASCADE,
+  PRIMARY KEY (item_id, ingredient_id)
+);
