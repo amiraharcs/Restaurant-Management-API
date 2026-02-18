@@ -133,3 +133,7 @@ ADD COLUMN IF NOT EXISTS user_id INT UNIQUE REFERENCES app_user (user_id) ON DEL
 
 ALTER TABLE kitchen_staff
 ADD COLUMN IF NOT EXISTS user_id INT UNIQUE REFERENCES app_user (user_id) ON DELETE SET NULL;
+
+-- Add missing description
+ALTER TABLE menu_item
+ADD COLUMN IF NOT EXISTS description TEXT;
