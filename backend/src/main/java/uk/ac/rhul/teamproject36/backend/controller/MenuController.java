@@ -31,47 +31,68 @@ public final class MenuController {
     /**
      * Returns the menu items available to customers, with optional filters.
      *
-     * @param category filter by category (optional)
+     * @param itemType filter by item type (optional)
      * @param vegetarian show only vegetarian items (optional)
+     * @param halal show only halal items (optional)
+     * @param vegan show only vegan items (optional)
      * @param glutenFree show only gluten-free items (optional)
+     * @param maxCalories maximum calories filter (optional)
+     * @param allergen allergen filter (optional)
      * @return filtered list of available menu items
      */
     @GetMapping("/menu")
     public java.util.Map<String, List<MenuService.MenuItemDto>> getMenu(
-        @RequestParam(required = false, name = "item_type") final uk.ac.rhul.teamproject36.backend.menu.ItemType itemType,
+        @RequestParam(required = false, name = "item_type")
+        final uk.ac.rhul.teamproject36.backend.menu.ItemType itemType,
         @RequestParam(required = false) final Boolean vegetarian,
         @RequestParam(required = false) final Boolean halal,
+        @RequestParam(required = false) final Boolean vegan,
+        @RequestParam(required = false, name = "gluten_free")
+        final Boolean glutenFree,
         @RequestParam(required = false) final Integer maxCalories,
         @RequestParam(required = false) final String allergen) {
 
-        if (itemType != null || vegetarian != null || halal != null || maxCalories != null || allergen != null) {
-            return menuService.getFilteredMenuGrouped(itemType, vegetarian, halal, maxCalories, allergen);
+        if (itemType != null
+            || vegetarian != null
+            || halal != null
+            || vegan != null
+            || glutenFree != null
+            || maxCalories != null
+            || allergen != null) {
+
+            return menuService.getFilteredMenuGrouped(
+                itemType,
+                vegetarian,
+                halal,
+                vegan,
+                glutenFree,
+                maxCalories,
+                allergen);
         }
 
         return menuService.getMenuGroupedForCustomers();
     }
-
 
     /**
      * Request body for updating a menu item's availability.
      */
     public static final class AvailabilityUpdateRequest {
 
-        private Boolean available;
+        private Boolean is_available;
 
         public Boolean getAvailable() {
-            return available;
+            return is_available;
         }
 
         public void setAvailable(final Boolean available) {
-            this.available = available;
+            this.is_available = available;
         }
     }
 
     /**
      * Updates the availability of a menu item.
      *
-     * @param id      the menu item id
+     * @param id the menu item id
      * @param request the availability update request body
      * @return HTTP status indicating the result
      */

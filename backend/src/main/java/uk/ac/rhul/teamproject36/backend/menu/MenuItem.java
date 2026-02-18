@@ -53,7 +53,7 @@ public final class MenuItem {
 
     /** Whether the menu item is currently available. */
     @Column(name = "is_available", nullable = false)
-    private boolean available = true;
+    private boolean is_available = true;
 
     /** Image URL for the menu item. */
     @Column(name = "image_url")
@@ -71,6 +71,14 @@ public final class MenuItem {
     @Enumerated(EnumType.STRING)
     @Column(name = "item_type")
     private ItemType itemType;
+    
+   
+    @Column(name = "is_vegan")
+    private boolean vegan;
+
+    @Column(name = "is_gluten_free")
+    private boolean glutenFree;
+
 
     /**
      * Default constructor for JPA.
@@ -182,7 +190,7 @@ public final class MenuItem {
      * @return true if available, false otherwise
      */
     public boolean isAvailable() {
-        return available;
+        return is_available;
     }
 
     /**
@@ -191,7 +199,7 @@ public final class MenuItem {
      * @param newAvailable the new availability status
      */
     public void setAvailable(final boolean newAvailable) {
-        this.available = newAvailable;
+        this.is_available = newAvailable;
     }
 
     /**
@@ -265,4 +273,21 @@ public final class MenuItem {
     public void setItemType(final ItemType newItemType) {
         this.itemType = newItemType;
     }
+    
+    public boolean isVegan() {
+        return vegan;
+    }
+
+    public void setVegan(final boolean newVegan) {
+        this.vegan = newVegan;
+    }
+
+    public boolean isGlutenFree() {
+        return glutenFree;
+    }
+
+    public void setGlutenFree(final boolean newGlutenFree) {
+        this.glutenFree = newGlutenFree;
+    }
+
 }

@@ -35,7 +35,8 @@ public final class MenuService {
      * @param repository the menu item repository
      * @param menuRepositoryParam the menu repository for filtering
      */
-    public MenuService(final MenuItemRepository repository, final MenuRepository menuRepositoryParam) {
+    public MenuService(final MenuItemRepository repository,
+                       final MenuRepository menuRepositoryParam) {
         this.menuItemRepository = repository;
         this.menuRepository = menuRepositoryParam;
     }
@@ -52,38 +53,94 @@ public final class MenuService {
     /**
      * Returns filtered menu items for customers, grouped by item type.
      *
-     * @param category filter by category
+     * @param itemType filter by item type
      * @param vegetarian filter vegetarian items
+     * @param halal filter halal items
+     * @param vegan filter vegan items
      * @param glutenFree filter gluten-free items
      * @param maxCalories maximum calories
      * @param allergen allergen filter (string)
      * @return grouped filtered menu items
      */
-    public Map<String, List<MenuItemDto>> getFilteredMenuGrouped(final ItemType itemType,
-    	    final Boolean vegetarian, final Boolean halal, final Integer maxCalories,
-    	    final String allergen)
- {
+    public Map<String, List<MenuItemDto>> getFilteredMenuGrouped(
+            final ItemType itemType,
+            final Boolean vegetarian,
+            final Boolean halal,
+            final Boolean vegan,
+            final Boolean glutenFree,
+            final Integer maxCalories,
+            final String allergen) {
 
-    	return group(menuRepository.findFiltered(itemType, vegetarian, halal, maxCalories, allergen));
+        final List<String> activeFilters =
+                buildActiveFilters(vegetarian, halal, vegan, glutenFree);
 
+        // Repository logic remains unchanged
+        final List<MenuItem> items =
+                menuRepository.findFiltered(itemType, vegetarian, halal, maxCalories, allergen);
+
+        return group(items);
+    }
+
+    /**
+     * Builds a list of active filter names based on Boolean values.
+     *
+     * @param vegetarian vegetarian flag
+     * @param halal halal flag
+     * @param vegan vegan flag
+     * @param glutenFree gluten-free flag
+     * @return list of active filter names
+     */
+    private List<String> buildActiveFilters(
+            final Boolean vegetarian,
+            final Boolean halal,
+            final Boolean vegan,
+            final Boolean glutenFree) {
+
+        final List<String> filters = new ArrayList<>();
+
+        if (Boolean.TRUE.equals(vegetarian)) {
+            filters.add("is_vegetarian");
+        }
+
+        if (Boolean.TRUE.equals(halal)) {
+            filters.add("is_halal");
+        }
+
+        if (Boolean.TRUE.equals(vegan)) {
+            filters.add("is_vegan");
+        }
+
+        if (Boolean.TRUE.equals(glutenFree)) {
+            filters.add("is_gluten_free");
+        }
+
+        return filters;
     }
 
     private Map<String, List<MenuItemDto>> group(final List<MenuItem> items) {
-        final Map<ItemType, List<MenuItemDto>> grouped = new EnumMap<>(ItemType.class);
+        final Map<ItemType, List<MenuItemDto>> grouped =
+                new EnumMap<>(ItemType.class);
 
         for (ItemType type : ItemType.values()) {
             grouped.put(type, new ArrayList<>());
         }
 
         for (MenuItem item : items) {
-            final ItemType type = item.getItemType() == null ? DEFAULT_ITEM_TYPE : item.getItemType();
+            final ItemType type =
+                    item.getItemType() == null
+                            ? DEFAULT_ITEM_TYPE
+                            : item.getItemType();
+
             grouped.get(type).add(MenuItemDto.from(item));
         }
 
-        final Map<String, List<MenuItemDto>> out = new LinkedHashMap<>();
+        final Map<String, List<MenuItemDto>> out =
+                new LinkedHashMap<>();
+
         out.put(ItemType.FOOD.name(), grouped.get(ItemType.FOOD));
         out.put(ItemType.DESSERT.name(), grouped.get(ItemType.DESSERT));
         out.put(ItemType.DRINK.name(), grouped.get(ItemType.DRINK));
+
         return out;
     }
 
@@ -95,41 +152,41 @@ public final class MenuService {
      * @param description the item description
      * @param price the item price
      * @param calories the calorie count
-     * @param isAvailable availability flag (frontend naming)
-     * @param ingredients list of ingredient names (empty until DB table exists)
+     * @param isAvailable availability flag
+     * @param ingredients list of ingredient names
      * @param allergens list of allergen names
-     * @param filters list of filters (e.g. vegetarian, halal)
+     * @param filters list of filters
      * @param image image url
-     * @param itemType the item type as string
+     * @param itemType the item type
      */
     public record MenuItemDto(
-        Long id,
-        String name,
-        String description,
-        BigDecimal price,
-        Integer calories,
-        boolean isAvailable,
-        List<String> ingredients,
-        List<String> allergens,
-        List<String> filters,
-        String image,
-        String itemType
-    ) {
+            Long id,
+            String name,
+            String description,
+            BigDecimal price,
+            Integer calories,
+            boolean isAvailable,
+            List<String> ingredients,
+            List<String> allergens,
+            List<String> filters,
+            String image,
+            String itemType) {
 
         static MenuItemDto from(final MenuItem item) {
             return new MenuItemDto(
-                item.getId(),
-                item.getName(),
-                item.getDescription(),
-                item.getPrice(),
-                item.getCalories(),
-                item.isAvailable(),
-                List.of(),
-                splitCsv(item.getAllergens()),
-                buildFilters(item),
-                item.getImageUrl(),
-                item.getItemType() == null ? DEFAULT_ITEM_TYPE.name() : item.getItemType().name()
-            );
+                    item.getId(),
+                    item.getName(),
+                    item.getDescription(),
+                    item.getPrice(),
+                    item.getCalories(),
+                    item.isAvailable(),
+                    List.of(),
+                    splitCsv(item.getAllergens()),
+                    buildFilters(item),
+                    item.getImageUrl(),
+                    item.getItemType() == null
+                            ? DEFAULT_ITEM_TYPE.name()
+                            : item.getItemType().name());
         }
 
         private static List<String> splitCsv(final String raw) {
@@ -138,20 +195,29 @@ public final class MenuService {
             }
 
             return Arrays.stream(raw.split(","))
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .toList();
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .toList();
         }
 
         private static List<String> buildFilters(final MenuItem item) {
+
             final List<String> filters = new ArrayList<>();
 
             if (item.isVegetarian()) {
-                filters.add("vegetarian");
+                filters.add("is_vegetarian");
+            }
+
+            if (item.isVegan()) {
+                filters.add("is_vegan");
+            }
+
+            if (item.isGlutenFree()) {
+                filters.add("is_gluten_free");
             }
 
             if (item.isHalal()) {
-                filters.add("halal");
+                filters.add("is_halal");
             }
 
             return filters;
@@ -165,9 +231,13 @@ public final class MenuService {
      * @param available the new availability value
      * @throws EntityNotFoundException if the item does not exist
      */
-    public void updateAvailability(final Long id, final boolean available) {
-        final MenuItem item = menuItemRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Menu item not found"));
+    public void updateAvailability(final Long id,
+                                   final boolean available) {
+
+        final MenuItem item =
+                menuItemRepository.findById(id)
+                        .orElseThrow(() ->
+                                new EntityNotFoundException("Menu item not found"));
 
         item.setAvailable(available);
         menuItemRepository.save(item);
