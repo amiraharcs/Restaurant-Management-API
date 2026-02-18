@@ -17,6 +17,7 @@ public final class Ingredient {
     /** Unique identifier. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ingredient_id")
     private Long id;
 
     /** Ingredient name. */
@@ -28,14 +29,29 @@ public final class Ingredient {
      */
     public Ingredient() { }
 
+    /**
+     * Returns the ingredient id.
+     *
+     * @return the id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Returns the ingredient name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the ingredient name.
+     *
+     * @param newName the new name
+     */
     public void setName(final String newName) {
         this.name = newName;
     }
