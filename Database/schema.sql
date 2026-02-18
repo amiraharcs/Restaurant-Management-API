@@ -142,3 +142,7 @@ ADD COLUMN IF NOT EXISTS description TEXT;
 -- Change price to decimal
 ALTER TABLE menu_item
 ALTER COLUMN price TYPE NUMERIC(10,2);
+
+-- get rid of prev ingredients table
+ALTER TABLE menu_item
+DROP COLUMN IF EXISTS ingredients;
