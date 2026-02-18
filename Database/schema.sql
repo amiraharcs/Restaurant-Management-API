@@ -137,3 +137,8 @@ ADD COLUMN IF NOT EXISTS user_id INT UNIQUE REFERENCES app_user (user_id) ON DEL
 -- Add missing description
 ALTER TABLE menu_item
 ADD COLUMN IF NOT EXISTS description TEXT;
+
+
+-- Change price to decimal
+ALTER TABLE menu_item
+ALTER COLUMN price TYPE NUMERIC(10,2);
