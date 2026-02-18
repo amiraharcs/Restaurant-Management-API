@@ -1,13 +1,16 @@
 package uk.ac.rhul.teamproject36.backend.service;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import uk.ac.rhul.teamproject36.backend.menu.Ingredient;
 import uk.ac.rhul.teamproject36.backend.menu.ItemType;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
 import uk.ac.rhul.teamproject36.backend.repository.MenuItemRepository;
@@ -28,16 +31,12 @@ public final class MenuDataSeeder implements CommandLineRunner {
 
     @Override
     public void run(final String... args) {
-        // Avoid duplicating rows on every start
         if (menuItemRepository.count() > 0) {
             log.info("Menu seed skipped (menu_item already contains data).");
             return;
         }
 
         final List<MenuItem> items = List.of(
-            // =========================
-            // MAIN (FOOD)
-            // =========================
             item(
                 ItemType.FOOD,
                 "Spaghetti Bolognese",
@@ -47,7 +46,8 @@ public final class MenuDataSeeder implements CommandLineRunner {
                 "Gluten",
                 true,
                 "/images/menu/spaghetti-bolognese.jpg",
-                List.of("Meat")
+                List.of("Meat"),
+                List.of("Spaghetti", "Beef mince", "Tomato", "Onion", "Garlic", "Olive oil", "Herbs")
             ),
             item(
                 ItemType.FOOD,
@@ -58,12 +58,9 @@ public final class MenuDataSeeder implements CommandLineRunner {
                 "Gluten,Milk",
                 true,
                 "/images/menu/chicken-alfredo.jpg",
-                List.of("Meat")
+                List.of("Meat"),
+                List.of("Pasta", "Chicken breast", "Cream", "Parmesan cheese", "Butter", "Garlic")
             ),
-
-            // =========================
-            // DESSERT
-            // =========================
             item(
                 ItemType.DESSERT,
                 "Chocolate Brownie",
@@ -73,12 +70,9 @@ public final class MenuDataSeeder implements CommandLineRunner {
                 "Gluten,Eggs,Milk",
                 true,
                 "/images/menu/chocolate-brownie.jpg",
-                List.of("Vegetarian")
+                List.of("Vegetarian"),
+                List.of("Flour", "Cocoa powder", "Butter", "Eggs", "Sugar", "Chocolate")
             ),
-
-            // =========================
-            // DRINKS
-            // =========================
             item(
                 ItemType.DRINK,
                 "Coca-Cola",
@@ -88,7 +82,15 @@ public final class MenuDataSeeder implements CommandLineRunner {
                 "",
                 true,
                 "/images/menu/coca-cola.jpg",
-                List.of("Vegan", "Vegetarian", "GlutenFree")
+                List.of("Vegan", "Vegetarian", "GlutenFree"),
+                List.of(
+                    "Carbonated water",
+                    "Sugar",
+                    "Colour (caramel E150d)",
+                    "Phosphoric acid",
+                    "Natural flavourings",
+                    "Caffeine"
+                )
             ),
             item(
                 ItemType.DRINK,
@@ -99,11 +101,13 @@ public final class MenuDataSeeder implements CommandLineRunner {
                 "",
                 true,
                 "/images/menu/sparkling-water.jpg",
-                List.of("Vegan", "Vegetarian", "GlutenFree")
+                List.of("Vegan", "Vegetarian", "GlutenFree"),
+                List.of("Carbonated water")
             )
         );
 
         menuItemRepository.saveAll(items);
+
         log.info("Menu seed inserted {} items ({} unavailable).",
             items.size(),
             items.stream().filter(i -> !i.isAvailable()).count());
@@ -118,7 +122,8 @@ public final class MenuDataSeeder implements CommandLineRunner {
         final String allergensCsv,
         final boolean available,
         final String imageUrl,
-        final List<String> filters
+        final List<String> filters,
+        final List<String> ingredientNames
     ) {
         final MenuItem m = new MenuItem();
         m.setItemType(itemType);
@@ -131,11 +136,12 @@ public final class MenuDataSeeder implements CommandLineRunner {
         m.setImageUrl(imageUrl);
 
         applyFilters(m, filters);
+        applyIngredients(m, ingredientNames);
+
         return m;
     }
 
     private void applyFilters(final MenuItem item, final List<String> filters) {
-        // Default values
         item.setVegetarian(false);
         item.setVegan(false);
         item.setGlutenFree(false);
@@ -160,5 +166,24 @@ public final class MenuDataSeeder implements CommandLineRunner {
                 }
             }
         }
+    }
+
+    private void applyIngredients(final MenuItem item, final List<String> ingredientNames) {
+        if (ingredientNames == null || ingredientNames.isEmpty()) {
+            return;
+        }
+
+        final Set<Ingredient> set = new HashSet<>();
+        for (String name : ingredientNames) {
+            if (name == null || name.isBlank()) {
+                continue;
+            }
+
+            final Ingredient ing = new Ingredient();
+            ing.setName(name.trim());
+            set.add(ing);
+        }
+
+        item.setIngredients(set);
     }
 }
