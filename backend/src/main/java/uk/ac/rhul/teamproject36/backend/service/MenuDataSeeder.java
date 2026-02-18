@@ -1,15 +1,16 @@
 package uk.ac.rhul.teamproject36.backend.service;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
 import uk.ac.rhul.teamproject36.backend.menu.ItemType;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
 import uk.ac.rhul.teamproject36.backend.repository.MenuItemRepository;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Seeds the database with sample menu items on application startup.
@@ -34,38 +35,84 @@ public final class MenuDataSeeder implements CommandLineRunner {
         }
 
         final List<MenuItem> items = List.of(
-                item(ItemType.FOOD, "Chicken Tacos", "Grilled chicken with fresh salsa and lime", "8.50", 520, "gluten", true),
-                item(ItemType.FOOD, "Beef Burrito", "Slow cooked beef with rice and beans", "9.00", 680, "gluten,dairy", true),
-                item(ItemType.FOOD, "Vegetable Quesadilla", "Roasted vegetables with melted cheese", "7.50", 610, "gluten,dairy", true),
-                item(ItemType.FOOD, "Fish Tacos", "Battered fish with cabbage slaw", "8.75", 540, "gluten,fish", true),
-                item(ItemType.FOOD, "Nachos", "Corn chips topped with cheese and jalapeños", "6.50", 700, "dairy", true),
-                item(ItemType.FOOD, "Guacamole & Chips", "Fresh avocado dip with corn chips", "5.50", 390, "avocado", true),
-                item(ItemType.FOOD, "Pulled Pork Tacos", "Slow cooked pork with BBQ sauce", "8.75", 630, "gluten", true),
-                item(ItemType.FOOD, "Vegan Burrito Bowl", "Rice, beans, vegetables and salsa", "8.00", 560, "none", true),
+            // ===== main =====
+            item(
+                ItemType.FOOD,
+                "Spaghetti Bolognese",
+                "Classic spaghetti served with a slow-cooked beef and tomato ragu.",
+                "9.99",
+                720,
+                "Gluten",
+                true,
+                "/images/menu/spaghetti-bolognese.jpg",
+                List.of("Meat")
+            ),
+            item(
+                ItemType.FOOD,
+                "Chicken Alfredo Pasta",
+                "Creamy parmesan sauce with grilled chicken served over pasta.",
+                "10.99",
+                850,
+                "Gluten,Milk",
+                true,
+                "/images/menu/chicken-alfredo.jpg",
+                List.of("Meat")
+            ),
 
-                // Unavailable items (at least 2)
-                item(ItemType.DESSERT, "Churros", "Fried dough with cinnamon sugar", "4.50", 450, "gluten", false),
-                item(ItemType.FOOD, "Spicy Wings", "Chicken wings with hot sauce", "7.25", 720, "gluten", false),
+            // ===== dessert =====
+            item(
+                ItemType.DESSERT,
+                "Chocolate Brownie",
+                "Warm chocolate brownie served with a rich cocoa flavour.",
+                "4.99",
+                430,
+                "Gluten,Eggs,Milk",
+                true,
+                "/images/menu/chocolate-brownie.jpg",
+                List.of("Vegetarian")
+            ),
 
-                // Add 2 more for a nicer demo (now 12 total)
-                item(ItemType.FOOD, "Chicken Burrito", "Rice, chicken, salsa, sour cream", "8.99", 650, "gluten,dairy", true),
-                item(ItemType.DRINK, "Coke", "330ml can", "1.80", 139, "none", true)
+            // ===== drinks =====
+            item(
+                ItemType.DRINK,
+                "Coca-Cola",
+                "Chilled sparkling cola served in a bottle or can.",
+                "2.50",
+                140,
+                "",
+                true,
+                "/images/menu/coca-cola.jpg",
+                List.of("Vegan", "Vegetarian", "GlutenFree")
+            ),
+            item(
+                ItemType.DRINK,
+                "Sparkling Water",
+                "Refreshing sparkling mineral water.",
+                "2.20",
+                0,
+                "",
+                true,
+                "/images/menu/sparkling-water.jpg",
+                List.of("Vegan", "Vegetarian", "GlutenFree")
+            )
         );
 
         menuItemRepository.saveAll(items);
         log.info("Menu seed inserted {} items ({} unavailable).",
-                items.size(),
-                items.stream().filter(i -> !i.isAvailable()).count());
+            items.size(),
+            items.stream().filter(i -> !i.isAvailable()).count());
     }
 
     private MenuItem item(
-            final ItemType itemType,
-            final String name,
-            final String description,
-            final String price,
-            final Integer calories,
-            final String allergens,
-            final boolean available
+        final ItemType itemType,
+        final String name,
+        final String description,
+        final String price,
+        final Integer calories,
+        final String allergensCsv,
+        final boolean available,
+        final String imageUrl,
+        final List<String> filters
     ) {
         final MenuItem m = new MenuItem();
         m.setItemType(itemType);
@@ -73,8 +120,39 @@ public final class MenuDataSeeder implements CommandLineRunner {
         m.setDescription(description);
         m.setPrice(new BigDecimal(price));
         m.setCalories(calories);
-        m.setAllergens(allergens);
+        m.setAllergens(allergensCsv);
         m.setAvailable(available);
+        m.setImageUrl(imageUrl);
+
+        applyFilters(m, filters);
         return m;
+    }
+
+    private void applyFilters(final MenuItem item, final List<String> filters) {
+        // Defaults
+        item.setVegetarian(false);
+        item.setVegan(false);
+        item.setGlutenFree(false);
+        item.setHalal(false);
+
+        if (filters == null) {
+            return;
+        }
+
+        for (String f : filters) {
+            if (f == null) {
+                continue;
+            }
+
+            switch (f) {
+                case "Vegetarian" -> item.setVegetarian(true);
+                case "Vegan" -> item.setVegan(true);
+                case "GlutenFree" -> item.setGlutenFree(true);
+                case "Halal" -> item.setHalal(true);
+                default -> {
+                    // ignore (e.g. "Meat" is just a UI label)
+                }
+            }
+        }
     }
 }
