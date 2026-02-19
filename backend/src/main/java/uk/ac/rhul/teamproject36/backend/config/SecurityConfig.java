@@ -37,7 +37,7 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/menu").permitAll()
         .requestMatchers(HttpMethod.PATCH, "/api/menu/*/avaliability")
-        .hasAnyRole("STAFF", "ADMIN")
+        .hasAnyRole("WAITER", "KITCHEN")
         .anyRequest()
         .authenticated());
     return http.build();
