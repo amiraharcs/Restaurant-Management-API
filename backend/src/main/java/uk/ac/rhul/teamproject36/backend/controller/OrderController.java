@@ -29,6 +29,27 @@ public class OrderController {
         return orderService.createOrder(request);
     }
 
+    @GetMapping("/orders/{id}")
+    public OrderService.OrderDto getOrder(@PathVariable Long id) {
+      return orderService.getOrder(id);
+    }
+
+    /**
+     * Confirms a customer order (waiter action). Changes PLACED → CONFIRMED.
+     */
+    @PatchMapping("/orders/{id}/confirm")
+    public OrderDto confirmOrder(@PathVariable Long id) {
+      return orderService.confirmOrder(id);
+    }
+
+    /**
+     * Accepts a customer order (kitchen action). Changes PLACED → PREPARING.
+     */
+    @PatchMapping("/orders/{id}/accept")
+    public OrderDto acceptOrder(@PathVariable Long id) {
+      return orderService.acceptOrder(id);
+    }
+
     @ExceptionHandler(OrderService.BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadRequest(OrderService.BadRequestException ex) {
@@ -42,18 +63,5 @@ public class OrderController {
     }
 
     public record ErrorResponse(String error) {}
-    
-    @GetMapping("/orders/{id}")
-    public OrderService.OrderDto getOrder(@PathVariable Long id) {
-        return orderService.getOrder(id);
-    }
+  }
 
-    /**
-     * Confirms a customer order (waiter action). Changes PLACED → CONFIRMED.
-     */
-    @PatchMapping("/orders/{id}/confirm")
-    public OrderDto confirmOrder(@PathVariable Long id) {
-      return orderService.confirmOrder(id);
-    }
-
-}
