@@ -50,13 +50,9 @@ public class OrderController {
       return orderService.acceptOrder(id);
     }
 
-    /**
-     * Marks a customer order as READY (kitchen action).
-     */
     @PatchMapping("/orders/{id}/ready")
     public OrderDto markReady(@PathVariable Long id) {
-      // TODO: delegate to service
-      return orderService.getOrder(id); // temporary; just returns current order
+      return orderService.markReady(id);
     }
 
     @ExceptionHandler(OrderService.BadRequestException.class)
