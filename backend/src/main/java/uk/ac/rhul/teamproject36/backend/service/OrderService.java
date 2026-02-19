@@ -116,6 +116,18 @@ public class OrderService {
       return toOrderDto(order);
     }
 
+    /**
+     * Marks order as READY if status is PREPARING (kitchen action).
+     */
+    @Transactional
+    public OrderDto markReady(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      // TODO: implement status change PREPARING -> READY with validation
+      return toOrderDto(order);
+    }
+
     private OrderDto toOrderDto(CustomerOrder order) {
       List<OrderItemDto> items = new ArrayList<>();
       for (var it : order.getItems()) {
