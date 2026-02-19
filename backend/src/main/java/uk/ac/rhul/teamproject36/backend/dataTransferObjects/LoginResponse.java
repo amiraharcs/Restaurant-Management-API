@@ -18,7 +18,7 @@ public final class LoginResponse {
    * Creates a login response.
    *
    * @param newUsername authenticated clients user-name
-   * @param newRole clients role (STAFF or ADMIN)
+   * @param newRole clients role (WAITER or KITCHEN)
    */
   public LoginResponse(final String newUsername, final String newRole) {
     this.username = newUsername;
