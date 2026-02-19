@@ -4,19 +4,31 @@ import { LuUser, LuLock, LuEye, LuEyeOff } from 'react-icons/lu'
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "./data/components/NavBar";
 import StaffFooter from "./data/components/StaffFooter";
+import { postLogin } from './api/loginApi';
 
 export default function Login() {
     let navigate = useNavigate();
 
     const [revealPassword, setRevealPassword] = useState(false);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [loginUser, setUsername] = useState("");
+    const [loginPass, setPassword] = useState("");
 
-    function submitLogin(e : React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
+    async function submitLogin(formData: FormData) {
+        const user = (formData.get("username") ?? "").toString();
+        const pass = (formData.get("password") ?? "").toString();
+        console.log("Login:", user, pass);
 
-        console.log("Login:", username, password);
-        navigate("/waiter");
+        const res = await postLogin({
+            username: user,
+            password: pass,
+        })
+        console.log("Response:", res);
+
+        if (res.role === "WAITER") {
+            navigate("/waiter", {state: { username: res.username }});
+        } else if (res.role === "KITCHEN") {
+            navigate("/kitchen", {state: { username: res.username }});
+        }
     }
 
     return (
@@ -27,14 +39,21 @@ export default function Login() {
                 <div className='loginBox'>
                     <h1 className='loginTitle'> Staff Login </h1>
 
-                    <form className='loginForm' onSubmit={submitLogin}>
+                    <form 
+                        className='loginForm' 
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            const formData = new FormData(e.currentTarget);
+                            submitLogin(formData);
+                        }}>
                         <div className='inputWrap'>
                             <LuUser className='inputIcon' />
                             <input 
                                 className='inputBox'
+                                name='username'
                                 type='text'
                                 placeholder='Username'
-                                value={username}
+                                value={loginUser}
                                 onChange={(u) => setUsername(u.target.value)}
                                 required
                                 minLength={4}
@@ -45,9 +64,10 @@ export default function Login() {
                             <LuLock className='inputIcon' />
                             <input
                                 className='inputBox'
+                                name='password'
                                 type={revealPassword ? "text" : "password"}
                                 placeholder='Password'
-                                value={password}
+                                value={loginPass}
                                 onChange={(p) => setPassword(p.target.value)}
                                 required
                                 minLength={6}

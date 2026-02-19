@@ -1,4 +1,4 @@
-package uk.ac.rhul.teamproject36.Backend.dataTransferObjects;
+package uk.ac.rhul.teamproject36.backend.dataTransferObjects;
 
 /**
  * Data Transfer Object (DTO) for a login request.

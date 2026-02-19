@@ -1,4 +1,4 @@
-package uk.ac.rhul.teamproject36.Backend.controller;
+package uk.ac.rhul.teamproject36.backend.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.rhul.teamproject36.Backend.dataTransferObjects.LoginRequest;
-import uk.ac.rhul.teamproject36.Backend.dataTransferObjects.LoginResponse;
+import uk.ac.rhul.teamproject36.backend.dataTransferObjects.LoginRequest;
+import uk.ac.rhul.teamproject36.backend.dataTransferObjects.LoginResponse;
 
 /**
  * REST controller for user authentication. (replaces default http.basic())
