@@ -62,32 +62,45 @@ public class MenuDataSeeder implements CommandLineRunner {
             // =========================
             // MAIN (FOOD)
             // =========================
-            item(
-                ingredientCache,
-                ItemType.FOOD,
-                "Spaghetti Bolognese",
-                "Classic spaghetti served with a slow-cooked beef and tomato ragu.",
-                "9.99",
-                720,
-                "Gluten",
-                true,
-                "/images/menu/spaghetti-bolognese.jpg",
-                List.of("Meat"),
-                List.of("Spaghetti", "Beef mince", "Tomato", "Onion", "Garlic", "Olive oil", "Herbs")
-            ),
-            item(
-                ingredientCache,
-                ItemType.FOOD,
-                "Chicken Alfredo Pasta",
-                "Creamy parmesan sauce with grilled chicken served over pasta.",
-                "10.99",
-                850,
-                "Gluten,Milk",
-                true,
-                "/images/menu/chicken-alfredo.jpg",
-                List.of("Meat"),
-                List.of("Pasta", "Chicken breast", "Cream", "Parmesan cheese", "Butter", "Garlic")
-            ),
+                item(
+                        ingredientCache,
+                        ItemType.FOOD,
+                        "Chicken Quesadilla",
+                        "Grilled tortilla stuffed with melted cheese and spiced chicken.",
+                        "9.49",
+                        700,
+                        "Gluten,Milk",
+                        true,
+                        "/images/menu/chicken-quesadilla.jpg",
+                        List.of("Meat"),
+                        List.of("Flour tortilla", "Chicken breast", "Mozzarella", "Cheddar", "Peppers", "Onion")
+                ),
+                item(
+                        ingredientCache,
+                        ItemType.FOOD,
+                        "Beef Burrito",
+                        "Large flour tortilla wrapped with seasoned beef, rice, beans and salsa.",
+                        "10.49",
+                        920,
+                        "Gluten",
+                        true,
+                        "/images/menu/beef-burrito.jpg",
+                        List.of("Meat"),
+                        List.of("Flour tortilla", "Beef mince", "Mexican rice", "Black beans", "Salsa", "Cheese")
+                ),
+                item(
+                        ingredientCache,
+                        ItemType.FOOD,
+                        "Enchiladas Verdes",
+                        "Corn tortillas filled with chicken and topped with green tomatillo sauce.",
+                        "11.49",
+                        830,
+                        "Milk",
+                        true,
+                        "/images/menu/enchiladas-verdes.jpg",
+                        List.of("Meat"),
+                        List.of("Corn tortillas", "Chicken", "Tomatillo sauce", "Cheese", "Sour cream", "Coriander")
+                ),
 
             // =========================
             // DESSERT
@@ -105,6 +118,45 @@ public class MenuDataSeeder implements CommandLineRunner {
                 List.of("Vegetarian"),
                 List.of("Flour", "Cocoa powder", "Butter", "Eggs", "Sugar", "Chocolate")
             ),
+                item(
+                        ingredientCache,
+                        ItemType.DESSERT,
+                        "Churros with Chocolate",
+                        "Crispy fried dough sticks coated in cinnamon sugar, served with warm chocolate dip.",
+                        "6.49",
+                        520,
+                        "Gluten,Milk,Egg",
+                        true,
+                        "/images/menu/churros.jpg",
+                        List.of("Vegetarian"),
+                        List.of("Flour", "Sugar", "Cinnamon", "Egg", "Butter", "Dark chocolate")
+                ),
+                item(
+                        ingredientCache,
+                        ItemType.DESSERT,
+                        "Tres Leches Cake",
+                        "Light sponge cake soaked in three kinds of milk and topped with whipped cream.",
+                        "6.99",
+                        610,
+                        "Gluten,Milk,Egg",
+                        true,
+                        "/images/menu/tres-leches.jpg",
+                        List.of("Vegetarian"),
+                        List.of("Flour", "Condensed milk", "Evaporated milk", "Cream", "Eggs", "Sugar")
+                ),
+                item(
+                        ingredientCache,
+                        ItemType.DESSERT,
+                        "Flan",
+                        "Traditional Mexican caramel custard with a smooth and creamy texture.",
+                        "5.99",
+                        430,
+                        "Milk,Egg",
+                        true,
+                        "/images/menu/flan.jpg",
+                        List.of("Vegetarian"),
+                        List.of("Milk", "Eggs", "Sugar", "Vanilla")
+                ),
 
             // =========================
             // DRINKS
