@@ -69,7 +69,6 @@ public class OrderService {
         public NotFoundException(String msg) { super(msg); }
     }
     
-    
     public record OrderItemDto(Long menuItemId, String name, Integer quantity) {}
     public record OrderDto(Long id, OrderStatus status, java.time.Instant createdAt, List<OrderItemDto> items) {}
 
@@ -78,25 +77,25 @@ public class OrderService {
         CustomerOrder order = orderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("order not found: " + id));
 
-        List<OrderItemDto> items = new ArrayList<>();
-        for (var it : order.getItems()) {
-            items.add(new OrderItemDto(
-                    it.getMenuItem().getId(),
-                    it.getMenuItem().getName(),
-                    it.getQuantity()
-            ));
-        }
-
-        return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
+        return toOrderDto(order);
     }
 
-    private OrderDto toOrderDto(CustomerOrder order) {
-      List<OrderItemDto> items = new ArrayList<>();
-      for (var it : order.getItems()) {
-        items.add(new OrderItemDto(it.getMenuItem().getId(), it.getMenuItem().getName(),
-            it.getQuantity()));
+    /**
+     * Confirms order if status is PLACED (waiter action).
+     */
+    @Transactional
+    public OrderDto confirmOrder(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getStatus() != OrderStatus.PLACED) {
+        throw new BadRequestException("Invalid status transition: " + order.getStatus());
       }
-      return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
+
+      order.setStatus(OrderStatus.CONFIRMED);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
     }
 
     /**
@@ -116,4 +115,14 @@ public class OrderService {
 
       return toOrderDto(order);
     }
+
+    private OrderDto toOrderDto(CustomerOrder order) {
+      List<OrderItemDto> items = new ArrayList<>();
+      for (var it : order.getItems()) {
+        items.add(new OrderItemDto(it.getMenuItem().getId(), it.getMenuItem().getName(),
+            it.getQuantity()));
+      }
+      return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
+    }
 }
+
