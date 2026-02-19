@@ -67,6 +67,8 @@ export default function Menu() {
                     drinks: data.DRINK ?? []
                 };
 
+                console.log(mapped);
+
                 setProducts(mapped);
             } catch (e: any) {
                 setError(e?.message ?? "Failed to load menu");

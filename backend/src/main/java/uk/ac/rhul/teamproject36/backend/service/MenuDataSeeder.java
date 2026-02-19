@@ -65,6 +65,32 @@ public class MenuDataSeeder implements CommandLineRunner {
                 item(
                         ingredientCache,
                         ItemType.FOOD,
+                        "Chicken Fajitas",
+                        "Sizzling grilled chicken served with peppers, onions and warm flour tortillas.",
+                        "11.99",
+                        780,
+                        "Gluten",
+                        true,
+                        "/images/menu/chicken-fajitas.jpg",
+                        List.of("Meat"),
+                        List.of("Chicken breast", "Bell peppers", "Onion", "Flour tortillas", "Lime", "Spices")
+                ),
+                item(
+                        ingredientCache,
+                        ItemType.FOOD,
+                        "Beef Tacos",
+                        "Soft corn tortillas filled with seasoned beef, fresh salsa and shredded lettuce.",
+                        "8.99",
+                        640,
+                        "None",
+                        true,
+                        "/images/menu/beef-tacos.jpg",
+                        List.of("Meat", "GlutenFree"),
+                        List.of("Corn tortillas", "Beef mince", "Tomato salsa", "Lettuce", "Cheddar cheese", "Sour cream")
+                ),
+                item(
+                        ingredientCache,
+                        ItemType.FOOD,
                         "Chicken Quesadilla",
                         "Grilled tortilla stuffed with melted cheese and spiced chicken.",
                         "9.49",
@@ -91,15 +117,28 @@ public class MenuDataSeeder implements CommandLineRunner {
                 item(
                         ingredientCache,
                         ItemType.FOOD,
-                        "Enchiladas Verdes",
-                        "Corn tortillas filled with chicken and topped with green tomatillo sauce.",
-                        "11.49",
-                        830,
-                        "Milk",
+                        "Bean & Cheese Burrito",
+                        "Large flour tortilla filled with seasoned black beans, rice and melted cheese.",
+                        "9.29",
+                        820,
+                        "Gluten,Milk",
                         true,
-                        "/images/menu/enchiladas-verdes.jpg",
-                        List.of("Meat"),
-                        List.of("Corn tortillas", "Chicken", "Tomatillo sauce", "Cheese", "Sour cream", "Coriander")
+                        "/images/menu/bean-cheese-burrito.jpeg",
+                        List.of("Vegetarian"),
+                        List.of("Flour tortilla", "Black beans", "Mexican rice", "Cheese", "Salsa", "Coriander")
+                ),
+                item(
+                        ingredientCache,
+                        ItemType.FOOD,
+                        "Veggie Tacos",
+                        "Soft corn tortillas filled with grilled vegetables, black beans and fresh salsa.",
+                        "8.49",
+                        550,
+                        "None",
+                        true,
+                        "/images/menu/veggie-tacos.jpg",
+                        List.of("Vegetarian", "GlutenFree", "Vegan"),
+                        List.of("Corn tortillas", "Black beans", "Bell peppers", "Onion", "Tomato salsa", "Lettuce")
                 ),
 
             // =========================
@@ -147,15 +186,15 @@ public class MenuDataSeeder implements CommandLineRunner {
                 item(
                         ingredientCache,
                         ItemType.DESSERT,
-                        "Flan",
-                        "Traditional Mexican caramel custard with a smooth and creamy texture.",
-                        "5.99",
-                        430,
-                        "Milk,Egg",
+                        "Mango Sorbet",
+                        "Refreshing dairy-free mango sorbet made with ripe mangoes and a hint of lime.",
+                        "5.49",
+                        180,
+                        "None",
                         true,
-                        "/images/menu/flan.jpg",
-                        List.of("Vegetarian"),
-                        List.of("Milk", "Eggs", "Sugar", "Vanilla")
+                        "/images/menu/mango-sorbet.jpg",
+                        List.of("Vegan", "Vegetarian", "GlutenFree"),
+                        List.of("Mango", "Sugar", "Lime juice", "Water")
                 ),
 
             // =========================
