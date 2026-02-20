@@ -36,11 +36,7 @@ export default function Order() {
     0,
   );
 
-  function submitOrder(formData: FormData) {
-    const name = formData.get("name");
-    const phoneNumber = formData.get("phoneNumber");
-    const tableNumber = formData.get("tableNumber");
-
+  function submitOrder() {
     showConfirmedOrder(true);
   }
 
@@ -59,8 +55,7 @@ export default function Order() {
             className="order_form"
             onSubmit={(e) => {
               e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              submitOrder(formData);
+              submitOrder();
             }}
           >
             <div className="inputWrap">
@@ -108,7 +103,7 @@ export default function Order() {
           <div>
             <h3 className="order_right_title">Your Order</h3>
             <div className="order_right_items">
-              {basket.map((basketItem: BasketItem, i: number) => (
+              {basket.map((basketItem: BasketItem) => (
                 <div className="order_right_item">
                   <img
                     src={basketItem.item.image}
