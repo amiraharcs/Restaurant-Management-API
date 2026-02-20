@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import NavBar from "./data/components/NavBar";
 import StaffFooter from "./data/components/StaffFooter";
 import { postLogin } from './api/loginApi';
+import { setLoggedInStaffUsername } from "./data/components/staffSession";
 
 export default function Login() {
     let navigate = useNavigate();
@@ -12,22 +13,35 @@ export default function Login() {
     const [revealPassword, setRevealPassword] = useState(false);
     const [loginUser, setUsername] = useState("");
     const [loginPass, setPassword] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [loginError, setLoginError] = useState("");
 
     async function submitLogin(formData: FormData) {
-        const user = (formData.get("username") ?? "").toString();
-        const pass = (formData.get("password") ?? "").toString();
-        console.log("Login:", user, pass);
+        setIsSubmitting(true);
+        setLoginError("");
 
-        const res = await postLogin({
-            username: user,
-            password: pass,
-        })
-        console.log("Response:", res);
+        try {
+            const user = (formData.get("username") ?? "").toString();
+            const pass = (formData.get("password") ?? "").toString();
+            const res = await postLogin({
+                username: user,
+                password: pass,
+            });
 
-        if (res.role === "WAITER") {
-            navigate("/waiter", {state: { username: res.username }});
-        } else if (res.role === "KITCHEN") {
-            navigate("/kitchen", {state: { username: res.username }});
+            const role = (res.role ?? "").toUpperCase();
+            setLoggedInStaffUsername(res.username ?? "");
+
+            if (role === "WAITER") {
+                navigate("/waiter", {state: { username: res.username }});
+            } else if (role === "KITCHEN") {
+                navigate("/kitchen", {state: { username: res.username }});
+            } else {
+                setLoginError("Your account role is not supported in this app.");
+            }
+        } catch {
+            setLoginError("Login failed. Check your username/password and that the backend is running.");
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -41,10 +55,10 @@ export default function Login() {
 
                     <form 
                         className='loginForm' 
-                        onSubmit={(e) => {
+                        onSubmit={async (e) => {
                             e.preventDefault();
                             const formData = new FormData(e.currentTarget);
-                            submitLogin(formData);
+                            await submitLogin(formData);
                         }}>
                         <div className='inputWrap'>
                             <LuUser className='inputIcon' />
@@ -82,7 +96,11 @@ export default function Login() {
                             </button>
                         </div>
 
-                        <button className='loginButton' type='submit'> LOGIN </button>
+                        {loginError && <p className='loginError'>{loginError}</p>}
+
+                        <button className='loginButton' type='submit' disabled={isSubmitting}>
+                            {isSubmitting ? 'LOGGING IN...' : 'LOGIN'}
+                        </button>
 
                         <div className='loginLinks'>
                             <Link className='loginLink' to='/reset-password'>Forgot password?</Link>

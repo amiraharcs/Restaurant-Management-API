@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { LuUserRound } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
+import { clearLoggedInStaffSession } from "./staffSession";
 
 export default function NavBarKitchen() {
   const navigate = useNavigate();
@@ -41,7 +42,12 @@ export default function NavBarKitchen() {
           <NavLink to="/past-order" className="kitchenNavbar__link">
             PAST ORDERS
           </NavLink>
-          <NavLink to="/login" className="kitchenNavbar__link" end>
+          <NavLink
+            to="/login"
+            className="kitchenNavbar__link"
+            end
+            onClick={clearLoggedInStaffSession}
+          >
             LOGOUT
           </NavLink>
         </div>
