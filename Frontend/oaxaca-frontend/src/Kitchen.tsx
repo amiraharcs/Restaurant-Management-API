@@ -5,6 +5,7 @@ import orderData from "./data/waiter.json";
 import NavBarKitchen from "./data/components/NavBarKitchen";
 import OrderDetails from "./data/components/showOrderDetails";
 import StaffFooter from "./data/components/StaffFooter";
+import StaffWelcome from "./data/components/StaffWelcome";
 
 type KitchenStatus = "new" | "preparing" | "ready";
 
@@ -69,7 +70,7 @@ export default function Kitchen() {
             <NavBarKitchen />
 
             <div className="alertsPage">
-                <h2 className="welcomeText"> Welcome, John Doe </h2>
+                <StaffWelcome />
 
                 <div className="orderContainer">
                     <div className="orderTabs">

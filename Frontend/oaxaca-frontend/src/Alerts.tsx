@@ -10,6 +10,7 @@ import {
   fetchCallWaiterAlerts,
   markCallWaiterAlertHandled,
 } from "./api/alertsApi";
+import StaffWelcome from "./data/components/StaffWelcome";
 
 type CallWaiterAlert = {
   id: number;
@@ -133,7 +134,7 @@ export default function Alerts() {
       <NavBarWaiter notificationCount={totalNotifications} />
 
       <div className="alertsPage">
-        <h2 className="welcomeText"> Welcome, John Doe </h2>
+        <StaffWelcome />
         <div className="orderContainer">
           <div className="alertTabs">
             <button
