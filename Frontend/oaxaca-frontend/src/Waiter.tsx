@@ -7,6 +7,7 @@ import { getTotalNotifications } from "./data/notificationCount.ts";
 import { LuChevronRight } from 'react-icons/lu';
 import OrderDetails from './data/components/showOrderDetails';
 import StaffFooter from "./data/components/StaffFooter";
+import StaffWelcome from "./data/components/StaffWelcome";
 
 type status = "new" | "preparing" | "ready";
 type Order = {
@@ -76,8 +77,7 @@ export default function Waiter() {
             <NavBarWaiter notificationCount={totalNotifications} />
             
             <div className='waiterPage'>
-
-                <h2 className='welcomeText'> Welcome, John Doe </h2>
+                <StaffWelcome />
 
                 <div className='orderContainer'>
                     <div className='orderTabs'>

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import NavBar from "./data/components/NavBar";
 import StaffFooter from "./data/components/StaffFooter";
 import { postLogin } from './api/loginApi';
+import { setLoggedInStaffUsername } from "./data/components/staffSession";
 
 export default function Login() {
     let navigate = useNavigate();
@@ -28,6 +29,7 @@ export default function Login() {
             });
 
             const role = (res.role ?? "").toUpperCase();
+            setLoggedInStaffUsername(res.username ?? "");
 
             if (role === "WAITER") {
                 navigate("/waiter", {state: { username: res.username }});
