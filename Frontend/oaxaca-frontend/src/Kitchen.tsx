@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./css/Kitchen.css";
 import { LuChevronRight } from "react-icons/lu";
 import orderData from "./data/waiter.json";
 import NavBarKitchen from "./data/components/NavBarKitchen";
 import OrderDetails from "./data/components/showOrderDetails";
 import StaffFooter from "./data/components/StaffFooter";
-import StaffWelcome from "./data/components/StaffWelcome";
 
 type KitchenStatus = "new" | "preparing" | "ready";
 
@@ -41,10 +40,7 @@ export default function Kitchen() {
     const [selectedOrder, setSelectedOrder] = useState<KitchenOrder | null>(null);
     const [orderDetailsPlacedAt, setOrderDetailsPlacedAt] = useState("");
 
-    useEffect(() => {
-        const timer = setInterval(() => setNow(Date.now()), 1000);
-        return () => clearInterval(timer);
-    }, []);
+    setInterval(() => setNow(Date.now()), 1000);
 
     const orders = (orderData as { orders: KitchenOrder[] }).orders;
 
@@ -70,7 +66,7 @@ export default function Kitchen() {
             <NavBarKitchen />
 
             <div className="alertsPage">
-                <StaffWelcome />
+                <h2 className="welcomeText"> Welcome, John Doe </h2>
 
                 <div className="orderContainer">
                     <div className="orderTabs">

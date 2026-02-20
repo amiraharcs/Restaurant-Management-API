@@ -6,11 +6,6 @@ import "./css/Alerts.css";
 import mockAlertsData from "./data/mockAlertsData.json";
 import { getTotalNotifications } from "./data/notificationCount.ts";
 import StaffFooter from "./data/components/StaffFooter.tsx";
-import {
-  fetchCallWaiterAlerts,
-  markCallWaiterAlertHandled,
-} from "./api/alertsApi";
-import StaffWelcome from "./data/components/StaffWelcome";
 
 type CallWaiterAlert = {
   id: number;
@@ -67,31 +62,12 @@ export default function Alerts() {
     CallWaiterAlert | OrderReady | null
   >(null);
 
-  // Load data on mount
+  // Load mock data from JSON on mount
   useEffect(() => {
-    const loadAlerts = async () => {
-      try {
-        setCallWaiterAlerts(await fetchCallWaiterAlerts());
-      } catch {
-        setCallWaiterAlerts([]);
-      }
-
-      if (mockAlertsData) {
-        setOrdersReady(mockAlertsData.mockOrdersReady || []);
-      }
-    };
-
-    loadAlerts();
-  }, []);
-
-  useEffect(() => {
-    const refreshTimer = window.setInterval(async () => {
-      try {
-        setCallWaiterAlerts(await fetchCallWaiterAlerts());
-      } catch {}
-    }, 5000);
-
-    return () => window.clearInterval(refreshTimer);
+    if (mockAlertsData) {
+      setCallWaiterAlerts(mockAlertsData.mockCallWaiterAlerts || []);
+      setOrdersReady(mockAlertsData.mockOrdersReady || []);
+    }
   }, []);
 
   useEffect(() => {
@@ -102,24 +78,15 @@ export default function Alerts() {
     return () => window.clearInterval(timer);
   }, []);
 
-  const handleMarkCallWaiterHandled = async (id: number) => {
-    try {
-      await markCallWaiterAlertHandled(id);
-    } catch {
-      return;
-    }
-
+  const handleMarkHandled = (id: number | string) => {
     setCallWaiterAlerts((alerts) =>
       alerts.map((a) => (a.id === id ? { ...a, handled: true } : a)),
     );
-    setShowDetails(false);
-  };
-
-  const handleMarkOrderHandled = (id: string) => {
     setOrdersReady((alerts) =>
       alerts.map((a) => (a.id === id ? { ...a, handled: true } : a)),
     );
     setShowDetails(false);
+    // TODO: PATCH /api/alerts/{id}/ack when backend is ready
   };
 
   const unhandledCallWaiterAlerts = callWaiterAlerts.filter((a) => !a.handled);
@@ -134,7 +101,7 @@ export default function Alerts() {
       <NavBarWaiter notificationCount={totalNotifications} />
 
       <div className="alertsPage">
-        <StaffWelcome />
+        <h2 className="welcomeText"> Welcome, John Doe </h2>
         <div className="orderContainer">
           <div className="alertTabs">
             <button
@@ -161,7 +128,7 @@ export default function Alerts() {
                       className="requestCloseBtn"
                       onClick={(e) => {
                         e.stopPropagation();
-                            handleMarkCallWaiterHandled(alert.id);
+                        handleMarkHandled(alert.id);
                       }}
                     >
                       ×
@@ -186,7 +153,7 @@ export default function Alerts() {
                         className="dismiss-btn"
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleMarkCallWaiterHandled(alert.id);
+                          handleMarkHandled(alert.id);
                         }}
                       >
                         Dismiss
@@ -239,7 +206,7 @@ export default function Alerts() {
                       className="popupBtn confirmBtn"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleMarkOrderHandled(order.id);
+                        handleMarkHandled(order.id);
                       }}
                     >
                       Delivered
@@ -256,11 +223,7 @@ export default function Alerts() {
                 setShowDetails(false);
                 setSelectedAlert(null);
               }}
-              onMarkHandled={
-                activeTab === "ordersReady"
-                  ? (id: string) => handleMarkOrderHandled(id)
-                  : (id: number) => void handleMarkCallWaiterHandled(id)
-              }
+              onMarkHandled={handleMarkHandled}
               isOrderReady={activeTab === "ordersReady"}
             />
           )}
