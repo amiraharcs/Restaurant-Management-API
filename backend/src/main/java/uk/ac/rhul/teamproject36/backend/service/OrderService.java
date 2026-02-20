@@ -116,6 +116,21 @@ public class OrderService {
       return toOrderDto(order);
     }
 
+    @Transactional
+    public OrderDto markReady(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getStatus() != OrderStatus.PREPARING) {
+        throw new BadRequestException("Invalid status transition: " + order.getStatus());
+      }
+
+      order.setStatus(OrderStatus.READY);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
+
     private OrderDto toOrderDto(CustomerOrder order) {
       List<OrderItemDto> items = new ArrayList<>();
       for (var it : order.getItems()) {

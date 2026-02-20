@@ -50,6 +50,11 @@ public class OrderController {
       return orderService.acceptOrder(id);
     }
 
+    @PatchMapping("/orders/{id}/ready")
+    public OrderDto markReady(@PathVariable Long id) {
+      return orderService.markReady(id);
+    }
+
     @ExceptionHandler(OrderService.BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadRequest(OrderService.BadRequestException ex) {
