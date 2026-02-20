@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './css/Waiter.css';
 import NavBarWaiter from "./data/components/NavBarWaiter";
 import orderData from "./data/waiter.json";
@@ -56,7 +56,11 @@ export default function Waiter() {
     }
 
     const [now, setNow] = useState(Date.now())
-    setInterval(() => setNow(Date.now()), 1000);
+
+    useEffect(() => {
+        const timer = setInterval(() => setNow(Date.now()), 1000);
+        return () => clearInterval(timer);
+    }, []);
 
     const [showOrderDetails, setShowOrderDetails] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState({});

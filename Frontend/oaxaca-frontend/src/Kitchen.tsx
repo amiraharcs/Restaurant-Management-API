@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./css/Kitchen.css";
 import { LuChevronRight } from "react-icons/lu";
 import orderData from "./data/waiter.json";
@@ -40,7 +40,10 @@ export default function Kitchen() {
     const [selectedOrder, setSelectedOrder] = useState<KitchenOrder | null>(null);
     const [orderDetailsPlacedAt, setOrderDetailsPlacedAt] = useState("");
 
-    setInterval(() => setNow(Date.now()), 1000);
+    useEffect(() => {
+        const timer = setInterval(() => setNow(Date.now()), 1000);
+        return () => clearInterval(timer);
+    }, []);
 
     const orders = (orderData as { orders: KitchenOrder[] }).orders;
 
