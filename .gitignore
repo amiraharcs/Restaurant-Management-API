@@ -405,3 +405,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/java,maven,node,react,intellij,visualstudiocode,windows,macos,linux
+
+# Code for the orecal live 
+deploy/
+.gitlab-ci.yml
