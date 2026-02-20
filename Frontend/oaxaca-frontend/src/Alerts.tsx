@@ -6,6 +6,10 @@ import "./css/Alerts.css";
 import mockAlertsData from "./data/mockAlertsData.json";
 import { getTotalNotifications } from "./data/notificationCount.ts";
 import StaffFooter from "./data/components/StaffFooter.tsx";
+import {
+  fetchCallWaiterAlerts,
+  markCallWaiterAlertHandled,
+} from "./api/alertsApi";
 
 type CallWaiterAlert = {
   id: number;
@@ -62,12 +66,31 @@ export default function Alerts() {
     CallWaiterAlert | OrderReady | null
   >(null);
 
-  // Load mock data from JSON on mount
+  // Load data on mount
   useEffect(() => {
-    if (mockAlertsData) {
-      setCallWaiterAlerts(mockAlertsData.mockCallWaiterAlerts || []);
-      setOrdersReady(mockAlertsData.mockOrdersReady || []);
-    }
+    const loadAlerts = async () => {
+      try {
+        setCallWaiterAlerts(await fetchCallWaiterAlerts());
+      } catch {
+        setCallWaiterAlerts([]);
+      }
+
+      if (mockAlertsData) {
+        setOrdersReady(mockAlertsData.mockOrdersReady || []);
+      }
+    };
+
+    loadAlerts();
+  }, []);
+
+  useEffect(() => {
+    const refreshTimer = window.setInterval(async () => {
+      try {
+        setCallWaiterAlerts(await fetchCallWaiterAlerts());
+      } catch {}
+    }, 5000);
+
+    return () => window.clearInterval(refreshTimer);
   }, []);
 
   useEffect(() => {
@@ -78,15 +101,24 @@ export default function Alerts() {
     return () => window.clearInterval(timer);
   }, []);
 
-  const handleMarkHandled = (id: number | string) => {
+  const handleMarkCallWaiterHandled = async (id: number) => {
+    try {
+      await markCallWaiterAlertHandled(id);
+    } catch {
+      return;
+    }
+
     setCallWaiterAlerts((alerts) =>
       alerts.map((a) => (a.id === id ? { ...a, handled: true } : a)),
     );
+    setShowDetails(false);
+  };
+
+  const handleMarkOrderHandled = (id: string) => {
     setOrdersReady((alerts) =>
       alerts.map((a) => (a.id === id ? { ...a, handled: true } : a)),
     );
     setShowDetails(false);
-    // TODO: PATCH /api/alerts/{id}/ack when backend is ready
   };
 
   const unhandledCallWaiterAlerts = callWaiterAlerts.filter((a) => !a.handled);
@@ -128,7 +160,7 @@ export default function Alerts() {
                       className="requestCloseBtn"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleMarkHandled(alert.id);
+                            handleMarkCallWaiterHandled(alert.id);
                       }}
                     >
                       ×
@@ -153,7 +185,7 @@ export default function Alerts() {
                         className="dismiss-btn"
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleMarkHandled(alert.id);
+                          handleMarkCallWaiterHandled(alert.id);
                         }}
                       >
                         Dismiss
@@ -206,7 +238,7 @@ export default function Alerts() {
                       className="popupBtn confirmBtn"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleMarkHandled(order.id);
+                        handleMarkOrderHandled(order.id);
                       }}
                     >
                       Delivered
@@ -223,7 +255,11 @@ export default function Alerts() {
                 setShowDetails(false);
                 setSelectedAlert(null);
               }}
-              onMarkHandled={handleMarkHandled}
+              onMarkHandled={
+                activeTab === "ordersReady"
+                  ? (id: string) => handleMarkOrderHandled(id)
+                  : (id: number) => void handleMarkCallWaiterHandled(id)
+              }
               isOrderReady={activeTab === "ordersReady"}
             />
           )}
