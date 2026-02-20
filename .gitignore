@@ -408,4 +408,4 @@ $RECYCLE.BIN/
 
 # Code for the orecal live 
 deploy/
-.gitlab-ci.yml
+.gitlab-ci.oracle.yml
