@@ -56,6 +56,17 @@
     background-color: orange;
 }
 
+.loginButton:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+
+.loginError {
+    margin: 0;
+    color: #a11212;
+    font-size: 14px;
+}
+
 .inputIcon {
   position: absolute;
   font-size: 18px;
