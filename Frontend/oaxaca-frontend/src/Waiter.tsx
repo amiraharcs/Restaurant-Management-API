@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './css/Waiter.css';
 import NavBarWaiter from "./data/components/NavBarWaiter";
 import orderData from "./data/waiter.json";
@@ -7,7 +7,6 @@ import { getTotalNotifications } from "./data/notificationCount.ts";
 import { LuChevronRight } from 'react-icons/lu';
 import OrderDetails from './data/components/showOrderDetails';
 import StaffFooter from "./data/components/StaffFooter";
-import StaffWelcome from "./data/components/StaffWelcome";
 
 type status = "new" | "preparing" | "ready";
 type Order = {
@@ -57,11 +56,7 @@ export default function Waiter() {
     }
 
     const [now, setNow] = useState(Date.now())
-
-    useEffect(() => {
-        const timer = setInterval(() => setNow(Date.now()), 1000);
-        return () => clearInterval(timer);
-    }, []);
+    setInterval(() => setNow(Date.now()), 1000);
 
     const [showOrderDetails, setShowOrderDetails] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState({});
@@ -77,7 +72,8 @@ export default function Waiter() {
             <NavBarWaiter notificationCount={totalNotifications} />
             
             <div className='waiterPage'>
-                <StaffWelcome />
+
+                <h2 className='welcomeText'> Welcome, John Doe </h2>
 
                 <div className='orderContainer'>
                     <div className='orderTabs'>

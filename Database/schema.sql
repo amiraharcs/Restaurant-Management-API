@@ -125,16 +125,6 @@ CREATE TABLE
     last_login TIMESTAMP
   );
 
-CREATE TABLE
-  IF NOT EXISTS call_waiter_alert (
-    id SERIAL PRIMARY KEY,
-    table_number INT NOT NULL CHECK (table_number > 0),
-    customer_name TEXT NOT NULL,
-    message TEXT NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW (),
-    handled BOOLEAN NOT NULL DEFAULT FALSE
-  );
-
 -- =========================
 -- LINK STAFF TO LOGIN 
 -- =========================
