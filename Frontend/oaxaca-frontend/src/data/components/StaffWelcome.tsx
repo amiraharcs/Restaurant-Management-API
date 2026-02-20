@@ -15,7 +15,7 @@ export default function StaffWelcome() {
   const stateUsername = typeof state?.username === "string" ? state.username.trim() : "";
 
   const [displayName, setDisplayName] = useState(
-    () => stateUsername || getLoggedInStaffUsername() || "John Doe",
+    () => stateUsername || getLoggedInStaffUsername() || "Unknown Staff",
   );
 
   useEffect(() => {
