@@ -143,3 +143,54 @@ ADD COLUMN IF NOT EXISTS user_id INT UNIQUE REFERENCES app_user (user_id) ON DEL
 
 ALTER TABLE kitchen_staff
 ADD COLUMN IF NOT EXISTS user_id INT UNIQUE REFERENCES app_user (user_id) ON DELETE SET NULL;
+
+-- Add missing description
+ALTER TABLE menu_item
+ADD COLUMN IF NOT EXISTS description TEXT;
+
+
+-- Change price to decimal
+ALTER TABLE menu_item
+ALTER COLUMN price TYPE NUMERIC(10,2);
+
+-- get rid of prev ingredients table
+ALTER TABLE menu_item
+DROP COLUMN IF EXISTS ingredients;
+
+-- =========================
+-- New ingredients table 
+-- =========================
+
+CREATE TABLE IF NOT EXISTS ingredient (
+  ingredient_id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS menu_item_ingredient (
+  item_id INT NOT NULL REFERENCES menu_item(item_id) ON DELETE CASCADE,
+  ingredient_id INT NOT NULL REFERENCES ingredient(ingredient_id) ON DELETE CASCADE,
+  PRIMARY KEY (item_id, ingredient_id)
+);
+
+-- =========================
+-- diet filters
+-- =========================
+
+CREATE TABLE IF NOT EXISTS dietary_filter (
+  filter_id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS menu_item_filter (
+  item_id INT NOT NULL REFERENCES menu_item(item_id) ON DELETE CASCADE,
+  filter_id INT NOT NULL REFERENCES dietary_filter(filter_id) ON DELETE CASCADE,
+  PRIMARY KEY (item_id, filter_id)
+);
+
+-- Remove old boolean columns
+ALTER TABLE menu_item
+DROP COLUMN IF EXISTS is_vegetarian;
+
+ALTER TABLE menu_item
+DROP COLUMN IF EXISTS is_halal;
+
