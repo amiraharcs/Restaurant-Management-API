@@ -53,9 +53,6 @@ public class LoginAuthController {
     UserDetails user = (UserDetails) authentication.getPrincipal();
 
     String role = user.getAuthorities().iterator().next().getAuthority();
-    if (role.startsWith("ROLE_")) {
-      role = role.substring("ROLE_".length());
-    }
 
     return ResponseEntity.ok(new LoginResponse(user.getUsername(), role));
   }
