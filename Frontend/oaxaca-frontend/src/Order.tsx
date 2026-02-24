@@ -4,6 +4,7 @@ import { FaLock } from "react-icons/fa";
 import NavBar from "./data/components/NavBar";
 import { useState } from "react";
 import Footer from "./data/components/Footer";
+import { placeOrder } from "./api/orderApi";
 
 export default function Order() {
   const location = useLocation();
@@ -12,6 +13,7 @@ export default function Order() {
   const navigate = useNavigate();
 
   type MenuItem = {
+    id?: number;
     name: string;
     description: string;
     price: number;
@@ -21,6 +23,7 @@ export default function Order() {
     allergens: string[];
     filters: string[];
     image: string;
+    itemType?: string;
   };
 
   type BasketItem = {
@@ -36,9 +39,25 @@ export default function Order() {
     0,
   );
 
-  function submitOrder() {
-    showConfirmedOrder(true);
-  }
+async function submitOrder(formData: FormData) {
+    const name = formData.get("name");
+    const phoneNumber = formData.get("phoneNumber");
+    const tableNumberRaw = formData.get("tableNumber");
+
+    console.log(basket)
+
+    const items = basket.map( (item: BasketItem) => ({
+      menuItemId: item.item.id, quantity: item.quantity
+    }))
+
+    try {
+      await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
+      showConfirmedOrder(true)
+    } catch(e: any) {
+      console.error(e)
+    }
+    
+}
 
   return (
     <div className="order">
@@ -55,7 +74,9 @@ export default function Order() {
             className="order_form"
             onSubmit={(e) => {
               e.preventDefault();
-              submitOrder();
+              const formData = new FormData(e.currentTarget);
+              submitOrder(formData);
+
             }}
           >
             <div className="inputWrap">

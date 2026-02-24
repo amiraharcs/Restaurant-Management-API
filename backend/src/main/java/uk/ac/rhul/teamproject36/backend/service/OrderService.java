@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
+import uk.ac.rhul.teamproject36.backend.order.Customer;
 import uk.ac.rhul.teamproject36.backend.order.CustomerOrder;
 import uk.ac.rhul.teamproject36.backend.order.OrderItem;
 import uk.ac.rhul.teamproject36.backend.order.OrderStatus;
+import uk.ac.rhul.teamproject36.backend.repository.CustomerRepository;
 import uk.ac.rhul.teamproject36.backend.repository.MenuItemRepository;
 import uk.ac.rhul.teamproject36.backend.repository.OrderRepository;
 
@@ -16,13 +18,15 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final MenuItemRepository menuItemRepository;
+    private final CustomerRepository customerRepository;
 
-    public OrderService(OrderRepository orderRepository, MenuItemRepository menuItemRepository) {
+    public OrderService(OrderRepository orderRepository, MenuItemRepository menuItemRepository, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
         this.menuItemRepository = menuItemRepository;
+        this.customerRepository = customerRepository;
     }
 
-    public record CreateOrderRequest(List<CreateOrderItem> items) {}
+    public record CreateOrderRequest(String name, String phoneNumber, Integer tableNumber, List<CreateOrderItem> items) {}
     public record CreateOrderItem(Long menuItemId, Integer quantity) {}
     public record CreateOrderResponse(Long orderId, OrderStatus status) {}
 
@@ -32,8 +36,15 @@ public class OrderService {
             throw new BadRequestException("items must not be empty");
         }
 
+        Customer newCustomer = new Customer();
+        newCustomer.setName(request.name());
+        newCustomer.setPhoneNumber(request.phoneNumber());
+        customerRepository.save(newCustomer);
+
         CustomerOrder order = new CustomerOrder();
+        order.setCustomer(newCustomer);
         order.setStatus(OrderStatus.PLACED);
+
 
         for (CreateOrderItem itemReq : request.items()) {
             if (itemReq == null || itemReq.menuItemId() == null) {
