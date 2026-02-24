@@ -8,6 +8,7 @@ import { LuChevronRight } from 'react-icons/lu';
 import OrderDetails from './data/components/showOrderDetails';
 import StaffFooter from "./data/components/StaffFooter";
 import StaffWelcome from "./data/components/StaffWelcome";
+import { confirmOrder, getOrder } from './api/waiterApi.ts';
 
 type status = "new" | "preparing" | "ready";
 type Order = {

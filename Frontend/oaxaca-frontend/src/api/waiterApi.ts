@@ -17,8 +17,8 @@ export async function confirmOrder(id : number) {
     if (!res.ok) throw new Error(`Confirm order failed: ${res.status}`);
 }
 
-export async function getOrders(): Promise<OrderResponse[]> {
-    const res = await fetch(`${API_BASE}/api/orders/`);
+export async function getOrder(id : number): Promise<OrderResponse[]> {
+    const res = await fetch(`${API_BASE}/api/orders/${id}`);
 
     if (!res.ok) throw new Error(`Confirm order failed: ${res.status}`);
     return res.json();
