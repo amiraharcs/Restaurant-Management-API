@@ -11,6 +11,7 @@ import NavBar from "./data/components/NavBar";
 import Basket from './data/components/Basket';
 import HelpWidget from "./data/components/Help_widget";
 import Footer from "./data/components/Footer";
+import { fetchMenu } from './api/menuApi';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
@@ -49,35 +50,25 @@ export default function Menu() {
     const [error, setError] = useState<string>("");
 
     useEffect(() => {
-        async function load() {
-            try {
-                setLoading(true);
-                setError("");
+        async function loadMenu() {
+        try {
+            setLoading(true);
+            setError("");
 
-                const res = await fetch(`${API_BASE}/api/menu`);
-                if (!res.ok) {
-                    throw new Error(`Menu fetch failed: ${res.status}`);
-                }
-
-                const data = await res.json() as Record<string, MenuItemType[]>;
-
-                const mapped: MenuData = {
-                    main: data.FOOD ?? [],
-                    dessert: data.DESSERT ?? [],
-                    drinks: data.DRINK ?? []
-                };
-
-                console.log(mapped);
-
-                setProducts(mapped);
-            } catch (e: any) {
-                setError(e?.message ?? "Failed to load menu");
-            } finally {
-                setLoading(false);
+            const data = await fetchMenu()
+            const mapped: MenuData = {
+                main: data.FOOD ?? [],
+                dessert: data.DESSERT ?? [],
+                drinks: data.DRINK ?? []
             }
+            setProducts(mapped)
+        } catch (e: any) {
+            setError(e?.message ?? "Failed to load menu")
+        } finally {
+            setLoading(false)
         }
-
-        load();
+    }
+    loadMenu()
     }, []);
 
     const [selectedAllergen, setSelectedAllergen] = useState<string>("");
