@@ -39,6 +39,7 @@ public class SecurityConfig {
         auth -> auth
       .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+        .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
         .requestMatchers("/api/alerts/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/menu").permitAll()
         .requestMatchers(HttpMethod.PATCH, "/api/menu/*/availability")

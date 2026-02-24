@@ -14,6 +14,10 @@ public class CustomerOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)  // This matches the foreign key
+    private Customer customer;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status = OrderStatus.PLACED;
@@ -27,6 +31,14 @@ public class CustomerOrder {
     public CustomerOrder() {}
 
     public Long getId() { return id; }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     public OrderStatus getStatus() { return status; }
     public void setStatus(OrderStatus status) { this.status = status; }
