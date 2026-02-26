@@ -16,6 +16,7 @@ build:
 
 test:
   stage: test
+  image: maven:3.9.9-eclipse-temurin-17
   services:
     - name: postgres:16
       alias: db
@@ -31,6 +32,7 @@ test:
 
 jacoco:
   stage: jacoco
+  image: maven:3.9.9-eclipse-temurin-17
   services:
     - name: postgres:16
       alias: db
