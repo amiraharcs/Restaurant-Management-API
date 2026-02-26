@@ -1,15 +1,21 @@
 stages:
-  - test
   - build
+  - test
+  - jacoco
+  - checkstyle
+  - spotbugs
 
 cache:
-  key: maven-cache
   paths:
     - .m2/repository
 
-backend:test:
+build:
+  stage: build
+  script:
+    - (cd backend && mvn compile)
+
+test:
   stage: test
-  image: maven:3.9.9-eclipse-temurin-17
   services:
     - name: postgres:16
       alias: db
@@ -17,24 +23,33 @@ backend:test:
     POSTGRES_DB: oaxaca
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres
-
     DB_URL: jdbc:postgresql://db:5432/oaxaca
     DB_USER: postgres
     DB_PASS: postgres
-  before_script:
-    - cd backend
   script:
-    - ./mvnw test
+    - (cd backend && mvn test)
 
-backend:build:
-  stage: build
-  image: maven:3.9.9-eclipse-temurin-17
-  before_script:
-    - cd backend
+jacoco:
+  stage: jacoco
+  services:
+    - name: postgres:16
+      alias: db
+  variables:
+    POSTGRES_DB: oaxaca
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    DB_URL: jdbc:postgresql://db:5432/oaxaca
+    DB_USER: postgres
+    DB_PASS: postgres
   script:
-    - ./mvnw package -DskipTests
-  artifacts:
-    paths:
-      - backend/target/*.jar
-    expire_in: 7 days
+    - (cd backend && mvn verify)
 
+checkstyle:
+  stage: checkstyle
+  script:
+    - (cd backend && mvn checkstyle:check)
+
+spotbugs:
+  stage: spotbugs
+  script:
+    - (cd backend && mvn spotbugs:check)
