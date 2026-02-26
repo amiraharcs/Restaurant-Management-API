@@ -9,6 +9,9 @@ cache:
   paths:
     - .m2/repository
 
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
 build:
   stage: build
   script:
@@ -16,31 +19,11 @@ build:
 
 test:
   stage: test
-  services:
-    - name: postgres:16
-      alias: db
-  variables:
-    POSTGRES_DB: oaxaca
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres
-    DB_URL: jdbc:postgresql://db:5432/oaxaca
-    DB_USER: postgres
-    DB_PASS: postgres
   script:
     - (cd backend && mvn test)
 
 jacoco:
   stage: jacoco
-  services:
-    - name: postgres:16
-      alias: db
-  variables:
-    POSTGRES_DB: oaxaca
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres
-    DB_URL: jdbc:postgresql://db:5432/oaxaca
-    DB_USER: postgres
-    DB_PASS: postgres
   script:
     - (cd backend && mvn verify)
 
