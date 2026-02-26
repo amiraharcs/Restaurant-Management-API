@@ -16,33 +16,11 @@ build:
 
 test:
   stage: test
-  image: maven:3.9.9-eclipse-temurin-17
-  services:
-    - name: postgres:16
-      alias: db
-  variables:
-    POSTGRES_DB: oaxaca
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres
-    DB_URL: jdbc:postgresql://db:5432/oaxaca
-    DB_USER: postgres
-    DB_PASS: postgres
   script:
     - (cd backend && mvn test)
 
 jacoco:
   stage: jacoco
-  image: maven:3.9.9-eclipse-temurin-17
-  services:
-    - name: postgres:16
-      alias: db
-  variables:
-    POSTGRES_DB: oaxaca
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres
-    DB_URL: jdbc:postgresql://db:5432/oaxaca
-    DB_USER: postgres
-    DB_PASS: postgres
   script:
     - (cd backend && mvn verify)
 
