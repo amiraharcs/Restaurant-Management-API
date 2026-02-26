@@ -1,0 +1,113 @@
+.trackOrderPage {
+    min-height: calc(90vh - 72px);
+    background-color: #e7e7e7;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 16px 64px;
+}
+
+.panel {
+    width: min(1100px, 100%);
+    background: #3f987f;
+    border-radius: 0 0 26px 26px;
+    position: relative;
+    overflow: hidden;
+    padding: 64px 18px 90px;
+}
+
+.panel::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -180px;
+    width: min(980px, 92%);
+    height: 480px;
+    background: #3f987f;
+    border-radius: 999px;
+}
+
+.innerPanel {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    gap: 26px;
+}
+
+.trackOrderTitle {
+    margin: 0;
+    color: white;
+    font-weight: 800;
+    line-height: 0.7;
+    font-size: clamp(34px, 4vw, 56px);
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.trackOrderForm {
+    margin-top: 25px;
+    background: white;
+    padding: 3%;
+    display: grid;
+    gap: 10px;
+    width: 40%;
+    max-width: 92vw;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.3);
+}
+
+.trackOrderLabel {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2b2b2b;
+}
+
+.trackOrderInput {
+    height: 34px;
+    border-radius: 6px;
+    border: 1px solid #d7d7d7;
+    padding: 0 14px;
+    outline: none;
+    font-size: 14px;
+    cursor: text;
+}
+
+.trackOrderInput:focus {
+    border-color: rgba(63, 152, 127, 0.9);
+    box-shadow: 0 0 0 4px rgba(63, 152, 127, 0.18);
+}
+
+.trackOrderButton {
+    height: 34px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    margin-top: 4px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    background-color: #0b6b4f;
+}
+
+.trackOrderButton:hover{
+    filter: brightness(1.02);
+    transform: translateY(-1px);
+    background-color: orange;
+}
+
+.trackOrderButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #0b6b4f;
+    transform: none;
+}
+
+.trackOrderHint {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: #6b6b6b;
+    justify-self: center;
+}
