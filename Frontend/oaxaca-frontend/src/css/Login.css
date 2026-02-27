@@ -5,10 +5,12 @@
     padding: 4%;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.3);
+    background-color: white;
 }
 
 .loginPage {
     max-height: calc(100vh - 80px);
+    background-color: #e7e7e7;
     place-items: center;
     padding: 12.5%;
     padding-top: 220px;

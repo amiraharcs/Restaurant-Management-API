@@ -10,7 +10,7 @@ import StaffFooter from "./data/components/StaffFooter";
 import StaffWelcome from "./data/components/StaffWelcome";
 import { confirmOrder, getOrder } from './api/waiterApi.ts';
 
-type status = "new" | "preparing" | "ready";
+type status = "received" | "confirmed" | "preparing" | "ready" | "served";
 type Order = {
     orderId: string;
     customerName: string;
@@ -51,7 +51,7 @@ function calculatePlacedAt(ms : number) {
 }
 
 export default function Waiter() {
-    const [activeTab, setActiveTab] = useState<status>("new");
+    const [activeTab, setActiveTab] = useState<status>("received");
 
     // dummy data from waiter.json
     const orders = (orderData as { orders: Order[]}).orders;
@@ -63,9 +63,11 @@ export default function Waiter() {
 
     function calculateTabs() {
         const count = {
-            new: 0,
+            received: 0,
+            confirmed: 0,
             preparing: 0,
-            ready: 0
+            ready: 0,
+            served: 0
         };
         for ( const s of orders ) {
             count[s.status] += 1;
@@ -98,8 +100,8 @@ export default function Waiter() {
 
                 <div className='orderContainer'>
                     <div className='orderTabs'>
-                        <button className={`orderTab ${activeTab === "new" ? "active" : ""}`} onClick={() => setActiveTab("new")}>
-                            New ({calculateTabs().new})
+                        <button className={`orderTab ${activeTab === "received" ? "active" : ""}`} onClick={() => setActiveTab("received")}>
+                            New ({calculateTabs().received})
                         </button>
 
                         <button className={`orderTab ${activeTab === "preparing" ? "active" : ""}`} onClick={() => setActiveTab("preparing")}>
