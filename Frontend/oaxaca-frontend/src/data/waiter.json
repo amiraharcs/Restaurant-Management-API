@@ -4,7 +4,7 @@
       "orderId": "003",
       "customerName": "Jason Statham",
       "tableNo": 5,
-      "status": "new",
+      "status": "received",
       "placedAt": "2026-02-13T15:10:00.000Z",
       "items": [
         { "name": "Spaghetti Bolognese", "qty": 2 },
@@ -16,7 +16,7 @@
       "orderId": "004",
       "customerName": "Dwayne Johnson",
       "tableNo": 5,
-      "status": "new",
+      "status": "received",
       "placedAt": "2026-02-13T15:12:30.000Z",
       "items": [
         { "name": "Chicken Alfredo Pasta", "qty": 2 },
@@ -62,7 +62,7 @@
       "orderId": "006",
       "customerName": "Drizzy Drake",
       "tableNo": 3,
-      "status": "new",
+      "status": "received",
       "placedAt": "2026-02-13T15:13:05.000Z",
       "items": [
         { "name": "Chocolate Brownie", "qty": 1 },
@@ -85,7 +85,7 @@
       "orderId": "009",
       "customerName": "Emma Watson",
       "tableNo": 9,
-      "status": "new",
+      "status": "received",
       "placedAt": "2026-02-13T15:31:15.000Z",
       "items": [
         { "name": "Chicken Alfredo Pasta", "qty": 2 },
@@ -96,7 +96,7 @@
       "orderId": "011",
       "customerName": "Future",
       "tableNo": 10,
-      "status": "new",
+      "status": "received",
       "placedAt": "2026-02-13T19:31:15.000Z",
       "items": [
         { "name": "Chicken Alfredo Pasta", "qty": 2 },
@@ -133,7 +133,7 @@
       "orderId": "015",
       "customerName": "Ishowspeed",
       "tableNo": 2,
-      "status": "new",
+      "status": "received",
       "placedAt": "2026-02-24T16:03:02.000Z",
       "items": [
         { "name": "Spaghetti Bolognese", "qty": 2 },
@@ -147,11 +147,33 @@
       "orderId": "016",
       "customerName": "Kevin Hart",
       "tableNo": 2,
-      "status": "new",
+      "status": "received",
       "placedAt": "2026-02-23T19:59:02.000Z",
       "items": [
         { "name": "Spaghetti Bolognese", "qty": 1 },
         { "name": "Chicken Alfredo Pasta", "qty": 2 },
+        { "name": "Sparkling Water", "qty": 1 }
+      ]
+    },
+    {
+      "orderId": "017",
+      "customerName": "Kanye West",
+      "tableNo": 8,
+      "status": "served",
+      "placedAt": "2026-02-26T19:59:02.000Z",
+      "items": [
+        { "name": "Spaghetti Bolognese", "qty": 1 },
+        { "name": "Sparkling Water", "qty": 1 }
+      ]
+    },
+    {
+      "orderId": "019",
+      "customerName": "Kim K",
+      "tableNo": 8,
+      "status": "confirmed",
+      "placedAt": "2026-02-26T19:59:02.000Z",
+      "items": [
+        { "name": "Spaghetti Bolognese", "qty": 1 },
         { "name": "Sparkling Water", "qty": 1 }
       ]
     }
