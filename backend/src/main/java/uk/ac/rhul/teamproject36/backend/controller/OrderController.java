@@ -10,18 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.rhul.teamproject36.backend.service.MenuDataSeeder;
 import uk.ac.rhul.teamproject36.backend.service.OrderService;
 import uk.ac.rhul.teamproject36.backend.service.OrderService.OrderDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api")
 public class OrderController {
 
     private final OrderService orderService;
-    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
@@ -30,7 +26,6 @@ public class OrderController {
     @PostMapping("/orders")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderService.CreateOrderResponse createOrder(@RequestBody OrderService.CreateOrderRequest request) {
-        log.info("Received order request: {}", request);
         return orderService.createOrder(request);
     }
 
@@ -39,17 +34,11 @@ public class OrderController {
       return orderService.getOrder(id);
     }
 
-    /**
-     * Confirms a customer order (waiter action). Changes PLACED → CONFIRMED.
-     */
     @PatchMapping("/orders/{id}/confirm")
     public OrderDto confirmOrder(@PathVariable Long id) {
       return orderService.confirmOrder(id);
     }
 
-    /**
-     * Accepts a customer order (kitchen action). Changes PLACED → PREPARING.
-     */
     @PatchMapping("/orders/{id}/accept")
     public OrderDto acceptOrder(@PathVariable Long id) {
       return orderService.acceptOrder(id);
