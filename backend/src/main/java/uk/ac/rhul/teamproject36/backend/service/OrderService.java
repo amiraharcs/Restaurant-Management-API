@@ -155,5 +155,16 @@ public class OrderService {
       return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
     }
 
+    @Transactional(readOnly = true)
+    public List<OrderDto> getAllOrders() {
+      List<CustomerOrder> orders = orderRepository.findAll();
+      List<OrderDto> result = new ArrayList<>();
+      for (CustomerOrder order : orders) {
+        result.add(toOrderDto(order));
+      }
+      return result;
+    }
+
+
 }
 

@@ -1,5 +1,6 @@
 package uk.ac.rhul.teamproject36.backend.controller;
 
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,11 @@ public class OrderController {
     @GetMapping("/orders/{id}")
     public OrderService.OrderDto getOrder(@PathVariable Long id) {
       return orderService.getOrder(id);
+    }
+
+    @GetMapping("/orders")
+    public List<OrderDto> getAllOrders() {
+      return orderService.getAllOrders();
     }
 
     @PatchMapping("/orders/{id}/confirm")
