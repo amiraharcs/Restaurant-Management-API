@@ -102,8 +102,7 @@ export default function ManageMenu() {
                             <div className='manage_menu_items_div'>
                                 {items.map((item) =>
                                     item.isAvailable && (
-                                        <div key={item.id ?? item.name} className='manage_menu_item'
-                                        onClick={() => { setShowItem(true); setSelectedItem(item); }}>
+                                        <div key={item.id ?? item.name} className='manage_menu_item'>
                                             <img className='manage_menu_item_image' src={item.image} alt={item.name} />
                                             <div className='manage_menu_item_text'>
                                                 <div className='manage_menu_item_title'>
@@ -136,7 +135,9 @@ export default function ManageMenu() {
                                                 </div>
           
                                                 <div className='manage_menu_item_add'>
-                                                    <p className='manage_menu_item_add_add'>Edit</p>
+                                                    <p className='manage_menu_item_add_add'
+                                                    onClick={() => { setShowItem(true); setSelectedItem(item); }}
+                                                >Edit</p>
           
                                                 </div>
                                             </div>
