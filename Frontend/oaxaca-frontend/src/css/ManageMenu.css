@@ -1,22 +1,194 @@
-.manageMenuPage {
-  padding: 7% 15%;
-  background: #e7e7e7;
-  min-height: 80vh;
+.manage_menu_page {
+  background-color: #e7e7e7e7;
+  padding: 100px;
 }
 
-.manageMenuTitle {
+.manage_menu {
+  background-color: #ffffff;
+  border-radius: 2rem;
+  margin-top: 0.8rem;
+}
+
+.manage_menu_header {
+  margin-bottom: 1.5rem;
+}
+
+.manage_menu_header_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0rem 1rem 0rem 1rem;
+}
+
+.manage_menu_page_title {
+  font-size: 2.2rem;
+  color: #d41445;
+  font-weight: bold;
+  letter-spacing: 1px;
   margin: 0;
-  font-size: 2rem;
 }
 
-.manageMenuPlaceholder {
-  margin: 12px 0 0;
-  color: #374151;
+.manage_menu_actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 2rem 0rem 2rem 0rem;
+}
+
+.manage_menu_btn {
+  padding: 18px 34px;
   font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-@media (max-width: 900px) {
-  .manageMenuPage {
-    padding: 110px 16px 20px;
-  }
+.add_btn {
+  background-color: #1f8f3a;
+  color: white;
+}
+
+.add_btn:hover {
+  background-color: #166e2c;
+}
+
+.delete_btn {
+  background-color: #d41445;
+  color: white;
+}
+
+.delete_btn:hover {
+  background-color: #a30f35;
+}
+
+.manage_menu_page_title_br {
+    margin-bottom: 2rem;
+}
+
+.manage_menu_layout {
+}
+
+.manage_menu_content {
+}
+
+.category_title {
+    text-transform: capitalize;
+    font-size: 2rem;
+    margin-bottom: 0.6rem;
+}
+
+.manage_menu_items_div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.manage_menu_item {
+    width: 240px;
+    border: 0.1rem solid gainsboro;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.manage_menu_item_title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.manage_menu_item_filters {
+    display: flex;
+    align-items: center;
+    color: #0b6b4f;
+    gap: 0.4rem;
+}
+
+.manage_meatIcon {
+    font-size: 22px;
+}
+
+.manage_menu_item_text {
+  padding: 0.7rem 0.7rem 0.7rem;
+}
+
+.manage_menu_item_text h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.manage_menu_item_calories {
+    margin-top: 0.3rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+    font-size: 0.78rem;
+    align-items: center;
+}
+
+.calorie_icon {
+    color: #0b6b4f;
+}
+
+.calorie_text {
+    color: rgb(72, 68, 68);
+}
+
+.manage_menu_item_calories_price {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
+.manage_menu_item_add {
+    margin-top: 0.8rem;
+    width: 100%;
+    border-radius: 0.3rem;
+    border: none;
+    overflow: hidden;
+    background-color: #0b6b4f;
+    color: #ffffff;
+    padding: 0.25rem 0;
+    font-weight: 600;;
+}
+
+.manage_menu_item_add_add {
+    padding: 0 0 0 0.7rem;
+}
+
+.manage_menu_item_price {
+  font-weight: 600;
+}
+
+.manage_menu_item_add:hover {
+    background-color: orange;
+}
+
+
+.manage_menu_item:hover {
+    border-color: #0b6b4f;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.manage_menu_item_image {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+}
+
+/******Edit Menu********/
+
+.edit_item_content {
+
 }
