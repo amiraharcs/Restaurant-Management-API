@@ -12,6 +12,8 @@ import { FaLeaf } from "react-icons/fa";
 import { GiMeat } from "react-icons/gi";
 import StaffWelcome from "./data/components/StaffWelcome.tsx";
 import EditItem from "./data/components/EditItem.tsx";
+import { useNavigate } from "react-router-dom";
+
 
 
 export default function ManageMenu() {
@@ -66,6 +68,8 @@ export default function ManageMenu() {
       loadMenu()
       }, []);
 
+      const navigate = useNavigate();
+
   return (
     <main className="">
       <NavBarWaiter notificationCount={totalNotifications} />
@@ -102,7 +106,9 @@ export default function ManageMenu() {
                             <div className='manage_menu_items_div'>
                                 {items.map((item) =>
                                     item.isAvailable && (
-                                        <div key={item.id ?? item.name} className='manage_menu_item'>
+                                        <div key={item.id ?? item.name} className='manage_menu_item'
+                                        onClick={() => navigate(`/manage-menu/${item.id}`)}
+                                        >
                                             <img className='manage_menu_item_image' src={item.image} alt={item.name} />
                                             <div className='manage_menu_item_text'>
                                                 <div className='manage_menu_item_title'>
