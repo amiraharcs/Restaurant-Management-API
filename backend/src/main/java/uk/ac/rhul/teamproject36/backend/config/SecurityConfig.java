@@ -36,16 +36,15 @@ public class SecurityConfig {
       .cors(Customizer.withDefaults())
       .csrf(csrf -> csrf.disable())
       .authorizeHttpRequests(
-        auth -> auth
-      .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-        .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
-        .requestMatchers("/api/alerts/**").permitAll()
-        .requestMatchers(HttpMethod.GET, "/api/menu").permitAll()
-        .requestMatchers(HttpMethod.PATCH, "/api/menu/*/availability")
-        .hasAnyRole("WAITER", "KITCHEN")
-        .anyRequest()
-        .authenticated());
+            auth -> auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/orders/**").permitAll()
+                .requestMatchers(HttpMethod.PATCH, "/api/orders/**").permitAll()
+                .requestMatchers("/api/alerts/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/menu").permitAll()
+                .requestMatchers(HttpMethod.PATCH, "/api/menu/*/availability")
+                .hasAnyRole("WAITER", "KITCHEN").anyRequest().authenticated());
     return http.build();
   }
 
