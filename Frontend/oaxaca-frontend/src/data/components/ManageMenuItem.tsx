@@ -116,7 +116,7 @@ export default function ManageMenuItem() {
 
     {showDeleteConfirm && (
     <div className="confirm_delete_main">
-        <div className="confirm_delete_main_backdrop"></div>
+        <div className="confirm_delete_main_backdrop" onClick={() => {setShowDeleteConfirm(false)}}></div>
         <div className="confirm_delete_main_content">
             <button
                 className="confirm_delete_main_close"
