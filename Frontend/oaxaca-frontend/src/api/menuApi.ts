@@ -22,12 +22,3 @@ export async function fetchMenu(): Promise<MenuGrouped> {
   return res.json();
 }
 
-export async function fetchMenuItemById(id: number): Promise<MenuItemDto> {
-  const res = await fetch(`${API_BASE}/api/menu/menuItem/${id}`);
-
-  if (!res.ok) {
-    throw new Error(`Menu item fetch failed: ${res.status}`);
-  }
-
-  return res.json();
-}

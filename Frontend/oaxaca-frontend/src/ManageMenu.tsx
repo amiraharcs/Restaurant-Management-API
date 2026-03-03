@@ -141,9 +141,7 @@ export default function ManageMenu() {
                                                 </div>
           
                                                 <div className='manage_menu_item_add'>
-                                                    <p className='manage_menu_item_add_add'
-                                                    onClick={() => { setShowItem(true); setSelectedItem(item); }}
-                                                >Edit</p>
+                                                    <p className='manage_menu_item_add_add'>View</p>
           
                                                 </div>
                                             </div>
@@ -156,11 +154,6 @@ export default function ManageMenu() {
             </div>
           </div>
         </div>
-
-        {showItem && <EditItem item={selectedItem} onClose={() => {
-                        setShowItem(false)
-                        setSelectedItem({})
-                    }} />}
 
       <StaffFooter />
     </main>

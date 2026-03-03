@@ -1,14 +1,30 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchMenuItemById } from "../../api/menuApi";
+import { deleteMenuItem, fetchMenuItemById } from "../../api/waiterApi";
 import NavBarWaiter from "./NavBarWaiter";
 import StaffFooter from "./StaffFooter";
 import { SiTicktick } from "react-icons/si";
 import { RxCrossCircled } from "react-icons/rx";
+import EditItem from "./EditItem";
 
 export default function ManageMenuItem() {
+    const navigate = useNavigate();
+
   const { id } = useParams();
   const [item, setItem] = useState<any>(null);
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const handleConfirmDelete = async () => {
+    try {
+        await deleteMenuItem(item.id);
+        setShowDeleteConfirm(false);
+        navigate("/manage-menu");
+    } catch (error) {
+        console.log("failed to delete")
+        setShowDeleteConfirm(false);
+    }
+};
 
   useEffect(() => {
     async function loadItem() {
@@ -19,6 +35,9 @@ export default function ManageMenuItem() {
     loadItem();
     
   }, [id]);
+
+    const [showItem, setShowItem] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<any>({});
 
   if (!item) return <p>Loading...</p>;
 
@@ -81,13 +100,49 @@ export default function ManageMenuItem() {
                 <p className="manage_item_price">£{Number(item.price).toFixed(2)}</p>
             </div>
             <div className="manage_item_buttons">
-                <button className="btn btn_edit">Edit</button>
-                <button className="btn btn_delete">Delete</button>
+                <button className="btn btn_edit" onClick={() => { setShowItem(true); setSelectedItem(item); }}>Edit</button>
+                <button className="btn btn_delete" onClick={() => {setShowDeleteConfirm(true)}}>Delete</button>
             </div>
       </div>
     </div>
 
     <StaffFooter />
+
+    {showItem && <EditItem item={selectedItem} onClose={() => {
+                setShowItem(false)
+                setSelectedItem({})
+            }} />}
+
+    {showDeleteConfirm && (
+    <div className="confirm_delete_main">
+        <div className="confirm_delete_main_backdrop"></div>
+        <div className="confirm_delete_main_content">
+            <button
+                className="confirm_delete_main_close"
+                onClick={() => {setShowDeleteConfirm(false)}}
+            >
+                x
+            </button>
+            <h3 className="confirm_delete_main_title">Confirm Delete</h3>
+            <p>Are you sure you want to delete this item?</p>
+            <p className="delete-warning">This action cannot be undone.</p>
+            <div className="confirm_delete_buttons">
+                <button 
+                    className="btn_cancel"
+                    onClick={() => {setShowDeleteConfirm(false)}}
+                >
+                    Cancel
+                </button>
+                <button 
+                    className="btn_delete_confirm"
+                    onClick={handleConfirmDelete}
+                >
+                    Yes, Delete
+                </button>
+            </div>
+        </div>
+    </div>
+)}
   </div>
   );
 }
