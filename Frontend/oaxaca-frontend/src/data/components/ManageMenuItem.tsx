@@ -15,14 +15,15 @@ export default function ManageMenuItem() {
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
+  const [error, setError] = useState<string | null>(null);
+
   const handleConfirmDelete = async () => {
     try {
         await deleteMenuItem(item.id);
         setShowDeleteConfirm(false);
         navigate("/manage-menu");
-    } catch (error) {
-        console.log("failed to delete")
-        setShowDeleteConfirm(false);
+    } catch (error : any) {
+        setError(error.message || "Failed to delete item. Please try again.");
     }
 };
 
@@ -140,6 +141,11 @@ export default function ManageMenuItem() {
                     Yes, Delete
                 </button>
             </div>
+            {error && (
+                <div className="error_box">
+                    <p className="error_box_title" style={{ fontSize: "1rem"}}>There was an error in deleting the item: {error}</p>
+                </div>
+            )}
         </div>
     </div>
 )}

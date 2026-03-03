@@ -13,6 +13,7 @@ import { GiMeat } from "react-icons/gi";
 import StaffWelcome from "./data/components/StaffWelcome.tsx";
 import EditItem from "./data/components/EditItem.tsx";
 import { useNavigate } from "react-router-dom";
+import AddItem from "./data/components/AddItem.tsx";
 
 
 
@@ -24,6 +25,8 @@ export default function ManageMenu() {
 
       const [showItem, setShowItem] = useState(false);
       const [selectedItem, setSelectedItem] = useState<any>({});
+
+      const [showAddItem, setShowAddItem] = useState(false)
   
       type MenuItemType = {
           id?: number;
@@ -81,13 +84,10 @@ export default function ManageMenu() {
               <div className="manage_menu_header_row">
                 <h1 className="manage_menu_page_title">Manage Menu</h1>
 
-                <div className="manage_menu_actions">
-                  <button className="manage_menu_btn add_btn">
+                <div className="manage_menu_action">
+                  <button className="manage_menu_btn add_btn"
+                  onClick={() => setShowAddItem(true)}>
                     Add Item
-                  </button>
-
-                  <button className="manage_menu_btn delete_btn">
-                    Delete Item
                   </button>
                 </div>
               </div>
@@ -154,6 +154,8 @@ export default function ManageMenu() {
             </div>
           </div>
         </div>
+
+        {showAddItem && <AddItem onClose={() => setShowAddItem(false)}/>}
 
       <StaffFooter />
     </main>

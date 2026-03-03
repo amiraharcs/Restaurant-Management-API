@@ -93,9 +93,7 @@ export default function EditItem({item, onClose} : any ) {
         "Vegan",
         ];
 
-        if (!filtersRaw) {
-            validationErrors.filters = "Filters are required (use 'None' if no filters)";
-        } else {
+        if (filtersRaw && filtersRaw.length > 0) {
             const filters = filtersRaw
             .split(",")
             .map((v) => v.trim())
@@ -246,7 +244,6 @@ export default function EditItem({item, onClose} : any ) {
                             type="text"
                             defaultValue={item.allergens}
                             name="allergens"
-                            required
                         />
                         <label className="edit_item_form_label" htmlFor="filters">Dietary Filters</label>
                         <input
@@ -255,7 +252,6 @@ export default function EditItem({item, onClose} : any ) {
                             type="text"
                             defaultValue={item.filters}
                             name="filters"
-                            required
                         />
                         <label className="edit_item_form_label" htmlFor="itemType">Item Type</label>
                         <select name="itemType" id="itemType" defaultValue={item.itemType} className="edit_item_form_select">

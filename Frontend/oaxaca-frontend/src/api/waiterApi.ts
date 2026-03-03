@@ -12,7 +12,7 @@ export type OrderResponse = {
 };
 
 export type MenuItemDto = {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   price: number;
@@ -75,5 +75,21 @@ export async function deleteMenuItem(id: number): Promise<void> {
   if (!res.ok) {
     throw new Error(`Menu item delete failed: ${res.status}`);
   }
+}
+
+export async function addMenuItem(itemData: MenuItemDto): Promise<MenuItemDto> {
+  const res = await fetch(`${API_BASE}/api/menu/menuItem/add`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(itemData),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Menu item add failed: ${res.status}`);
+  }
+
+  return res.json();
 }
 
