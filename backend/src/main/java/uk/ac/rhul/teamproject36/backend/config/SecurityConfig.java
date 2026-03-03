@@ -42,6 +42,7 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
         .requestMatchers("/api/alerts/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/menu").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/menu/**").permitAll()
         .requestMatchers(HttpMethod.PATCH, "/api/menu/*/availability")
         .hasAnyRole("WAITER", "KITCHEN")
         .anyRequest()

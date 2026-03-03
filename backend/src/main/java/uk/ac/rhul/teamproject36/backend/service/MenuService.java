@@ -265,4 +265,10 @@ public final class MenuService {
         item.setAvailable(available);
         menuItemRepository.save(item);
     }
+
+    public MenuItem getMenuItembyId(Long id) {
+        MenuItem item = menuItemRepository.findById(id).orElseThrow(() -> new RuntimeException("customer not found"));
+
+        return item;
+    }
 }
