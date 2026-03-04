@@ -232,7 +232,7 @@ export default function AddItem({ onClose }: any) {
             />
 
             <label className="add_item_form_label" htmlFor="ingredients">
-              Ingredients (comma separated)
+              Ingredients (comma separated if multiple)
             </label>
             <input
               className="add_item_form_input"
@@ -243,7 +243,7 @@ export default function AddItem({ onClose }: any) {
             />
 
             <label className="add_item_form_label" htmlFor="allergens">
-              Allergens
+              Allergens (optional - comma separated if multiple)
             </label>
             <input
               className="add_item_form_input"
@@ -253,7 +253,7 @@ export default function AddItem({ onClose }: any) {
             />
 
             <label className="add_item_form_label" htmlFor="filters">
-              Dietary Filters
+              Dietary Filters (optional - comma separated if multiple)
             </label>
             <input
               className="add_item_form_input"
