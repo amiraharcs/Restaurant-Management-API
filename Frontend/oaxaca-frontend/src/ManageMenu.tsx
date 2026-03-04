@@ -11,9 +11,10 @@ import { SiVega } from "react-icons/si";
 import { FaLeaf } from "react-icons/fa";
 import { GiMeat } from "react-icons/gi";
 import StaffWelcome from "./data/components/StaffWelcome.tsx";
-import EditItem from "./data/components/EditItem.tsx";
 import { useNavigate } from "react-router-dom";
 import AddItem from "./data/components/AddItem.tsx";
+import { SiTicktick } from "react-icons/si";
+import { RxCrossCircled } from "react-icons/rx";
 
 
 
@@ -22,9 +23,6 @@ export default function ManageMenu() {
     mockAlertsData.mockCallWaiterAlerts || [],
     mockAlertsData.mockOrdersReady || [],
   );
-
-      const [showItem, setShowItem] = useState(false);
-      const [selectedItem, setSelectedItem] = useState<any>({});
 
       const [showAddItem, setShowAddItem] = useState(false)
   
@@ -142,7 +140,7 @@ export default function ManageMenu() {
           
                                                 <div className='manage_menu_item_add'>
                                                     <p className='manage_menu_item_add_add'>View</p>
-          
+                                                    {item.isAvailable ? <SiTicktick className="manage_menu_item_icon"/> : <RxCrossCircled />}
                                                 </div>
                                             </div>
                                         </div>)

@@ -82,17 +82,17 @@ export default function ManageMenuItem() {
                 <div className="manage_item_box">
                     <p className="manage_item_allergen_filter_title">Allergens</p>
                     <div className="manage_item_tags">
-                        {item.allergens.map( (allergen: any) => (
+                        {item.allergens && item.allergens.length > 0 ? item.allergens.map( (allergen: any) => (
                             <p key={allergen} className="manage_item_tag">{allergen}</p>
-                        ))}
+                        )) : <p className="manage_item_tag">None</p>}
                     </div>
                 </div>
                 <div className="manage_item_box">
                     <p className="manage_item_allergen_filter_title">Filter</p>
                     <div className="manage_item_tags">
-                        {item.filters.map( (filter: any) => (
+                        {item.filters && item.filters.length > 0 ? item.filters.map( (filter: any) => (
                             <p key={filter} className="manage_item_tag">{filter}</p>
-                        ))}
+                        )) : <p className="manage_item_tag">None</p>}
                     </div>
                 </div>
             </div>
