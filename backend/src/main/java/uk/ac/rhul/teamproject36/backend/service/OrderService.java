@@ -81,7 +81,11 @@ public class OrderService {
     }
     
     public record OrderItemDto(Long menuItemId, String name, Integer quantity) {}
-    public record OrderDto(Long id, OrderStatus status, java.time.Instant createdAt, List<OrderItemDto> items) {}
+
+    public record OrderDto(Long id, OrderStatus status, java.time.Instant createdAt,
+        List<OrderItemDto> items) {
+    }
+
 
     @Transactional(readOnly = true)
     public OrderDto getOrder(Long id) {
@@ -150,5 +154,17 @@ public class OrderService {
       }
       return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
     }
+
+    @Transactional(readOnly = true)
+    public List<OrderDto> getAllOrders() {
+      List<CustomerOrder> orders = orderRepository.findAll();
+      List<OrderDto> result = new ArrayList<>();
+      for (CustomerOrder order : orders) {
+        result.add(toOrderDto(order));
+      }
+      return result;
+    }
+
+
 }
 
