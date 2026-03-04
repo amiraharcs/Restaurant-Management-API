@@ -228,7 +228,7 @@ export default function EditItem({item, onClose} : any ) {
                             name="calories"
                             required
                         />
-                        <label className="edit_item_form_label" htmlFor="ingredients">Ingredients (comma separated)</label>
+                        <label className="edit_item_form_label" htmlFor="ingredients">Ingredients (comma separated if multiple)</label>
                         <input
                             className="edit_item_form_input"
                             id="ingredients"
@@ -237,7 +237,7 @@ export default function EditItem({item, onClose} : any ) {
                             name="ingredients"
                             required
                         />
-                        <label className="edit_item_form_label" htmlFor="allergens">Allergens</label>
+                        <label className="edit_item_form_label" htmlFor="allergens">Allergens (optional - comma separated if multiple)</label>
                         <input
                             className="edit_item_form_input"
                             id="allergens"
@@ -245,7 +245,7 @@ export default function EditItem({item, onClose} : any ) {
                             defaultValue={item.allergens}
                             name="allergens"
                         />
-                        <label className="edit_item_form_label" htmlFor="filters">Dietary Filters</label>
+                        <label className="edit_item_form_label" htmlFor="filters">Dietary Filters (optional - comma separated if multiple)</label>
                         <input
                             className="edit_item_form_input"
                             id="filters"
