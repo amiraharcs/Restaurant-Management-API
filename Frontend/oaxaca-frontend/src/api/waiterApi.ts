@@ -94,7 +94,7 @@ export async function addMenuItem(itemData: MenuItemDto): Promise<MenuItemDto> {
 }
 
 export async function getAllOrders(): Promise<OrderResponse[]> {
-    const res = await fetch(`${API_BASE}/api/orders/`);
+    const res = await fetch(`${API_BASE}/api/orders`);
 
     if (!res.ok) throw new Error(`Confirm order failed: ${res.status}`);
     return res.json();
