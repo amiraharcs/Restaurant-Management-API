@@ -8,17 +8,10 @@ import { LuChevronRight } from 'react-icons/lu';
 import OrderDetails from './data/components/showOrderDetails';
 import StaffFooter from "./data/components/StaffFooter";
 import StaffWelcome from "./data/components/StaffWelcome";
-import { confirmOrder, getOrder } from './api/waiterApi.ts';
+import { getAllOrders } from './api/waiterApi.ts';
+import type { OrderResponse } from './api/waiterApi.ts';
 
-type status = "received" | "confirmed" | "preparing" | "ready" | "served";
-type Order = {
-    orderId: string;
-    customerName: string;
-    tableNo: number;
-    placedAt: string;
-    status: status;
-    items: { name: string; qty: number }[];
-};
+type status = "placed" | "confirmed" | "preparing" | "ready" | "delivered";
 
 function pendingItemsSum(items : { qty: number }[]) {
     let count = 0;
@@ -51,10 +44,29 @@ function calculatePlacedAt(ms : number) {
 }
 
 export default function Waiter() {
-    const [activeTab, setActiveTab] = useState<status>("received");
+    const [activeTab, setActiveTab] = useState<status>("placed");
+    const [orders, setOrders] = useState<OrderResponse[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     // dummy data from waiter.json
-    const orders = (orderData as { orders: Order[]}).orders;
+    //const orders = (orderData as { orders: Order[]}).orders;
+
+    useEffect(() => {
+        async function fetchOrders() {
+            try {
+                setLoading(true);
+                const data = await getAllOrders();
+                setOrders(data);
+            } catch (err) {
+                setError('Failed to fetch orders');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchOrders();
+    }, []);
 
     function filterOrders(tab : status) {
         const activeOrders = orders.filter((order) => order.status === tab);
@@ -63,11 +75,11 @@ export default function Waiter() {
 
     function calculateTabs() {
         const count = {
-            received: 0,
+            placed: 0,
             confirmed: 0,
             preparing: 0,
             ready: 0,
-            served: 0
+            delivered: 0
         };
         for ( const s of orders ) {
             count[s.status] += 1;
@@ -100,8 +112,8 @@ export default function Waiter() {
 
                 <div className='orderContainer'>
                     <div className='orderTabs'>
-                        <button className={`orderTab ${activeTab === "received" ? "active" : ""}`} onClick={() => setActiveTab("received")}>
-                            New ({calculateTabs().received})
+                        <button className={`orderTab ${activeTab === "placed" ? "active" : ""}`} onClick={() => setActiveTab("placed")}>
+                            New ({calculateTabs().placed})
                         </button>
 
                         <button className={`orderTab ${activeTab === "preparing" ? "active" : ""}`} onClick={() => setActiveTab("preparing")}>
