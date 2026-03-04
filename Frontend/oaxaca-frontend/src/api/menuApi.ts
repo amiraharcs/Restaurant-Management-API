@@ -21,3 +21,4 @@ export async function fetchMenu(): Promise<MenuGrouped> {
   if (!res.ok) throw new Error(`Menu fetch failed: ${res.status}`);
   return res.json();
 }
+

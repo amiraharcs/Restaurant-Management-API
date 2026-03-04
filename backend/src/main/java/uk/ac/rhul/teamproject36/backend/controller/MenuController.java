@@ -96,4 +96,12 @@ public final class MenuController {
             return ResponseEntity.notFound().build();
         }
     }
+
+@GetMapping("/menu/menuItem/{id}")
+public ResponseEntity<MenuService.MenuItemDto> getMenuItemById(@PathVariable Long id) {
+
+    MenuService.MenuItemDto item = menuService.getMenuItembyId(id);
+
+    return ResponseEntity.ok(item);
+}
 }

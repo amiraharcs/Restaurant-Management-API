@@ -1,5 +1,6 @@
 package uk.ac.rhul.teamproject36.backend.service;
 
+import java.awt.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -264,5 +265,11 @@ public final class MenuService {
 
         item.setAvailable(available);
         menuItemRepository.save(item);
+    }
+
+    public MenuItemDto getMenuItembyId(Long id) {
+        MenuItem item = menuItemRepository.findById(id).orElseThrow(() -> new RuntimeException("Menu Item not found"));
+
+        return MenuItemDto.from(item);
     }
 }
