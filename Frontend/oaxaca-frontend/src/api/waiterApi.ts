@@ -1,14 +1,15 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
-export type status = "new" | "preparing" | "ready";
+export type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED";
 
 export type OrderResponse = {
-    orderId: string;
-    customerName: string;
-    tableNo: number;
-    placedAt: string;
+    id: string;
     status: status;
-    items: { name: string; qty: number }[];
+    createdAt: string;
+    tableNumber: number;
+    customerName: string;
+    customerPhoneNumber: string;
+    items: { menuItemId: number; name: string; quantity: number }[];
 };
 
 export type MenuItemDto = {
@@ -26,15 +27,22 @@ export type MenuItemDto = {
 };
 
 export async function confirmOrder(id : number) {
-    const res = await fetch(`${API_BASE}/api/orders/${id}/confirm`);
+    const res = await fetch(`${API_BASE}/api/orders/${id}/confirm`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+
 
     if (!res.ok) throw new Error(`Confirm order failed: ${res.status}`);
+    return res.json();
 }
 
-export async function getOrder(id : number): Promise<OrderResponse[]> {
+export async function getOrder(id : number): Promise<OrderResponse> {
     const res = await fetch(`${API_BASE}/api/orders/${id}`);
 
-    if (!res.ok) throw new Error(`Confirm order failed: ${res.status}`);
+    if (!res.ok) throw new Error(`Get order failed: ${res.status}`);
     return res.json();
 }
 
@@ -93,3 +101,9 @@ export async function addMenuItem(itemData: MenuItemDto): Promise<MenuItemDto> {
   return res.json();
 }
 
+export async function getAllOrders(): Promise<OrderResponse[]> {
+    const res = await fetch(`${API_BASE}/api/orders`);
+
+    if (!res.ok) throw new Error(`Get all orders failed: ${res.status}`);
+    return res.json();
+}

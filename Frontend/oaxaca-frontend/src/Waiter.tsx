@@ -8,21 +8,14 @@ import { LuChevronRight } from 'react-icons/lu';
 import OrderDetails from './data/components/showOrderDetails';
 import StaffFooter from "./data/components/StaffFooter";
 import StaffWelcome from "./data/components/StaffWelcome";
-import { confirmOrder, getOrder } from './api/waiterApi.ts';
+import { getAllOrders } from './api/waiterApi.ts';
+import type { OrderResponse } from './api/waiterApi.ts';
 
-type status = "received" | "confirmed" | "preparing" | "ready" | "served";
-type Order = {
-    orderId: string;
-    customerName: string;
-    tableNo: number;
-    placedAt: string;
-    status: status;
-    items: { name: string; qty: number }[];
-};
+type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED";
 
-function pendingItemsSum(items : { qty: number }[]) {
+function pendingItemsSum(items : { quantity: number }[]) {
     let count = 0;
-    Object.values(items).forEach((item) => count += item.qty)
+    Object.values(items).forEach((item) => count += item.quantity)
     return count;
 }
 
@@ -51,23 +44,47 @@ function calculatePlacedAt(ms : number) {
 }
 
 export default function Waiter() {
-    const [activeTab, setActiveTab] = useState<status>("received");
+    const [activeTab, setActiveTab] = useState<status>("PLACED");
+    const [orders, setOrders] = useState<OrderResponse[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     // dummy data from waiter.json
-    const orders = (orderData as { orders: Order[]}).orders;
+    //const orders = (orderData as { orders: Order[]}).orders;
+
+    useEffect(() => {
+        async function fetchOrders() {
+            try {
+                setLoading(true);
+                const data = await getAllOrders();
+                setOrders(data);
+            } catch (err) {
+                setError('Failed to fetch orders');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchOrders();
+    }, []);
 
     function filterOrders(tab : status) {
+        if (tab === "PLACED") {
+            return orders.filter((order) => 
+                order.status === "PLACED" || order.status === "CONFIRMED"
+            );
+        }
         const activeOrders = orders.filter((order) => order.status === tab);
         return activeOrders;
     }
 
     function calculateTabs() {
         const count = {
-            received: 0,
-            confirmed: 0,
-            preparing: 0,
-            ready: 0,
-            served: 0
+            PLACED: 0,
+            CONFIRMED: 0,
+            PREPARING: 0,
+            READY: 0,
+            DELIVERED: 0
         };
         for ( const s of orders ) {
             count[s.status] += 1;
@@ -100,16 +117,16 @@ export default function Waiter() {
 
                 <div className='orderContainer'>
                     <div className='orderTabs'>
-                        <button className={`orderTab ${activeTab === "received" ? "active" : ""}`} onClick={() => setActiveTab("received")}>
-                            New ({calculateTabs().received})
+                        <button className={`orderTab ${activeTab === "PLACED" ? "active" : ""}`} onClick={() => setActiveTab("PLACED")}>
+                            New ({calculateTabs().PLACED + calculateTabs().CONFIRMED})
                         </button>
 
-                        <button className={`orderTab ${activeTab === "preparing" ? "active" : ""}`} onClick={() => setActiveTab("preparing")}>
-                            Preparing ({calculateTabs().preparing})
+                        <button className={`orderTab ${activeTab === "PREPARING" ? "active" : ""}`} onClick={() => setActiveTab("PREPARING")}>
+                            Preparing ({calculateTabs().PREPARING})
                         </button>
 
-                        <button className={`orderTab ${activeTab === "ready" ? "active" : ""}`} onClick={() => setActiveTab("ready")}>
-                            Ready ({calculateTabs().ready})
+                        <button className={`orderTab ${activeTab === "READY" ? "active" : ""}`} onClick={() => setActiveTab("READY")}>
+                            Ready ({calculateTabs().READY})
                         </button>
                     </div>
 
@@ -120,17 +137,20 @@ export default function Waiter() {
                     <div className='topDivider' />
 
                     <div className='orderList'>
-                        {filterOrders(activeTab).length === 0 && <div className='emptyList'> No orders in this section </div> }
+                        { (loading && <div className='emptyList'> Orders are currently loading... </div>) || 
+                                    (filterOrders(activeTab).length === 0 && <div className='emptyList'> No orders in this section </div>) }
+
+                        {error && <div className='emptyList'> {error} </div> }
 
                         {filterOrders(activeTab).map((order) => {
-                            const placedMs = new Date(order.placedAt).getTime();
+                            const placedMs = new Date(order.createdAt).getTime();
                             const ageMs = now - placedMs;
 
                             return (
-                                <div key={order.orderId} className='orderRow' role='button' onClick={() => {setShowOrderDetails(true); setSelectedOrder(order); setorderDetailsPlacedAt(calculatePlacedAt(ageMs));}}>
+                                <div key={order.id} className='orderRow' role='button' onClick={() => {setShowOrderDetails(true); setSelectedOrder(order); setorderDetailsPlacedAt(calculatePlacedAt(ageMs));}}>
                                     <div className='orderLeft'>
                                         <div className='orderTopLeft'>
-                                            <div className='orderId'>Order #{order.orderId}</div>
+                                            <div className='orderId'>Order #{order.id}</div>
                                         </div>
                                         <div className='orderCustomerName'>{order.customerName}</div>
                                     </div>
@@ -138,7 +158,7 @@ export default function Waiter() {
                                     <div className='orderLine' />
 
                                     <div className='orderMiddle'>
-                                        <div className='orderTableNo'>Table No. {order.tableNo}</div>
+                                        <div className='orderTableNo'>Table No. {order.tableNumber}</div>
                                         <div className='orderPlacedAt'>Placed {calculatePlacedAt(ageMs)}</div>
                                     </div>
                                     

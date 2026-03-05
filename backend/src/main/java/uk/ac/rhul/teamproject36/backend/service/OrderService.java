@@ -83,6 +83,9 @@ public class OrderService {
     public record OrderItemDto(Long menuItemId, String name, Integer quantity) {}
 
     public record OrderDto(Long id, OrderStatus status, java.time.Instant createdAt,
+        Integer tableNumber,
+        String customerName,
+        String customerPhoneNumber,
         List<OrderItemDto> items) {
     }
 
@@ -152,7 +155,13 @@ public class OrderService {
         items.add(new OrderItemDto(it.getMenuItem().getId(), it.getMenuItem().getName(),
             it.getQuantity()));
       }
-      return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
+      return new OrderDto(order.getId(), order.getStatus(), 
+                            order.getCreatedAt(), 
+                            order.getTableNumber(), 
+                            order.getCustomer().getName(), 
+                            order.getCustomer().getPhoneNumber(), 
+                            items
+                        );
     }
 
     @Transactional(readOnly = true)
