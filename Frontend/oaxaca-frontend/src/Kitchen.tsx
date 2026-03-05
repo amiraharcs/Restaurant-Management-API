@@ -160,6 +160,7 @@ export default function Kitchen() {
                 <OrderDetails
                     order={selectedOrder}
                     placedAtTime={orderDetailsPlacedAt}
+                    role="kitchen"
                     onClose={() => {
                         setShowOrderDetails(false);
                         setSelectedOrder(null);
