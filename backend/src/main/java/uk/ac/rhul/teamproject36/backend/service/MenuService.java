@@ -272,4 +272,40 @@ public final class MenuService {
 
         return MenuItemDto.from(item);
     }
+
+    public MenuItem addMenuItem(final MenuItem item) {
+    return menuItemRepository.save(item);
+}
+
+public MenuItem editMenuItem(final Long id, final MenuItem updatedItem) {
+
+    MenuItem existing = menuItemRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Menu item not found"));
+
+    existing.setName(updatedItem.getName());
+    existing.setDescription(updatedItem.getDescription());
+    existing.setPrice(updatedItem.getPrice());
+    existing.setCalories(updatedItem.getCalories());
+    existing.setAllergens(updatedItem.getAllergens());
+    existing.setAvailable(updatedItem.isAvailable());
+    existing.setImageUrl(updatedItem.getImageUrl());
+    existing.setVegetarian(updatedItem.isVegetarian());
+    existing.setHalal(updatedItem.isHalal());
+    existing.setVegan(updatedItem.isVegan());
+    existing.setGlutenFree(updatedItem.isGlutenFree());
+    existing.setItemType(updatedItem.getItemType());
+    existing.setIngredients(updatedItem.getIngredients());
+
+    return menuItemRepository.save(existing);
+}
+
+public void deleteMenuItem(final Long id) {
+
+    if (!menuItemRepository.existsById(id)) {
+        throw new EntityNotFoundException("Menu item not found");
+    }
+
+    menuItemRepository.deleteById(id);
+}
+
 }
