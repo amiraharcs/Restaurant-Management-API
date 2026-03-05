@@ -44,6 +44,7 @@ public class OrderService {
         CustomerOrder order = new CustomerOrder();
         order.setCustomer(newCustomer);
         order.setStatus(OrderStatus.PLACED);
+        order.setTableNumber(request.tableNumber());
 
 
         for (CreateOrderItem itemReq : request.items()) {

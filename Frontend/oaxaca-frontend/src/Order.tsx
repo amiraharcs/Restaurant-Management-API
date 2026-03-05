@@ -39,25 +39,29 @@ export default function Order() {
     0,
   );
 
-async function submitOrder(formData: FormData) {
-    const name = formData.get("name");
-    const phoneNumber = formData.get("phoneNumber");
-    const tableNumberRaw = formData.get("tableNumber");
+  const [loading, setLoading] = useState(false);
 
-    console.log(basket)
+  async function submitOrder(formData: FormData) {
+      if (loading) return;
 
-    const items = basket.map( (item: BasketItem) => ({
-      menuItemId: item.item.id, quantity: item.quantity
-    }))
+      setLoading(true);
+      const name = formData.get("name");
+      const phoneNumber = formData.get("phoneNumber");
+      const tableNumberRaw = formData.get("tableNumber");
 
-    try {
-      await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
-      showConfirmedOrder(true)
-    } catch(e: any) {
-      console.error(e)
-    }
-    
-}
+      const items = basket.map( (item: BasketItem) => ({
+        menuItemId: item.item.id, quantity: item.quantity
+      }))
+
+      try {
+        await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
+        showConfirmedOrder(true)
+      } catch(e: any) {
+        console.error(e)
+      } finally {
+        setLoading(false);
+      }
+  }
 
   return (
     <div className="order">
@@ -115,8 +119,8 @@ async function submitOrder(formData: FormData) {
               />
             </div>
 
-            <button type="submit" className="order_button">
-              Order
+            <button type="submit" className="order_button" disabled={loading}>
+              {loading ? 'Placing Order...' : 'Place Order'}
             </button>
           </form>
         </div>
