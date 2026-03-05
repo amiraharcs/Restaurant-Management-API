@@ -11,11 +11,11 @@ import StaffWelcome from "./data/components/StaffWelcome";
 import { getAllOrders } from './api/waiterApi.ts';
 import type { OrderResponse } from './api/waiterApi.ts';
 
-type status = "placed" | "confirmed" | "preparing" | "ready" | "delivered";
+type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED";
 
-function pendingItemsSum(items : { qty: number }[]) {
+function pendingItemsSum(items : { quantity: number }[]) {
     let count = 0;
-    Object.values(items).forEach((item) => count += item.qty)
+    Object.values(items).forEach((item) => count += item.quantity)
     return count;
 }
 
@@ -44,7 +44,7 @@ function calculatePlacedAt(ms : number) {
 }
 
 export default function Waiter() {
-    const [activeTab, setActiveTab] = useState<status>("placed");
+    const [activeTab, setActiveTab] = useState<status>("PLACED");
     const [orders, setOrders] = useState<OrderResponse[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -75,11 +75,11 @@ export default function Waiter() {
 
     function calculateTabs() {
         const count = {
-            placed: 0,
-            confirmed: 0,
-            preparing: 0,
-            ready: 0,
-            delivered: 0
+            PLACED: 0,
+            CONFIRMED: 0,
+            PREPARING: 0,
+            READY: 0,
+            DELIVERED: 0
         };
         for ( const s of orders ) {
             count[s.status] += 1;
@@ -112,16 +112,16 @@ export default function Waiter() {
 
                 <div className='orderContainer'>
                     <div className='orderTabs'>
-                        <button className={`orderTab ${activeTab === "placed" ? "active" : ""}`} onClick={() => setActiveTab("placed")}>
-                            New ({calculateTabs().placed})
+                        <button className={`orderTab ${activeTab === "PLACED" ? "active" : ""}`} onClick={() => setActiveTab("PLACED")}>
+                            New ({calculateTabs().PLACED})
                         </button>
 
-                        <button className={`orderTab ${activeTab === "preparing" ? "active" : ""}`} onClick={() => setActiveTab("preparing")}>
-                            Preparing ({calculateTabs().preparing})
+                        <button className={`orderTab ${activeTab === "PREPARING" ? "active" : ""}`} onClick={() => setActiveTab("PREPARING")}>
+                            Preparing ({calculateTabs().PREPARING})
                         </button>
 
-                        <button className={`orderTab ${activeTab === "ready" ? "active" : ""}`} onClick={() => setActiveTab("ready")}>
-                            Ready ({calculateTabs().ready})
+                        <button className={`orderTab ${activeTab === "READY" ? "active" : ""}`} onClick={() => setActiveTab("READY")}>
+                            Ready ({calculateTabs().READY})
                         </button>
                     </div>
 
@@ -135,14 +135,14 @@ export default function Waiter() {
                         {filterOrders(activeTab).length === 0 && <div className='emptyList'> No orders in this section </div> }
 
                         {filterOrders(activeTab).map((order) => {
-                            const placedMs = new Date(order.placedAt).getTime();
+                            const placedMs = new Date(order.createdAt).getTime();
                             const ageMs = now - placedMs;
 
                             return (
-                                <div key={order.orderId} className='orderRow' role='button' onClick={() => {setShowOrderDetails(true); setSelectedOrder(order); setorderDetailsPlacedAt(calculatePlacedAt(ageMs));}}>
+                                <div key={order.id} className='orderRow' role='button' onClick={() => {setShowOrderDetails(true); setSelectedOrder(order); setorderDetailsPlacedAt(calculatePlacedAt(ageMs));}}>
                                     <div className='orderLeft'>
                                         <div className='orderTopLeft'>
-                                            <div className='orderId'>Order #{order.orderId}</div>
+                                            <div className='orderId'>Order #{order.id}</div>
                                         </div>
                                         <div className='orderCustomerName'>{order.customerName}</div>
                                     </div>
@@ -150,7 +150,7 @@ export default function Waiter() {
                                     <div className='orderLine' />
 
                                     <div className='orderMiddle'>
-                                        <div className='orderTableNo'>Table No. {order.tableNo}</div>
+                                        <div className='orderTableNo'>Table No. {order.tableNumber}</div>
                                         <div className='orderPlacedAt'>Placed {calculatePlacedAt(ageMs)}</div>
                                     </div>
                                     

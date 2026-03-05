@@ -1,14 +1,15 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
-export type status = "placed" | "confirmed" | "preparing" | "ready" | "delivered";
+export type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED";
 
 export type OrderResponse = {
-    orderId: string;
+    id: string;
     status: status;
+    createdAt: string;
+    tableNumber: number;
     customerName: string;
-    tableNo: number;
-    placedAt: string;
-    items: { itemId: number; name: string; qty: number }[];
+    customerPhoneNumber: string;
+    items: { menuItemId: number; name: string; quantity: number }[];
 };
 
 export type MenuItemDto = {

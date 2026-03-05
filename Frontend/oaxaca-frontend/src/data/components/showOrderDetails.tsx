@@ -7,7 +7,7 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
             <div className="orderDetailsBackdrop" onClick={onClose} />
             <div className="orderDetailsContent">
                 <div className='orderDetailsHeader'>
-                    <div className='orderDetailsTitle'>Order #{order.orderId}</div>
+                    <div className='orderDetailsTitle'>Order #{order.id}</div>
                     <button className="orderDetailsClose" onClick={onClose}>
                         <LuX />
                     </button>
@@ -21,7 +21,7 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                         </div>
                         <div className='infoRow'>
                             <p className='infoKey'>Table :</p>
-                            <p className='infoValue'>{order.tableNo}</p>
+                            <p className='infoValue'>{order.tableNumber}</p>
                         </div>
                         <div className='infoRow'>
                             <p className='infoKey'>Placed :</p>
@@ -39,14 +39,14 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                         <div className='itemsList'>
                             {order.items.map((item: any, index: number) => (
                                 <div key={`${item.name}${index}`} className='itemsRow'>
-                                    <p className='itemQuantity'>{item.qty}x</p>
+                                    <p className='itemQuantity'>{item.quantity}x</p>
                                     <p>{item.name}</p>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    {order.status === "new" && (
+                    {(order.status === "PLACED" || order.status === "CONFIRMED") && (
                         <div className='orderDetailsButtons'>
                             <button className='popupBtn confirmBtn'>
                                 <LuCircleCheck className='buttonIcons' />
@@ -60,7 +60,7 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                         </div>
                     )}
 
-                    {order.status === "preparing" && (
+                    {order.status === "PREPARING" && (
                         <div className='orderDetailsButtons'>
                             <button className='popupBtn deliveredBtn disabled' disabled>
                                 <LuCircleCheck className='buttonIcons' />
@@ -74,7 +74,7 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                         </div>
                     )}
 
-                    {order.status === "ready" && (
+                    {order.status === "READY" && (
                         <div className='orderDetailsButtons'>
                             <button className='popupBtn deliveredBtn'>
                                 <LuCircleCheck className='buttonIcons' />
