@@ -175,6 +175,44 @@ public class OrderService {
       return result;
     }
 
+    /**
+     * Cancels an order if it is not already READY, DELIVERED, or CANCELLED.
+     */
+    @Transactional
+    public OrderDto cancelOrder(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getStatus() == OrderStatus.DELIVERED
+          || order.getStatus() == OrderStatus.CANCELLED) {
+        throw new BadRequestException("Cannot cancel order in status: " + order.getStatus());
+      }
+
+      order.setStatus(OrderStatus.CANCELLED);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
+
+    /**
+     * Marks an order as DELIVERED if it is READY.
+     */
+    @Transactional
+    public OrderDto markDelivered(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getStatus() != OrderStatus.READY) {
+        throw new BadRequestException(
+            "Invalid status transition to DELIVERED from: " + order.getStatus());
+      }
+
+      order.setStatus(OrderStatus.DELIVERED);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
+
 
 }
 
