@@ -1,6 +1,8 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
 export async function placeOrder(order: any) {
+    console.log(order);
+
     const res = await fetch(`${API_BASE}/api/orders`, {
         method: "POST",
         headers: {

@@ -39,25 +39,22 @@ export default function Order() {
     0,
   );
 
-async function submitOrder(formData: FormData) {
-    const name = formData.get("name");
-    const phoneNumber = formData.get("phoneNumber");
-    const tableNumberRaw = formData.get("tableNumber");
+  async function submitOrder(formData: FormData) {
+      const name = formData.get("name");
+      const phoneNumber = formData.get("phoneNumber");
+      const tableNumberRaw = formData.get("tableNumber");
 
-    console.log(basket)
+      const items = basket.map( (item: BasketItem) => ({
+        menuItemId: item.item.id, quantity: item.quantity
+      }))
 
-    const items = basket.map( (item: BasketItem) => ({
-      menuItemId: item.item.id, quantity: item.quantity
-    }))
-
-    try {
-      await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
-      showConfirmedOrder(true)
-    } catch(e: any) {
-      console.error(e)
-    }
-    
-}
+      try {
+        await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
+        showConfirmedOrder(true)
+      } catch(e: any) {
+        console.error(e)
+      }
+  }
 
   return (
     <div className="order">
