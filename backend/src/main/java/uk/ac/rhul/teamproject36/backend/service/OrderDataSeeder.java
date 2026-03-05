@@ -119,19 +119,15 @@ public class OrderDataSeeder implements CommandLineRunner {
     private void addOrderItems(CustomerOrder order, List<MenuItem> menuItems, int[] quantities) {
         for (int i = 0; i < quantities.length && i < menuItems.size(); i++) {
             if (quantities[i] > 0) {
-                /*OrderItem item = new OrderItem();
-                item.setMenuItem(menuItems.get(i));
-                item.setQuantity(quantities[i]);
-                order.addItem(item);*/
                 MenuItem menuItem = menuItems.get(i);
-                // Make sure the menu item has an ID
+
                 if (menuItem.getId() == null) {
-                    log.error("Menu item {} has no ID! This shouldn't happen.", menuItem.getName());
+                    log.error("Menu item {} has no ID!", menuItem.getName());
                     continue;
                 }
                 
                 OrderItem item = new OrderItem();
-                item.setMenuItem(menuItem);  // This should set the menu_item_id
+                item.setMenuItem(menuItem);
                 item.setQuantity(quantities[i]);
                 order.addItem(item);
                 

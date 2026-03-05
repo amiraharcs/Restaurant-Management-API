@@ -1,7 +1,23 @@
+import { useState } from 'react';
 import '../../css/Waiter.css';
 import { LuCircleCheck, LuCircleX, LuX } from 'react-icons/lu';
+import { confirmOrder } from '../../api/waiterApi';
 
 export default function OrderDetails({order, placedAtTime, onClose}: any) {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
+    async function orderConfirmed() {
+        try {
+            setLoading(true);
+            await confirmOrder(order.id);
+        } catch (err) {
+            setError('Failed to confirm order');
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <main className="orderDetailsMain">
             <div className="orderDetailsBackdrop" onClick={onClose} />
@@ -45,10 +61,26 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                             ))}
                         </div>
                     </div>
+                    
+                    {error && <div className='orderDetailsButtons'> {error} </div>}
 
-                    {(order.status === "PLACED" || order.status === "CONFIRMED") && (
+                    {order.status === "PLACED" && (
                         <div className='orderDetailsButtons'>
-                            <button className='popupBtn confirmBtn'>
+                            <button className='popupBtn confirmBtn' onClick={orderConfirmed}>
+                                <LuCircleCheck className='buttonIcons' />
+                                {loading ? 'CONFIRMING...' : 'CONFIRM'}
+                            </button>
+
+                            <button className='popupBtn cancelBtn'>
+                                <LuCircleX className='buttonIcons' />
+                                CANCEL
+                            </button>
+                        </div>
+                    )}
+
+                    {order.status === "CONFIRMED" && (
+                        <div className='orderDetailsButtons'>
+                            <button className='popupBtn confirmBtn disabled' disabled>
                                 <LuCircleCheck className='buttonIcons' />
                                 CONFIRM
                             </button>

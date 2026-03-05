@@ -27,15 +27,22 @@ export type MenuItemDto = {
 };
 
 export async function confirmOrder(id : number) {
-    const res = await fetch(`${API_BASE}/api/orders/${id}/confirm`);
+    const res = await fetch(`${API_BASE}/api/orders/${id}/confirm`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+
 
     if (!res.ok) throw new Error(`Confirm order failed: ${res.status}`);
+    return res.json();
 }
 
 export async function getOrder(id : number): Promise<OrderResponse> {
     const res = await fetch(`${API_BASE}/api/orders/${id}`);
 
-    if (!res.ok) throw new Error(`Confirm order failed: ${res.status}`);
+    if (!res.ok) throw new Error(`Get order failed: ${res.status}`);
     return res.json();
 }
 
@@ -97,6 +104,6 @@ export async function addMenuItem(itemData: MenuItemDto): Promise<MenuItemDto> {
 export async function getAllOrders(): Promise<OrderResponse[]> {
     const res = await fetch(`${API_BASE}/api/orders`);
 
-    if (!res.ok) throw new Error(`Confirm order failed: ${res.status}`);
+    if (!res.ok) throw new Error(`Get all orders failed: ${res.status}`);
     return res.json();
 }

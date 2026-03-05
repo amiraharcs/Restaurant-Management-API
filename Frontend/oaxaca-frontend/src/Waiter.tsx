@@ -46,7 +46,7 @@ function calculatePlacedAt(ms : number) {
 export default function Waiter() {
     const [activeTab, setActiveTab] = useState<status>("PLACED");
     const [orders, setOrders] = useState<OrderResponse[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     // dummy data from waiter.json
@@ -69,6 +69,11 @@ export default function Waiter() {
     }, []);
 
     function filterOrders(tab : status) {
+        if (tab === "PLACED") {
+            return orders.filter((order) => 
+                order.status === "PLACED" || order.status === "CONFIRMED"
+            );
+        }
         const activeOrders = orders.filter((order) => order.status === tab);
         return activeOrders;
     }
@@ -113,7 +118,7 @@ export default function Waiter() {
                 <div className='orderContainer'>
                     <div className='orderTabs'>
                         <button className={`orderTab ${activeTab === "PLACED" ? "active" : ""}`} onClick={() => setActiveTab("PLACED")}>
-                            New ({calculateTabs().PLACED})
+                            New ({calculateTabs().PLACED + calculateTabs().CONFIRMED})
                         </button>
 
                         <button className={`orderTab ${activeTab === "PREPARING" ? "active" : ""}`} onClick={() => setActiveTab("PREPARING")}>
@@ -132,7 +137,10 @@ export default function Waiter() {
                     <div className='topDivider' />
 
                     <div className='orderList'>
-                        {filterOrders(activeTab).length === 0 && <div className='emptyList'> No orders in this section </div> }
+                        { (loading && <div className='emptyList'> Orders are currently loading... </div>) || 
+                                    (filterOrders(activeTab).length === 0 && <div className='emptyList'> No orders in this section </div>) }
+
+                        {error && <div className='emptyList'> {error} </div> }
 
                         {filterOrders(activeTab).map((order) => {
                             const placedMs = new Date(order.createdAt).getTime();
