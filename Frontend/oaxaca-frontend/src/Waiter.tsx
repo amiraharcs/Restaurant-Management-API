@@ -66,6 +66,12 @@ export default function Waiter() {
         }
 
         fetchOrders();
+
+        const interval = setInterval(fetchOrders, 5000);
+
+        return () => {
+            clearInterval(interval);
+        };
     }, []);
 
     function filterOrders(tab : status) {
