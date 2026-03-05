@@ -3,13 +3,14 @@ import NavBarWaiter from "./data/components/NavBarWaiter";
 import AlertDetails from "./data/components/AlertDetails";
 import "./css/Alerts.css";
 
-import mockAlertsData from "./data/mockAlertsData.json";
 import { getTotalNotifications } from "./data/notificationCount.ts";
 import StaffFooter from "./data/components/StaffFooter.tsx";
 import {
   fetchCallWaiterAlerts,
   markCallWaiterAlertHandled,
 } from "./api/alertsApi";
+import { getReadyOrders, deliverOrder } from "./api/waiterApi";
+import type { OrderResponse } from "./api/waiterApi";
 import StaffWelcome from "./data/components/StaffWelcome";
 
 type CallWaiterAlert = {
@@ -21,15 +22,6 @@ type CallWaiterAlert = {
   handled: boolean;
 };
 
-type OrderReady = {
-  id: string;
-  customerName: string;
-  tableNumber: number;
-  placedAt: string;
-  status: string;
-  items: { name: string; qty: number }[];
-  handled: boolean;
-};
 
 function timeAgo(iso: string, nowMs = Date.now()) {
   const createdMs = new Date(iso).getTime();
@@ -60,11 +52,11 @@ export default function Alerts() {
   const [callWaiterAlerts, setCallWaiterAlerts] = useState<CallWaiterAlert[]>(
     [],
   );
-  const [ordersReady, setOrdersReady] = useState<OrderReady[]>([]);
+  const [ordersReady, setOrdersReady] = useState<OrderResponse[]>([]);
   const [nowMs, setNowMs] = useState(Date.now());
   const [showDetails, setShowDetails] = useState(false);
   const [selectedAlert, setSelectedAlert] = useState<
-    CallWaiterAlert | OrderReady | null
+    CallWaiterAlert | OrderResponse | null
   >(null);
 
   // Load data on mount
