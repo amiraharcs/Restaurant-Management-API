@@ -39,7 +39,12 @@ export default function Order() {
     0,
   );
 
+  const [loading, setLoading] = useState(false);
+
   async function submitOrder(formData: FormData) {
+      if (loading) return;
+
+      setLoading(true);
       const name = formData.get("name");
       const phoneNumber = formData.get("phoneNumber");
       const tableNumberRaw = formData.get("tableNumber");
@@ -53,6 +58,8 @@ export default function Order() {
         showConfirmedOrder(true)
       } catch(e: any) {
         console.error(e)
+      } finally {
+        setLoading(false);
       }
   }
 
@@ -112,8 +119,8 @@ export default function Order() {
               />
             </div>
 
-            <button type="submit" className="order_button">
-              Order
+            <button type="submit" className="order_button" disabled={loading}>
+              {loading ? 'Placing Order...' : 'Place Order'}
             </button>
           </form>
         </div>
