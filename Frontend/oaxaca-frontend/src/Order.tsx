@@ -31,6 +31,11 @@ export default function Order() {
     quantity: number;
   };
 
+  type OrderResponse = {
+  orderId: number;
+  status: string;
+};
+
   const [confirmedOrder, showConfirmedOrder] = useState(false);
 
   const total = basket.reduce(
@@ -40,6 +45,8 @@ export default function Order() {
   );
 
   const [loading, setLoading] = useState(false);
+
+  const [orderResponse, setOrderResponse] = useState<OrderResponse | null>(null); 
 
   async function submitOrder(formData: FormData) {
       if (loading) return;
@@ -54,7 +61,9 @@ export default function Order() {
       }))
 
       try {
-        await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
+        const response = await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
+        setOrderResponse(response);
+        console.log(orderResponse)
         showConfirmedOrder(true)
       } catch(e: any) {
         console.error(e)
@@ -177,6 +186,7 @@ export default function Order() {
             </button>
             <h3 className="confirm_order_main_title">Order Confirmed!</h3>
             <p>Thank you for ordering with us.</p>
+            <p>Your order Id: {orderResponse?.orderId}</p>
             <p>Your food will be ready soon.</p>
           </div>
         </div>
