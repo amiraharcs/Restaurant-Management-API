@@ -1,22 +1,14 @@
 import { useEffect, useState } from "react";
 import "./css/Kitchen.css";
 import { LuChevronRight } from "react-icons/lu";
-import orderData from "./data/waiter.json";
 import NavBarKitchen from "./data/components/NavBarKitchen";
 import OrderDetails from "./data/components/showOrderDetails";
 import StaffFooter from "./data/components/StaffFooter";
 import StaffWelcome from "./data/components/StaffWelcome";
+import { getAllOrders } from "./api/waiterApi";
+import type { OrderResponse } from "./api/waiterApi";
 
 type KitchenStatus = "new" | "preparing" | "ready";
-
-type KitchenOrder = {
-    orderId: string;
-    customerName: string;
-    tableNo: number;
-    placedAt: string;
-    status: KitchenStatus;
-    items: { name: string; qty: number }[];
-};
 
 function pendingItemsSum(items: { qty: number }[]) {
     let count = 0;
