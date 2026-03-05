@@ -2,19 +2,18 @@ package uk.ac.rhul.teamproject36.backend.service;
 
 import java.awt.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import uk.ac.rhul.teamproject36.backend.menu.Ingredient;
 import uk.ac.rhul.teamproject36.backend.menu.ItemType;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
+import uk.ac.rhul.teamproject36.backend.repository.IngredientRepository;
 import uk.ac.rhul.teamproject36.backend.repository.MenuItemRepository;
 import uk.ac.rhul.teamproject36.backend.repository.MenuRepository;
 
@@ -30,6 +29,8 @@ public final class MenuService {
     /** The repository for filtered menu queries. */
     private final MenuRepository menuRepository;
 
+    private final IngredientRepository ingredientRepository;
+
     /**
      * Constructs a new MenuService with the given repositories.
      *
@@ -37,9 +38,10 @@ public final class MenuService {
      * @param menuRepositoryParam the menu repository for filtering
      */
     public MenuService(final MenuItemRepository repository,
-                       final MenuRepository menuRepositoryParam) {
+                       final MenuRepository menuRepositoryParam, final IngredientRepository ingredientRepository) {
         this.menuItemRepository = repository;
         this.menuRepository = menuRepositoryParam;
+        this.ingredientRepository = ingredientRepository;
     }
 
     /**
@@ -272,4 +274,75 @@ public final class MenuService {
 
         return MenuItemDto.from(item);
     }
+
+    public MenuItem addMenuItem(final MenuItem item) {
+
+        Set<Ingredient> managedIngredients = item.getIngredients()
+                .stream()
+                .map(ingredient -> {
+                    String name = ingredient.getName().trim();
+
+                    return ingredientRepository
+                            .findByNameIgnoreCase(name)
+                            .orElseGet(() -> {
+                                Ingredient newIngredient = new Ingredient();
+                                newIngredient.setName(name);
+                                return ingredientRepository.save(newIngredient);
+                            });
+                })
+                .collect(Collectors.toSet());
+
+        item.setIngredients(managedIngredients);
+    return menuItemRepository.save(item);
+}
+
+public MenuItem editMenuItem(final Long id, final MenuItem updatedItem) {
+
+    MenuItem existing = menuItemRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Menu item not found"));
+
+    existing.setName(updatedItem.getName());
+    existing.setDescription(updatedItem.getDescription());
+    existing.setPrice(updatedItem.getPrice());
+    existing.setCalories(updatedItem.getCalories());
+    existing.setAllergens(updatedItem.getAllergens());
+    existing.setAvailable(updatedItem.isAvailable());
+    existing.setImageUrl(updatedItem.getImageUrl());
+    existing.setVegetarian(updatedItem.isVegetarian());
+    existing.setHalal(updatedItem.isHalal());
+    existing.setVegan(updatedItem.isVegan());
+    existing.setGlutenFree(updatedItem.isGlutenFree());
+    existing.setItemType(updatedItem.getItemType());
+
+    Set<Ingredient> managedIngredients = updatedItem.getIngredients()
+            .stream()
+            .map(ingredient -> {
+                String name = ingredient.getName().trim();
+
+                return ingredientRepository
+                        .findByNameIgnoreCase(name)
+                        .orElseGet(() -> {
+                            Ingredient newIngredient = new Ingredient();
+                            newIngredient.setName(name);
+                            return ingredientRepository.save(newIngredient);
+                        });
+            })
+            .collect(Collectors.toSet());
+
+    existing.setIngredients(managedIngredients);
+
+    existing.setImageUrl(updatedItem.getImageUrl());
+
+    return menuItemRepository.save(existing);
+}
+
+public void deleteMenuItem(final Long id) {
+
+    if (!menuItemRepository.existsById(id)) {
+        throw new EntityNotFoundException("Menu item not found");
+    }
+
+    menuItemRepository.deleteById(id);
+}
+
 }

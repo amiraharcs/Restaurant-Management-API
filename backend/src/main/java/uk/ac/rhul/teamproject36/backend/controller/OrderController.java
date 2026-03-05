@@ -75,5 +75,17 @@ public class OrderController {
     }
 
     public record ErrorResponse(String error) {}
+
+
+    @PatchMapping("/orders/{id}/cancel")
+    public OrderDto cancelOrder(@PathVariable Long id) {
+      return orderService.cancelOrder(id);
+    }
+
+    @PatchMapping("/orders/{id}/deliver")
+    public OrderDto deliverOrder(@PathVariable Long id) {
+      return orderService.markDelivered(id);
+    }
+
   }
 

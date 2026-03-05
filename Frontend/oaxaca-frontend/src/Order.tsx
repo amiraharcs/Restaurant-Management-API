@@ -31,6 +31,11 @@ export default function Order() {
     quantity: number;
   };
 
+  type OrderResponse = {
+  orderId: number;
+  status: string;
+};
+
   const [confirmedOrder, showConfirmedOrder] = useState(false);
 
   const total = basket.reduce(
@@ -39,25 +44,33 @@ export default function Order() {
     0,
   );
 
-async function submitOrder(formData: FormData) {
-    const name = formData.get("name");
-    const phoneNumber = formData.get("phoneNumber");
-    const tableNumberRaw = formData.get("tableNumber");
+  const [loading, setLoading] = useState(false);
 
-    console.log(basket)
+  const [orderResponse, setOrderResponse] = useState<OrderResponse | null>(null); 
 
-    const items = basket.map( (item: BasketItem) => ({
-      menuItemId: item.item.id, quantity: item.quantity
-    }))
+  async function submitOrder(formData: FormData) {
+      if (loading) return;
 
-    try {
-      await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
-      showConfirmedOrder(true)
-    } catch(e: any) {
-      console.error(e)
-    }
-    
-}
+      setLoading(true);
+      const name = formData.get("name");
+      const phoneNumber = formData.get("phoneNumber");
+      const tableNumberRaw = formData.get("tableNumber");
+
+      const items = basket.map( (item: BasketItem) => ({
+        menuItemId: item.item.id, quantity: item.quantity
+      }))
+
+      try {
+        const response = await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
+        setOrderResponse(response);
+        console.log(orderResponse)
+        showConfirmedOrder(true)
+      } catch(e: any) {
+        console.error(e)
+      } finally {
+        setLoading(false);
+      }
+  }
 
   return (
     <div className="order">
@@ -115,8 +128,8 @@ async function submitOrder(formData: FormData) {
               />
             </div>
 
-            <button type="submit" className="order_button">
-              Order
+            <button type="submit" className="order_button" disabled={loading}>
+              {loading ? 'Placing Order...' : 'Place Order'}
             </button>
           </form>
         </div>
@@ -173,6 +186,7 @@ async function submitOrder(formData: FormData) {
             </button>
             <h3 className="confirm_order_main_title">Order Confirmed!</h3>
             <p>Thank you for ordering with us.</p>
+            <p>Your order Id: {orderResponse?.orderId}</p>
             <p>Your food will be ready soon.</p>
           </div>
         </div>

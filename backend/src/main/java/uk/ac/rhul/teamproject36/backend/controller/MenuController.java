@@ -104,4 +104,30 @@ public ResponseEntity<MenuService.MenuItemDto> getMenuItemById(@PathVariable Lon
 
     return ResponseEntity.ok(item);
 }
+
+@PostMapping("/menu/menuItem/add")
+public ResponseEntity<MenuItem> addMenuItem(@RequestBody final MenuItem item) {
+
+    MenuItem created = menuService.addMenuItem(item);
+
+    return ResponseEntity.ok(created);
+}
+
+@PutMapping("/menu/menuItem/edit/{id}")
+public ResponseEntity<MenuItem> editMenuItem(
+        @PathVariable final Long id,
+        @RequestBody final MenuItem item) {
+
+    MenuItem updated = menuService.editMenuItem(id, item);
+
+    return ResponseEntity.ok(updated);
+}
+
+@DeleteMapping("/menu/menuItem/delete/{id}")
+public ResponseEntity<Void> deleteMenuItem(@PathVariable final Long id) {
+
+    menuService.deleteMenuItem(id);
+
+    return ResponseEntity.noContent().build();
+}
 }

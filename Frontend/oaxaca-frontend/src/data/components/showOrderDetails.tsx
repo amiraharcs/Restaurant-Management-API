@@ -1,13 +1,29 @@
+import { useState } from 'react';
 import '../../css/Waiter.css';
 import { LuCircleCheck, LuCircleX, LuX } from 'react-icons/lu';
+import { confirmOrder } from '../../api/waiterApi';
 
 export default function OrderDetails({order, placedAtTime, onClose}: any) {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
+    async function orderConfirmed() {
+        try {
+            setLoading(true);
+            await confirmOrder(order.id);
+        } catch (err) {
+            setError('Failed to confirm order');
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <main className="orderDetailsMain">
             <div className="orderDetailsBackdrop" onClick={onClose} />
             <div className="orderDetailsContent">
                 <div className='orderDetailsHeader'>
-                    <div className='orderDetailsTitle'>Order #{order.orderId}</div>
+                    <div className='orderDetailsTitle'>Order #{order.id}</div>
                     <button className="orderDetailsClose" onClick={onClose}>
                         <LuX />
                     </button>
@@ -21,7 +37,7 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                         </div>
                         <div className='infoRow'>
                             <p className='infoKey'>Table :</p>
-                            <p className='infoValue'>{order.tableNo}</p>
+                            <p className='infoValue'>{order.tableNumber}</p>
                         </div>
                         <div className='infoRow'>
                             <p className='infoKey'>Placed :</p>
@@ -39,16 +55,32 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                         <div className='itemsList'>
                             {order.items.map((item: any, index: number) => (
                                 <div key={`${item.name}${index}`} className='itemsRow'>
-                                    <p className='itemQuantity'>{item.qty}x</p>
+                                    <p className='itemQuantity'>{item.quantity}x</p>
                                     <p>{item.name}</p>
                                 </div>
                             ))}
                         </div>
                     </div>
+                    
+                    {error && <div className='orderDetailsButtons'> {error} </div>}
 
-                    {order.status === "new" && (
+                    {order.status === "PLACED" && (
                         <div className='orderDetailsButtons'>
-                            <button className='popupBtn confirmBtn'>
+                            <button className='popupBtn confirmBtn' onClick={orderConfirmed}>
+                                <LuCircleCheck className='buttonIcons' />
+                                {loading ? 'CONFIRMING...' : 'CONFIRM'}
+                            </button>
+
+                            <button className='popupBtn cancelBtn'>
+                                <LuCircleX className='buttonIcons' />
+                                CANCEL
+                            </button>
+                        </div>
+                    )}
+
+                    {order.status === "CONFIRMED" && (
+                        <div className='orderDetailsButtons'>
+                            <button className='popupBtn confirmBtn disabled' disabled>
                                 <LuCircleCheck className='buttonIcons' />
                                 CONFIRM
                             </button>
@@ -60,7 +92,7 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                         </div>
                     )}
 
-                    {order.status === "preparing" && (
+                    {order.status === "PREPARING" && (
                         <div className='orderDetailsButtons'>
                             <button className='popupBtn deliveredBtn disabled' disabled>
                                 <LuCircleCheck className='buttonIcons' />
@@ -74,7 +106,7 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                         </div>
                     )}
 
-                    {order.status === "ready" && (
+                    {order.status === "READY" && (
                         <div className='orderDetailsButtons'>
                             <button className='popupBtn deliveredBtn'>
                                 <LuCircleCheck className='buttonIcons' />

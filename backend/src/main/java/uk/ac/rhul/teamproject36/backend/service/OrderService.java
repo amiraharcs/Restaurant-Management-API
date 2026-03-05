@@ -44,6 +44,7 @@ public class OrderService {
         CustomerOrder order = new CustomerOrder();
         order.setCustomer(newCustomer);
         order.setStatus(OrderStatus.PLACED);
+        order.setTableNumber(request.tableNumber());
 
 
         for (CreateOrderItem itemReq : request.items()) {
@@ -83,6 +84,9 @@ public class OrderService {
     public record OrderItemDto(Long menuItemId, String name, Integer quantity) {}
 
     public record OrderDto(Long id, OrderStatus status, java.time.Instant createdAt,
+        Integer tableNumber,
+        String customerName,
+        String customerPhoneNumber,
         List<OrderItemDto> items) {
     }
 
@@ -161,7 +165,13 @@ public class OrderService {
         items.add(new OrderItemDto(it.getMenuItem().getId(), it.getMenuItem().getName(),
             it.getQuantity()));
       }
-      return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(), items);
+      return new OrderDto(order.getId(), order.getStatus(), 
+                            order.getCreatedAt(), 
+                            order.getTableNumber(), 
+                            order.getCustomer().getName(), 
+                            order.getCustomer().getPhoneNumber(), 
+                            items
+                        );
     }
 
     @Transactional(readOnly = true)
@@ -174,6 +184,19 @@ public class OrderService {
       return result;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+<<<<<<< backend/src/main/java/uk/ac/rhul/teamproject36/backend/service/OrderService.java
     @Transactional(readOnly = true)
     public List<OrderDto> getOrdersByStatus(OrderStatus status) {
         List<CustomerOrder> orders = orderRepository.findByStatus(status);
@@ -185,6 +208,46 @@ public class OrderService {
 
         return result;
     }
+=======
+    /**
+     * Cancels an order if it is not already READY, DELIVERED, or CANCELLED.
+     */
+    @Transactional
+    public OrderDto cancelOrder(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getStatus() == OrderStatus.DELIVERED
+          || order.getStatus() == OrderStatus.CANCELLED) {
+        throw new BadRequestException("Cannot cancel order in status: " + order.getStatus());
+      }
+
+      order.setStatus(OrderStatus.CANCELLED);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
+
+    /**
+     * Marks an order as DELIVERED if it is READY.
+     */
+    @Transactional
+    public OrderDto markDelivered(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getStatus() != OrderStatus.READY) {
+        throw new BadRequestException(
+            "Invalid status transition to DELIVERED from: " + order.getStatus());
+      }
+
+      order.setStatus(OrderStatus.DELIVERED);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
+
+>>>>>>> backend/src/main/java/uk/ac/rhul/teamproject36/backend/service/OrderService.java
 
 }
 
