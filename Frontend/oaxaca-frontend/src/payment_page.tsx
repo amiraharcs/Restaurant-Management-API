@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./css/Payment_page.css"
+import "./css/payment_page.css"
 import NavBar from "./data/components/NavBar";
 import Footer from "./data/components/Footer";
 
