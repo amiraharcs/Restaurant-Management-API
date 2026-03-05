@@ -22,6 +22,7 @@ public class CustomerOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id") // Added to match the database column name
     private Long id;
 
     @ManyToOne
