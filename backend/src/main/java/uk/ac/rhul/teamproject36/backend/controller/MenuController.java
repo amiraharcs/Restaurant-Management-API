@@ -122,4 +122,12 @@ public ResponseEntity<MenuItem> editMenuItem(
 
     return ResponseEntity.ok(updated);
 }
+
+@DeleteMapping("/menu/menuItem/delete/{id}")
+public ResponseEntity<Void> deleteMenuItem(@PathVariable final Long id) {
+
+    menuService.deleteMenuItem(id);
+
+    return ResponseEntity.noContent().build();
+}
 }
