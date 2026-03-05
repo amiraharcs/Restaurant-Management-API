@@ -104,4 +104,14 @@ public ResponseEntity<MenuService.MenuItemDto> getMenuItemById(@PathVariable Lon
 
     return ResponseEntity.ok(item);
 }
+
+PostMapping("/menu/menuItem/add")
+public ResponseEntity<MenuItem> addMenuItem(@RequestBody final MenuItem item) {
+
+    MenuItem created = menuService.addMenuItem(item);
+
+    return ResponseEntity.ok(created);
+}
+
+
 }
