@@ -174,7 +174,17 @@ public class OrderService {
       return result;
     }
 
-    
+    @Transactional(readOnly = true)
+    public List<OrderDto> getOrdersByStatus(OrderStatus status) {
+        List<CustomerOrder> orders = orderRepository.findByStatus(status);
+
+        List<OrderDto> result = new ArrayList<>();
+        for (CustomerOrder order : orders) {
+            result.add(toOrderDto(order));
+        }
+
+        return result;
+    }
 
 }
 
