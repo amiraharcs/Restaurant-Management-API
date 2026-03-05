@@ -154,18 +154,21 @@ export default function EditItem({item, onClose} : any ) {
             ingredients: ingredientsRaw
                 .split(",")
                 .map((v) => v.trim())
-                .filter((v) => v.length > 0),
+                .filter((v) => v.length > 0)
+                .map((v) => ({ name: v })),
              allergens: allergensRaw
                 .split(",")
                 .map((v) => v.trim())
-                .filter((v) => v.length > 0),
+                .filter((v) => v.length > 0)
+                .join(","),
             filters: filtersRaw
                 .split(",")
                 .map((v) => v.trim())
-                .filter((v) => v.length > 0),
+                .filter((v) => v.length > 0)
+                .map((v) => ({ name: v })),
             itemType: itemType as "FOOD" | "DRINK" | "DESSERT",
             isAvailable: isAvailableRaw === "true",
-            image: item.image,
+            imageUrl: item.image,
         };
 
         await editMenuItem(item.id, updatedItem)

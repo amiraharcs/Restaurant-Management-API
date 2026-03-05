@@ -12,6 +12,16 @@ export type OrderResponse = {
     items: { menuItemId: number; name: string; quantity: number }[];
 };
 
+export type IngredientDto = {
+  id?: number;
+  name: string;
+};
+
+export type FilterDto = {
+  id?: number;
+  name?: string;
+};
+
 export type MenuItemDto = {
   id?: number;
   name: string;
@@ -19,10 +29,10 @@ export type MenuItemDto = {
   price: number;
   calories: number;
   isAvailable: boolean;
-  ingredients: string[];
-  allergens: string[];
-  filters: string[];
-  image: string;
+  ingredients: IngredientDto[];
+  allergens: String;
+  filters: FilterDto[];
+  imageUrl: string;
   itemType: "FOOD" | "DESSERT" | "DRINK";
 };
 
