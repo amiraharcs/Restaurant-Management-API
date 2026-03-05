@@ -10,6 +10,7 @@ import StaffFooter from "./data/components/StaffFooter";
 import StaffWelcome from "./data/components/StaffWelcome";
 import { getAllOrders } from './api/waiterApi.ts';
 import type { OrderResponse } from './api/waiterApi.ts';
+import WaiterAlertsWaiter from './data/components/WaiterAlertsWaiter.tsx';
 
 type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED";
 
@@ -119,7 +120,10 @@ export default function Waiter() {
             <NavBarWaiter notificationCount={totalNotifications} />
             
             <div className='waiterPage'>
-                <StaffWelcome />
+                <div className='waiterHeader'>
+                    <StaffWelcome />
+                    <WaiterAlertsWaiter />
+                </div>
 
                 <div className='orderContainer'>
                     <div className='orderTabs'>
