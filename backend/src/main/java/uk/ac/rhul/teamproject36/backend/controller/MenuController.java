@@ -113,5 +113,13 @@ public ResponseEntity<MenuItem> addMenuItem(@RequestBody final MenuItem item) {
     return ResponseEntity.ok(created);
 }
 
+@PutMapping("/menu/menuItem/edit/{id}")
+public ResponseEntity<MenuItem> editMenuItem(
+        @PathVariable final Long id,
+        @RequestBody final MenuItem item) {
 
+    MenuItem updated = menuService.editMenuItem(id, item);
+
+    return ResponseEntity.ok(updated);
+}
 }
