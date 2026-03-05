@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import uk.ac.rhul.teamproject36.backend.order.OrderStatus;
 import uk.ac.rhul.teamproject36.backend.service.OrderService;
 import uk.ac.rhul.teamproject36.backend.service.OrderService.OrderDto;
 
@@ -38,6 +40,11 @@ public class OrderController {
     @GetMapping("/orders")
     public List<OrderDto> getAllOrders() {
       return orderService.getAllOrders();
+    }
+
+    @GetMapping("/orders/status/{status}")
+    public List<OrderDto> getOrdersByStatus(@PathVariable OrderStatus status) {
+      return orderService.getOrdersByStatus(status);
     }
 
     @PatchMapping("/orders/{id}/confirm")

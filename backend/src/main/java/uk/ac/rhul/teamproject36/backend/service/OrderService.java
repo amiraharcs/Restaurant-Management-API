@@ -125,8 +125,17 @@ public class OrderService {
       CustomerOrder order = orderRepository.findById(id)
           .orElseThrow(() -> new NotFoundException("order not found: " + id));
 
-      if (order.getStatus() != OrderStatus.PLACED) {
+      if (order.getStatus() != OrderStatus.CONFIRMED) {
         throw new BadRequestException("Invalid status transition: " + order.getStatus());
+      }
+
+      //checks if the item ordered is avaliable.
+      for (OrderItem item : order.getItems()){
+        MenuItem menuItem = item.getMenuItem();
+
+        if (!menuItem.isAvailable()){
+            throw new BadRequestException("Item:"+ menuItem.getName() +"is currently unavaliable.");
+        }
       }
 
       order.setStatus(OrderStatus.PREPARING);
@@ -175,6 +184,31 @@ public class OrderService {
       return result;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+<<<<<<< backend/src/main/java/uk/ac/rhul/teamproject36/backend/service/OrderService.java
+    @Transactional(readOnly = true)
+    public List<OrderDto> getOrdersByStatus(OrderStatus status) {
+        List<CustomerOrder> orders = orderRepository.findByStatus(status);
+
+        List<OrderDto> result = new ArrayList<>();
+        for (CustomerOrder order : orders) {
+            result.add(toOrderDto(order));
+        }
+
+        return result;
+    }
+=======
     /**
      * Cancels an order if it is not already READY, DELIVERED, or CANCELLED.
      */
@@ -213,6 +247,7 @@ public class OrderService {
       return toOrderDto(order);
     }
 
+>>>>>>> backend/src/main/java/uk/ac/rhul/teamproject36/backend/service/OrderService.java
 
 }
 
