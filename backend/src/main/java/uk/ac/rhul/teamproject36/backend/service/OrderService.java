@@ -121,8 +121,17 @@ public class OrderService {
       CustomerOrder order = orderRepository.findById(id)
           .orElseThrow(() -> new NotFoundException("order not found: " + id));
 
-      if (order.getStatus() != OrderStatus.PLACED) {
+      if (order.getStatus() != OrderStatus.CONFIRMED) {
         throw new BadRequestException("Invalid status transition: " + order.getStatus());
+      }
+
+      //checks if the item ordered is avaliable.
+      for (OrderItem item : order.getItems()){
+        MenuItem menuItem = item.getMenuItem();
+
+        if (!menuItem.isAvailable()){
+            throw new BadRequestException("Item:"+ menuItem.getName() +"is currently unavaliable.");
+        }
       }
 
       order.setStatus(OrderStatus.PREPARING);
@@ -165,6 +174,7 @@ public class OrderService {
       return result;
     }
 
+    
 
 }
 
