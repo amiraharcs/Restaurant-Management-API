@@ -8,7 +8,7 @@ import StaffWelcome from "./data/components/StaffWelcome";
 import { getAllOrders } from "./api/waiterApi";
 import type { OrderResponse } from "./api/waiterApi";
 
-type KitchenStatus = "new" | "preparing" | "ready";
+type KitchenStatus = "new" | "preparing";
 
 function pendingItemsSum(items: { quantity: number }[]) {
     return items.reduce((sum, item) => sum + item.quantity, 0);
@@ -57,15 +57,13 @@ export default function Kitchen() {
 
     function filterOrders(tab: KitchenStatus) {
         if (tab === "new") return orders.filter((o) => o.status === "CONFIRMED");
-        if (tab === "preparing") return orders.filter((o) => o.status === "PREPARING");
-        return orders.filter((o) => o.status === "READY");
+        return orders.filter((o) => o.status === "PREPARING");
     }
 
     function calculateTabs() {
         return {
             new: orders.filter((o) => o.status === "CONFIRMED").length,
             preparing: orders.filter((o) => o.status === "PREPARING").length,
-            ready: orders.filter((o) => o.status === "READY").length,
         };
     }
 
@@ -92,16 +90,10 @@ export default function Kitchen() {
                             Preparing ({calculateTabs().preparing})
                         </button>
 
-                        <button
-                            className={`orderTab ${activeTab === "ready" ? "active" : ""}`}
-                            onClick={() => setActiveTab("ready")}
-                        >
-                            Ready ({calculateTabs().ready})
-                        </button>
                     </div>
 
                     <div className="orderTitle">
-                        <h2>{activeTab.toUpperCase()} ORDERS</h2>
+                        <h2>{activeTab === "new" ? "NEW ORDERS" : "BEING PREPARED"}</h2>
                     </div>
 
                     <div className="topDivider" />
