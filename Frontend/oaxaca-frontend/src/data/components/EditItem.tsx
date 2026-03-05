@@ -131,6 +131,7 @@ export default function EditItem({item, onClose} : any ) {
             validationErrors.image = "Image path must start with '/'";
         }
 
+
         const isAvailableRaw = formData.get("isAvailable")?.toString().trim() ?? "";
         if (!isAvailableRaw) {
             validationErrors.isAvailable = "Availability is required";
@@ -167,8 +168,8 @@ export default function EditItem({item, onClose} : any ) {
                 .filter((v) => v.length > 0)
                 .map((v) => ({ name: v })),
             itemType: itemType as "FOOD" | "DRINK" | "DESSERT",
-            isAvailable: isAvailableRaw === "true",
-            imageUrl: item.image,
+            available: isAvailableRaw === "true",
+            imageUrl: image,
         };
 
         await editMenuItem(item.id, updatedItem)
@@ -272,7 +273,7 @@ export default function EditItem({item, onClose} : any ) {
                             required
                         />
                         <label className="edit_item_form_label">Availability</label>
-                        <div className="edit_item_radio_group">
+                        <div className="edit_item_radio_group" key={item.id}>
                         <label className="edit_item_radio_label">
                             <input
                             type="radio"

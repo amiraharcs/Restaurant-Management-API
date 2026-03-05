@@ -28,7 +28,7 @@ export type MenuItemDto = {
   description: string;
   price: number;
   calories: number;
-  isAvailable: boolean;
+  available: boolean;
   ingredients: IngredientDto[];
   allergens: String;
   filters: FilterDto[];

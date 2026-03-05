@@ -156,7 +156,7 @@ export default function AddItem({ onClose }: any) {
           .filter((v) => v.length > 0)
           .map((v) => ({ name: v })),
         itemType: itemType as "FOOD" | "DRINK" | "DESSERT",
-        isAvailable: isAvailableRaw === "true",
+        available: isAvailableRaw === "true",
         imageUrl: image,
       };
 
