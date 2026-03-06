@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import '../../css/Waiter.css';
 import { LuCircleCheck, LuCircleX, LuX } from 'react-icons/lu';
-import { confirmOrder, acceptOrder, markReady, deliverOrder } from '../../api/waiterApi';
+import { confirmOrder, deliverOrder } from '../../api/waiterApi';
 
-export default function OrderDetails({order, placedAtTime, onClose, role = "waiter", onOrderUpdated}: any) {
+export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdated}: any) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    // Waiter confirms a newly placed order → CONFIRMED (goes to kitchen)
     async function orderConfirmed() {
         try {
             setLoading(true);
@@ -21,21 +20,6 @@ export default function OrderDetails({order, placedAtTime, onClose, role = "wait
         }
     }
 
-    // Kitchen accepts a confirmed order → PREPARING
-    async function orderAccepted() {
-        try {
-            setLoading(true);
-            await acceptOrder(order.id);
-            onOrderUpdated?.();
-            onClose();
-        } catch {
-            setError('Failed to accept order');
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    // Waiter marks a ready order as delivered → DELIVERED
     async function orderDelivered() {
         try {
             setLoading(true);
@@ -44,20 +28,6 @@ export default function OrderDetails({order, placedAtTime, onClose, role = "wait
             onClose();
         } catch {
             setError('Failed to mark order as delivered');
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    // Kitchen marks a preparing order as ready → READY (appears in waiter's Ready tab)
-    async function orderMarkedReady() {
-        try {
-            setLoading(true);
-            await markReady(order.id);
-            onOrderUpdated?.();
-            onClose();
-        } catch {
-            setError('Failed to mark order as ready');
         } finally {
             setLoading(false);
         }
@@ -106,11 +76,10 @@ export default function OrderDetails({order, placedAtTime, onClose, role = "wait
                             ))}
                         </div>
                     </div>
-                    
+
                     {error && <div className='orderDetailsButtons'> {error} </div>}
 
-                    {/* Waiter: confirm a new order → sends it to kitchen */}
-                    {role === "waiter" && order.status === "PLACED" && (
+                    {order.status === "PLACED" && (
                         <div className='orderDetailsButtons'>
                             <button className='popupBtn confirmBtn' onClick={orderConfirmed} disabled={loading}>
                                 <LuCircleCheck className='buttonIcons' />
@@ -123,12 +92,11 @@ export default function OrderDetails({order, placedAtTime, onClose, role = "wait
                         </div>
                     )}
 
-                    {/* Kitchen: accept a confirmed order → moves to preparing */}
-                    {role === "kitchen" && order.status === "CONFIRMED" && (
+                    {order.status === "CONFIRMED" && (
                         <div className='orderDetailsButtons'>
-                            <button className='popupBtn confirmBtn' onClick={orderAccepted} disabled={loading}>
+                            <button className='popupBtn confirmBtn disabled' disabled>
                                 <LuCircleCheck className='buttonIcons' />
-                                {loading ? 'ACCEPTING...' : 'ACCEPT'}
+                                CONFIRM
                             </button>
                             <button className='popupBtn cancelBtn'>
                                 <LuCircleX className='buttonIcons' />
@@ -137,26 +105,24 @@ export default function OrderDetails({order, placedAtTime, onClose, role = "wait
                         </div>
                     )}
 
-                    {/* Waiter: mark a ready order as delivered */}
-                    {role === "waiter" && order.status === "READY" && (
+                    {order.status === "PREPARING" && (
+                        <div className='orderDetailsButtons'>
+                            <button className='popupBtn deliveredBtn disabled' disabled>
+                                <LuCircleCheck className='buttonIcons' />
+                                DELIVERED
+                            </button>
+                            <button className='popupBtn cancelBtn'>
+                                <LuCircleX className='buttonIcons' />
+                                CANCEL
+                            </button>
+                        </div>
+                    )}
+
+                    {order.status === "READY" && (
                         <div className='orderDetailsButtons'>
                             <button className='popupBtn deliveredBtn' onClick={orderDelivered} disabled={loading}>
                                 <LuCircleCheck className='buttonIcons' />
                                 {loading ? 'UPDATING...' : 'DELIVERED'}
-                            </button>
-                            <button className='popupBtn cancelBtn'>
-                                <LuCircleX className='buttonIcons' />
-                                CANCEL
-                            </button>
-                        </div>
-                    )}
-
-                    {/* Kitchen: mark a preparing order as ready → appears in waiter's Ready tab */}
-                    {role === "kitchen" && order.status === "PREPARING" && (
-                        <div className='orderDetailsButtons'>
-                            <button className='popupBtn deliveredBtn' onClick={orderMarkedReady} disabled={loading}>
-                                <LuCircleCheck className='buttonIcons' />
-                                {loading ? 'UPDATING...' : 'MARK READY'}
                             </button>
                             <button className='popupBtn cancelBtn'>
                                 <LuCircleX className='buttonIcons' />

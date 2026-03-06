@@ -189,7 +189,7 @@ export default function Waiter() {
                     </div>
                 </div>
             </div>
-            {showOrderDetails && <OrderDetails order={selectedOrder} placedAtTime={orderDetailsPlacedAt} role="waiter" onOrderUpdated={fetchOrders} onClose={() => {
+            {showOrderDetails && <OrderDetails order={selectedOrder} placedAtTime={orderDetailsPlacedAt} onOrderUpdated={fetchOrders} onClose={() => {
                 setShowOrderDetails(false)
                 setSelectedOrder({})
             }}/>}
