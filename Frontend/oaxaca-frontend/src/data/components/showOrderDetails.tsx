@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import '../../css/Waiter.css';
 import { LuCircleCheck, LuCircleX, LuX } from 'react-icons/lu';
-import { confirmOrder, acceptOrder, markReady } from '../../api/waiterApi';
+import { confirmOrder, acceptOrder, markReady, deliverOrder } from '../../api/waiterApi';
 
 export default function OrderDetails({order, placedAtTime, onClose, role = "waiter", onOrderUpdated}: any) {
     const [loading, setLoading] = useState(false);
@@ -30,6 +30,20 @@ export default function OrderDetails({order, placedAtTime, onClose, role = "wait
             onClose();
         } catch {
             setError('Failed to accept order');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    // Waiter marks a ready order as delivered → DELIVERED
+    async function orderDelivered() {
+        try {
+            setLoading(true);
+            await deliverOrder(order.id);
+            onOrderUpdated?.();
+            onClose();
+        } catch {
+            setError('Failed to mark order as delivered');
         } finally {
             setLoading(false);
         }
@@ -115,6 +129,20 @@ export default function OrderDetails({order, placedAtTime, onClose, role = "wait
                             <button className='popupBtn confirmBtn' onClick={orderAccepted} disabled={loading}>
                                 <LuCircleCheck className='buttonIcons' />
                                 {loading ? 'ACCEPTING...' : 'ACCEPT'}
+                            </button>
+                            <button className='popupBtn cancelBtn'>
+                                <LuCircleX className='buttonIcons' />
+                                CANCEL
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Waiter: mark a ready order as delivered */}
+                    {role === "waiter" && order.status === "READY" && (
+                        <div className='orderDetailsButtons'>
+                            <button className='popupBtn deliveredBtn' onClick={orderDelivered} disabled={loading}>
+                                <LuCircleCheck className='buttonIcons' />
+                                {loading ? 'UPDATING...' : 'DELIVERED'}
                             </button>
                             <button className='popupBtn cancelBtn'>
                                 <LuCircleX className='buttonIcons' />
