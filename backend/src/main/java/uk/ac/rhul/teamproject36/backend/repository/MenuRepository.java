@@ -19,7 +19,7 @@ public interface MenuRepository extends JpaRepository<MenuItem, Long> {
      *
      * @param itemType optional item type filter (FOOD/DESSERT/DRINK)
      * @param vegetarian optional vegetarian filter
-     * @param halal optional halal filter
+     * @param meat optional meat filter
      * @param maxCalories optional max calories filter
      * @param allergen optional allergen substring filter
      * @return filtered menu items
@@ -28,14 +28,14 @@ public interface MenuRepository extends JpaRepository<MenuItem, Long> {
         SELECT m FROM MenuItem m
         WHERE (:itemType IS NULL OR m.itemType = :itemType)
           AND (:vegetarian IS NULL OR m.vegetarian = :vegetarian)
-          AND (:halal IS NULL OR m.halal = :halal)
+          AND (:meat IS NULL OR m.meat = :meat)
           AND (:maxCalories IS NULL OR m.calories <= :maxCalories)
           AND (:allergen IS NULL OR LOWER(m.allergens) LIKE LOWER(CONCAT('%', :allergen, '%')))
         """)
     List<MenuItem> findFiltered(
         @Param("itemType") ItemType itemType,
         @Param("vegetarian") Boolean vegetarian,
-        @Param("halal") Boolean halal,
+        @Param("meat") Boolean meat,
         @Param("maxCalories") Integer maxCalories,
         @Param("allergen") String allergen);
 }
