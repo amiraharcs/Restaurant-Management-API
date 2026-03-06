@@ -11,6 +11,7 @@ import {
 } from "./api/alertsApi";
 import { getReadyOrders, deliverOrder } from "./api/waiterApi";
 import type { OrderResponse } from "./api/waiterApi";
+
 import StaffWelcome from "./data/components/StaffWelcome";
 
 type CallWaiterAlert = {
@@ -68,8 +69,10 @@ export default function Alerts() {
         setCallWaiterAlerts([]);
       }
 
-      if (mockAlertsData) {
-        setOrdersReady(mockAlertsData.mockOrdersReady || []);
+      try {
+        setOrdersReady(await getReadyOrders());
+      } catch {
+        setOrdersReady([]);
       }
     };
 
@@ -80,6 +83,9 @@ export default function Alerts() {
     const refreshTimer = window.setInterval(async () => {
       try {
         setCallWaiterAlerts(await fetchCallWaiterAlerts());
+      } catch {}
+      try {
+        setOrdersReady(await getReadyOrders());
       } catch {}
     }, 5000);
 
@@ -107,15 +113,19 @@ export default function Alerts() {
     setShowDetails(false);
   };
 
-  const handleMarkOrderHandled = (id: string) => {
-    setOrdersReady((alerts) =>
-      alerts.map((a) => (a.id === id ? { ...a, handled: true } : a)),
-    );
+  const handleMarkOrderHandled = async (id: string) => {
+    try {
+      await deliverOrder(Number(id));
+    } catch {
+      return;
+    }
+    // Remove the delivered order from the list
+    setOrdersReady((orders) => orders.filter((o) => o.id !== id));
     setShowDetails(false);
   };
 
   const unhandledCallWaiterAlerts = callWaiterAlerts.filter((a) => !a.handled);
-  const unhandledOrdersReady = ordersReady.filter((a) => !a.handled);
+  const unhandledOrdersReady = ordersReady;
   const totalNotifications = getTotalNotifications(
     unhandledCallWaiterAlerts,
     unhandledOrdersReady,
@@ -217,7 +227,7 @@ export default function Alerts() {
                         Table No. {order.tableNumber}
                       </div>
                       <div className="orderPlacedAt">
-                        Placed {timeAgo(order.placedAt, nowMs)}
+                        Placed {timeAgo(order.createdAt, nowMs)}
                       </div>
                     </div>
                     <div className="orderLine" />
