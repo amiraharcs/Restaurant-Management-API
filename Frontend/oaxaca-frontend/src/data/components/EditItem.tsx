@@ -146,6 +146,7 @@ export default function EditItem({item, onClose} : any ) {
         };
 
         await editMenuItem(item.id, updatedItem)
+        window.location.reload()
     } catch (error: any) {
         setErrors({
             api: error.message || "Failed to update product. Please try again."

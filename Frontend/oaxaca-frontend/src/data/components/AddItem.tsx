@@ -142,6 +142,7 @@ export default function AddItem({ onClose }: any) {
 
       await addMenuItem(newItem);
       onClose?.();
+      window.location.reload();
     } catch (error: any) {
       setErrors({
         api: error.message || "Failed to add product. Please try again.",
