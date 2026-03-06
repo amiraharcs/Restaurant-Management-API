@@ -58,7 +58,7 @@ public final class MenuService {
      *
      * @param itemType filter by item type
      * @param vegetarian filter vegetarian items
-     * @param halal filter halal items
+     * @param meat filter meat items
      * @param vegan filter vegan items
      * @param glutenFree filter gluten-free items
      * @param maxCalories maximum calories
@@ -74,8 +74,8 @@ public final class MenuService {
         final boolean vegetarian =
                 filters != null && filters.contains("is_vegetarian");
 
-        final boolean halal =
-                filters != null && filters.contains("is_halal");
+        final boolean meat =
+                filters != null && filters.contains("is_meat");
 
         final boolean vegan =
                 filters != null && filters.contains("is_vegan");
@@ -87,7 +87,7 @@ public final class MenuService {
                 menuRepository.findFiltered(
                         itemType,
                         vegetarian,
-                        halal,
+                        meat,
                         maxCalories,
                         allergen);
 
@@ -99,14 +99,14 @@ public final class MenuService {
      * Builds a list of active filter names based on Boolean values.
      *
      * @param vegetarian vegetarian flag
-     * @param halal halal flag
+     * @param meat meat flag
      * @param vegan vegan flag
      * @param glutenFree gluten-free flag
      * @return list of active filter names
      */
     private List<String> buildActiveFilters(
             final Boolean vegetarian,
-            final Boolean halal,
+            final Boolean meat,
             final Boolean vegan,
             final Boolean glutenFree) {
 
@@ -116,8 +116,8 @@ public final class MenuService {
             filters.add("is_vegetarian");
         }
 
-        if (Boolean.TRUE.equals(halal)) {
-            filters.add("is_halal");
+        if (Boolean.TRUE.equals(meat)) {
+            filters.add("is_meat");
         }
 
         if (Boolean.TRUE.equals(vegan)) {
@@ -224,7 +224,7 @@ public final class MenuService {
             final boolean vegetarian = item.isVegetarian();
             final boolean vegan = item.isVegan();
 
-            // Frontend expects: Vegetarian / Vegan / GlutenFree / Halal / Meat
+            // Frontend expects: Vegetarian / Vegan / GlutenFree / Meat
             if (vegan) {
                 filters.add("Vegan");
                 // Many frontends treat vegan as vegetarian as well
@@ -233,17 +233,14 @@ public final class MenuService {
                 }
             } else if (vegetarian) {
                 filters.add("Vegetarian");
-            } else {
-                // Not vegetarian and not vegan => Meat
-                filters.add("Meat");
             }
 
             if (item.isGlutenFree()) {
                 filters.add("GlutenFree");
             }
 
-            if (item.isHalal()) {
-                filters.add("Halal");
+            if (item.isMeat()) {
+                filters.add("Meat");
             }
 
             return filters;
@@ -309,7 +306,7 @@ public MenuItem editMenuItem(final Long id, final MenuItem updatedItem) {
     existing.setAvailable(updatedItem.isAvailable());
     existing.setImageUrl(updatedItem.getImageUrl());
     existing.setVegetarian(updatedItem.isVegetarian());
-    existing.setHalal(updatedItem.isHalal());
+    existing.setMeat(updatedItem.isMeat());
     existing.setVegan(updatedItem.isVegan());
     existing.setGlutenFree(updatedItem.isGlutenFree());
     existing.setItemType(updatedItem.getItemType());
