@@ -49,15 +49,19 @@ export default function Waiter() {
     const [orders, setOrders] = useState<OrderResponse[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
     // dummy data from waiter.json
     //const orders = (orderData as { orders: Order[]}).orders;
 
-    async function fetchOrders() {
+    async function fetchOrders(isInitial = false) {
         try {
             setLoading(true);
             const data = await getAllOrders();
             setOrders(data);
+            if (isInitial) {
+                setIsInitialLoad(false);
+            }
         } catch (err) {
             setError('Failed to fetch orders');
         } finally {
@@ -66,7 +70,7 @@ export default function Waiter() {
     }
 
     useEffect(() => {
-        fetchOrders();
+        fetchOrders(true);
 
         const interval = setInterval(fetchOrders, 5000);
 
@@ -147,8 +151,13 @@ export default function Waiter() {
                     <div className='topDivider' />
 
                     <div className='orderList'>
-                        { (loading && <div className='emptyList'> Orders are currently loading... </div>) || 
-                                    (filterOrders(activeTab).length === 0 && <div className='emptyList'> No orders in this section </div>) }
+                        {isInitialLoad && loading && (
+                            <div className='emptyList'> Orders are currently loading... </div>
+                        )}
+                        
+                        {!isInitialLoad && filterOrders(activeTab).length === 0 && (
+                            <div className='emptyList'> No orders in this section </div>
+                        )}
 
                         {error && <div className='emptyList'> {error} </div> }
 
