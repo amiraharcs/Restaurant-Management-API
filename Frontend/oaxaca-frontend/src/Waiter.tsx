@@ -53,19 +53,19 @@ export default function Waiter() {
     // dummy data from waiter.json
     //const orders = (orderData as { orders: Order[]}).orders;
 
-    useEffect(() => {
-        async function fetchOrders() {
-            try {
-                setLoading(true);
-                const data = await getAllOrders();
-                setOrders(data);
-            } catch (err) {
-                setError('Failed to fetch orders');
-            } finally {
-                setLoading(false);
-            }
+    async function fetchOrders() {
+        try {
+            setLoading(true);
+            const data = await getAllOrders();
+            setOrders(data);
+        } catch (err) {
+            setError('Failed to fetch orders');
+        } finally {
+            setLoading(false);
         }
+    }
 
+    useEffect(() => {
         fetchOrders();
 
         const interval = setInterval(fetchOrders, 5000);
@@ -189,7 +189,7 @@ export default function Waiter() {
                     </div>
                 </div>
             </div>
-            {showOrderDetails && <OrderDetails order={selectedOrder} placedAtTime={orderDetailsPlacedAt} onClose={() => {
+            {showOrderDetails && <OrderDetails order={selectedOrder} placedAtTime={orderDetailsPlacedAt} role="waiter" onOrderUpdated={fetchOrders} onClose={() => {
                 setShowOrderDetails(false)
                 setSelectedOrder({})
             }}/>}
