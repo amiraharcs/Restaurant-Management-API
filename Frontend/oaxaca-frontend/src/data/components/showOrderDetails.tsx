@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import '../../css/Waiter.css';
 import { LuCircleCheck, LuCircleX, LuX } from 'react-icons/lu';
-import { confirmOrder, deliverOrder } from '../../api/waiterApi';
+import { cancelOrder, confirmOrder, deliverOrder } from '../../api/waiterApi';
 
 export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdated}: any) {
     const [loading, setLoading] = useState(false);
@@ -28,6 +28,19 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
             onClose();
         } catch {
             setError('Failed to mark order as delivered');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function orderCancelled() {
+        try {
+            setLoading(true);
+            await cancelOrder(order.id);
+            onOrderUpdated?.();
+            onClose();
+        } catch {
+            setError('Failed to mark order as cancelled');
         } finally {
             setLoading(false);
         }
@@ -85,7 +98,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                                 <LuCircleCheck className='buttonIcons' />
                                 {loading ? 'CONFIRMING...' : 'CONFIRM'}
                             </button>
-                            <button className='popupBtn cancelBtn'>
+                            <button className='popupBtn cancelBtn' onClick={orderCancelled}>
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
                             </button>
@@ -98,7 +111,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                                 <LuCircleCheck className='buttonIcons' />
                                 CONFIRM
                             </button>
-                            <button className='popupBtn cancelBtn'>
+                            <button className='popupBtn cancelBtn' onClick={orderCancelled}>
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
                             </button>
@@ -111,7 +124,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                                 <LuCircleCheck className='buttonIcons' />
                                 DELIVERED
                             </button>
-                            <button className='popupBtn cancelBtn'>
+                            <button className='popupBtn cancelBtn' onClick={orderCancelled}>
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
                             </button>
@@ -124,7 +137,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                                 <LuCircleCheck className='buttonIcons' />
                                 {loading ? 'UPDATING...' : 'DELIVERED'}
                             </button>
-                            <button className='popupBtn cancelBtn'>
+                            <button className='popupBtn cancelBtn' onClick={orderCancelled}>
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
                             </button>
