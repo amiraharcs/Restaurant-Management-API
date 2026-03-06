@@ -1,29 +1,17 @@
 import { useEffect, useState } from "react";
 import "./css/Kitchen.css";
 import { LuChevronRight } from "react-icons/lu";
-import orderData from "./data/waiter.json";
 import NavBarKitchen from "./data/components/NavBarKitchen";
 import OrderDetails from "./data/components/showOrderDetails";
 import StaffFooter from "./data/components/StaffFooter";
 import StaffWelcome from "./data/components/StaffWelcome";
+import { getAllOrders } from "./api/waiterApi";
+import type { OrderResponse } from "./api/waiterApi";
 
-type KitchenStatus = "new" | "preparing" | "ready";
+type KitchenStatus = "new" | "preparing";
 
-type KitchenOrder = {
-    orderId: string;
-    customerName: string;
-    tableNo: number;
-    placedAt: string;
-    status: KitchenStatus;
-    items: { name: string; qty: number }[];
-};
-
-function pendingItemsSum(items: { qty: number }[]) {
-    let count = 0;
-    Object.values(items).forEach((item) => {
-        count += item.qty;
-    });
-    return count;
+function pendingItemsSum(items: { quantity: number }[]) {
+    return items.reduce((sum, item) => sum + item.quantity, 0);
 }
 
 function calculatePlacedAt(ms: number) {
@@ -36,33 +24,47 @@ function calculatePlacedAt(ms: number) {
 
 export default function Kitchen() {
     const [activeTab, setActiveTab] = useState<KitchenStatus>("new");
+    const [orders, setOrders] = useState<OrderResponse[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
     const [now, setNow] = useState(Date.now());
     const [showOrderDetails, setShowOrderDetails] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState<KitchenOrder | null>(null);
+    const [selectedOrder, setSelectedOrder] = useState<OrderResponse | null>(null);
     const [orderDetailsPlacedAt, setOrderDetailsPlacedAt] = useState("");
+
+    async function fetchOrders() {
+        try {
+            setLoading(true);
+            const data = await getAllOrders();
+            setOrders(data);
+        } catch {
+            setError("Failed to fetch orders");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchOrders();
+        const interval = setInterval(fetchOrders, 5000);
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         const timer = setInterval(() => setNow(Date.now()), 1000);
         return () => clearInterval(timer);
     }, []);
 
-    const orders = (orderData as { orders: KitchenOrder[] }).orders;
-
     function filterOrders(tab: KitchenStatus) {
-        return orders.filter((order) => order.status === tab);
+        if (tab === "new") return orders.filter((o) => o.status === "CONFIRMED");
+        return orders.filter((o) => o.status === "PREPARING");
     }
 
     function calculateTabs() {
-        const count = {
-            new: 0,
-            preparing: 0,
-            ready: 0,
+        return {
+            new: orders.filter((o) => o.status === "CONFIRMED").length,
+            preparing: orders.filter((o) => o.status === "PREPARING").length,
         };
-
-        for (const order of orders) {
-            count[order.status] += 1;
-        }
-        return count;
     }
 
     return (
@@ -88,16 +90,10 @@ export default function Kitchen() {
                             Preparing ({calculateTabs().preparing})
                         </button>
 
-                        <button
-                            className={`orderTab ${activeTab === "ready" ? "active" : ""}`}
-                            onClick={() => setActiveTab("ready")}
-                        >
-                            Ready ({calculateTabs().ready})
-                        </button>
                     </div>
 
                     <div className="orderTitle">
-                        <h2>{activeTab.toUpperCase()} ORDERS</h2>
+                        <h2>{activeTab === "new" ? "NEW ORDERS" : "BEING PREPARED"}</h2>
                     </div>
 
                     <div className="topDivider" />
@@ -107,13 +103,16 @@ export default function Kitchen() {
                             <div className="emptyList"> No orders in this section </div>
                         )}
 
+                        {loading && <div className="emptyList">Loading orders...</div>}
+                        {error && <div className="emptyList">{error}</div>}
+
                         {filterOrders(activeTab).map((order) => {
-                            const placedMs = new Date(order.placedAt).getTime();
+                            const placedMs = new Date(order.createdAt).getTime();
                             const ageMs = now - placedMs;
 
                             return (
                                 <div
-                                    key={order.orderId}
+                                    key={order.id}
                                     className="orderRow"
                                     role="button"
                                     onClick={() => {
@@ -124,7 +123,7 @@ export default function Kitchen() {
                                 >
                                     <div className="orderLeft">
                                         <div className="orderTopLeft">
-                                            <div className="orderId">Order #{order.orderId}</div>
+                                            <div className="orderId">Order #{order.id}</div>
                                         </div>
                                         <div className="orderCustomerName">{order.customerName}</div>
                                     </div>
@@ -132,7 +131,7 @@ export default function Kitchen() {
                                     <div className="orderLine" />
 
                                     <div className="orderMiddle">
-                                        <div className="orderTableNo">Table No. {order.tableNo}</div>
+                                        <div className="orderTableNo">Table No. {order.tableNumber}</div>
                                         <div className="orderPlacedAt">
                                             Placed {calculatePlacedAt(ageMs)}
                                         </div>
@@ -161,10 +160,12 @@ export default function Kitchen() {
                 <OrderDetails
                     order={selectedOrder}
                     placedAtTime={orderDetailsPlacedAt}
+                    role="kitchen"
                     onClose={() => {
                         setShowOrderDetails(false);
                         setSelectedOrder(null);
                     }}
+                    onOrderUpdated={fetchOrders}
                 />
             )}
 

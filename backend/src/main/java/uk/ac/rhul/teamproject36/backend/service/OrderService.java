@@ -193,10 +193,6 @@ public class OrderService {
 
 
 
-
-
-
-<<<<<<< backend/src/main/java/uk/ac/rhul/teamproject36/backend/service/OrderService.java
     @Transactional(readOnly = true)
     public List<OrderDto> getOrdersByStatus(OrderStatus status) {
         List<CustomerOrder> orders = orderRepository.findByStatus(status);
@@ -208,9 +204,9 @@ public class OrderService {
 
         return result;
     }
-=======
+
     /**
-     * Cancels an order if it is not already READY, DELIVERED, or CANCELLED.
+     * Cancels an order if it is not already DELIVERED or CANCELLED.
      */
     @Transactional
     public OrderDto cancelOrder(Long id) {
@@ -246,8 +242,6 @@ public class OrderService {
 
       return toOrderDto(order);
     }
-
->>>>>>> backend/src/main/java/uk/ac/rhul/teamproject36/backend/service/OrderService.java
 
 }
 

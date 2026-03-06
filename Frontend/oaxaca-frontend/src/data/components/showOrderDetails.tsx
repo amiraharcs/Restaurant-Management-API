@@ -1,18 +1,49 @@
 import { useState } from 'react';
 import '../../css/Waiter.css';
 import { LuCircleCheck, LuCircleX, LuX } from 'react-icons/lu';
-import { confirmOrder } from '../../api/waiterApi';
+import { confirmOrder, acceptOrder, markReady } from '../../api/waiterApi';
 
-export default function OrderDetails({order, placedAtTime, onClose}: any) {
+export default function OrderDetails({order, placedAtTime, onClose, role = "waiter", onOrderUpdated}: any) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
+    // Waiter confirms a newly placed order → CONFIRMED (goes to kitchen)
     async function orderConfirmed() {
         try {
             setLoading(true);
             await confirmOrder(order.id);
-        } catch (err) {
+            onOrderUpdated?.();
+            onClose();
+        } catch {
             setError('Failed to confirm order');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    // Kitchen accepts a confirmed order → PREPARING
+    async function orderAccepted() {
+        try {
+            setLoading(true);
+            await acceptOrder(order.id);
+            onOrderUpdated?.();
+            onClose();
+        } catch {
+            setError('Failed to accept order');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    // Kitchen marks a preparing order as ready → READY (appears in waiter's Ready tab)
+    async function orderMarkedReady() {
+        try {
+            setLoading(true);
+            await markReady(order.id);
+            onOrderUpdated?.();
+            onClose();
+        } catch {
+            setError('Failed to mark order as ready');
         } finally {
             setLoading(false);
         }
@@ -64,13 +95,13 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                     
                     {error && <div className='orderDetailsButtons'> {error} </div>}
 
-                    {order.status === "PLACED" && (
+                    {/* Waiter: confirm a new order → sends it to kitchen */}
+                    {role === "waiter" && order.status === "PLACED" && (
                         <div className='orderDetailsButtons'>
-                            <button className='popupBtn confirmBtn' onClick={orderConfirmed}>
+                            <button className='popupBtn confirmBtn' onClick={orderConfirmed} disabled={loading}>
                                 <LuCircleCheck className='buttonIcons' />
                                 {loading ? 'CONFIRMING...' : 'CONFIRM'}
                             </button>
-
                             <button className='popupBtn cancelBtn'>
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
@@ -78,13 +109,13 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                         </div>
                     )}
 
-                    {order.status === "CONFIRMED" && (
+                    {/* Kitchen: accept a confirmed order → moves to preparing */}
+                    {role === "kitchen" && order.status === "CONFIRMED" && (
                         <div className='orderDetailsButtons'>
-                            <button className='popupBtn confirmBtn disabled' disabled>
+                            <button className='popupBtn confirmBtn' onClick={orderAccepted} disabled={loading}>
                                 <LuCircleCheck className='buttonIcons' />
-                                CONFIRM
+                                {loading ? 'ACCEPTING...' : 'ACCEPT'}
                             </button>
-
                             <button className='popupBtn cancelBtn'>
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
@@ -92,27 +123,13 @@ export default function OrderDetails({order, placedAtTime, onClose}: any) {
                         </div>
                     )}
 
-                    {order.status === "PREPARING" && (
+                    {/* Kitchen: mark a preparing order as ready → appears in waiter's Ready tab */}
+                    {role === "kitchen" && order.status === "PREPARING" && (
                         <div className='orderDetailsButtons'>
-                            <button className='popupBtn deliveredBtn disabled' disabled>
+                            <button className='popupBtn deliveredBtn' onClick={orderMarkedReady} disabled={loading}>
                                 <LuCircleCheck className='buttonIcons' />
-                                DELIVERED
+                                {loading ? 'UPDATING...' : 'MARK READY'}
                             </button>
-
-                            <button className='popupBtn cancelBtn'>
-                                <LuCircleX className='buttonIcons' />
-                                CANCEL
-                            </button>
-                        </div>
-                    )}
-
-                    {order.status === "READY" && (
-                        <div className='orderDetailsButtons'>
-                            <button className='popupBtn deliveredBtn'>
-                                <LuCircleCheck className='buttonIcons' />
-                                DELIVERED
-                            </button>
-
                             <button className='popupBtn cancelBtn'>
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL

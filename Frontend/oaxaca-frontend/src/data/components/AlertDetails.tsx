@@ -22,7 +22,7 @@ export default function AlertDetails({ alert, onClose, onMarkHandled, isOrderRea
               <div className='orderDetailsInfo'>
                 <div className='infoRow'><p className='infoKey'>Customer :</p><p className='infoValue'>{alert.customerName}</p></div>
                 <div className='infoRow'><p className='infoKey'>Table :</p><p className='infoValue'>{alert.tableNumber}</p></div>
-                <div className='infoRow'><p className='infoKey'>Placed :</p><p className='infoValue'>{timeAgo(alert.placedAt)}</p></div>
+                <div className='infoRow'><p className='infoKey'>Placed :</p><p className='infoValue'>{timeAgo(alert.createdAt)}</p></div>
                 <div className='infoRow'><p className='infoKey'>Status :</p><p className='infoValue'>{alert.status}</p></div>
               </div>
               <div className='orderDetailsItems'>
@@ -30,7 +30,7 @@ export default function AlertDetails({ alert, onClose, onMarkHandled, isOrderRea
                 <div className='itemsList'>
                   {alert.items.map((item: any, index: number) => (
                     <div key={`${item.name}${index}`} className='itemsRow'>
-                      <p className='itemQuantity'>{item.qty}x</p>
+                      <p className='itemQuantity'>{item.quantity}x</p>
                       <p>{item.name}</p>
                     </div>
                   ))}

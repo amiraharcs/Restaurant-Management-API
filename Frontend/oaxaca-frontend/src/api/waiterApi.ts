@@ -117,3 +117,27 @@ export async function getAllOrders(): Promise<OrderResponse[]> {
     if (!res.ok) throw new Error(`Get all orders failed: ${res.status}`);
     return res.json();
 }
+
+export async function acceptOrder(id: number) {
+    const res = await fetch(`${API_BASE}/api/orders/${id}/accept`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Accept order failed: ${res.status}`);
+    return res.json();
+}
+
+export async function markReady(id: number) {
+    const res = await fetch(`${API_BASE}/api/orders/${id}/ready`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Mark ready failed: ${res.status}`);
+    return res.json();
+}
+
+export async function getReadyOrders(): Promise<OrderResponse[]> {
+    const res = await fetch(`${API_BASE}/api/orders/status/READY`);
+    if (!res.ok) throw new Error(`Get ready orders failed: ${res.status}`);
+    return res.json();
+}
+
+export async function deliverOrder(id: number) {
+    const res = await fetch(`${API_BASE}/api/orders/${id}/deliver`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Deliver order failed: ${res.status}`);
+    return res.json();
+}
