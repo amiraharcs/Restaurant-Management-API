@@ -31,7 +31,10 @@ export type MenuItemDto = {
   available: boolean;
   ingredients: IngredientDto[];
   allergens: String;
-  filters: FilterDto[];
+  vegetarian: Boolean;
+  vegan: Boolean;
+  glutenFree: Boolean;
+  meat: Boolean;
   imageUrl: string;
   itemType: "FOOD" | "DESSERT" | "DRINK";
 };

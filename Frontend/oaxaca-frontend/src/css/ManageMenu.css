@@ -514,6 +514,12 @@
   margin-top: 0px;
 }
 
+.edit_item_form_filter {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
 .edit_item_form_select {
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -767,6 +773,12 @@
   border: 1px solid #ccc;
   font-size: 0.9rem;
   margin-top: 0px;
+}
+
+.add_item_form_filter {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
 }
 
 .add_item_form_select {
