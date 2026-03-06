@@ -32,7 +32,7 @@ export default function NavBarKitchen() {
     <main>
       <nav className={`kitchenNavbar${show ? "" : " kitchenNavbar--hidden"}`}>
         <NavLink to="/kitchen" className="kitchenNavbar__brand">
-          OAXACA
+          <img src="/images/main/logo.png" alt="OAXACA" className="kitchenNavbar__logoImg" />
         </NavLink>
 
         <div className="kitchenNavbar__center">

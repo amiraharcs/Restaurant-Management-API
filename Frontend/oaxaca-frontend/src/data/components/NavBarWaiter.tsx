@@ -43,7 +43,7 @@ export default function NavBarWaiter({
     <main>
       <nav className={`waiterNavbar${show ? "" : " waiterNavbar--hidden"}`}>
         <NavLink to="/waiter" className="waiterNavbar__brand">
-          OAXACA
+          <img src="/images/main/logo.png" alt="OAXACA" className="waiterNavbar__logoImg" />
         </NavLink>
 
         <div className="waiterNavbar__center">

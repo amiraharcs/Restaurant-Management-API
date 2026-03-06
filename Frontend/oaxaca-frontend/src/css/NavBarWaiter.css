@@ -22,11 +22,14 @@
 .waiterNavbar__brand {
     justify-self: start;
     text-decoration: none;
-    color: #d41445;
-    font-size: 3.9rem;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+}
+
+.waiterNavbar__logoImg {
+    height: 60px;
+    width: auto;
+    display: block;
 }
 
 .waiterNavbar__center {
@@ -117,9 +120,6 @@
         gap: 10px;
     }
 
-    .waiterNavbar__brand {
-        font-size: 2.6rem;
-    }
 
     .waiterNavbar__center {
         gap: 22px;
