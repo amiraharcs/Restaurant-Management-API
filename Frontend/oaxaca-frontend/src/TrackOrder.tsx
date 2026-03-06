@@ -5,47 +5,68 @@ import "./css/TrackOrder.css";
 import { useState } from "react";
 import orderData from "./data/waiter.json";
 import { LuChefHat, LuCircleCheck, LuClipboardList, LuThumbsUp, LuUtensils } from "react-icons/lu";
+import { getOrder } from "./api/waiterApi";
 
-type status = "received" | "confirmed" | "preparing" | "ready" | "served";
-type OrderResponse = {
-    orderId: string;
-    customerName: string;
-    tableNo: number;
-    placedAt: string;
+type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED";
+export type OrderResponse = {
+    id: string;
     status: status;
-    items: { name: string; qty: number }[];
+    createdAt: string;
+    tableNumber: number;
+    customerName: string;
+    customerPhoneNumber: string;
+    items: { menuItemId: number; name: string; quantity: number }[];
 };
-type MockData = { orders: OrderResponse[] };
-const typedOrderData = orderData as MockData;
+//type MockData = { orders: OrderResponse[] };
+//onst typedOrderData = orderData as MockData;
 
 const steps = [
-    { id: "received", title: "Order received", icon: <LuClipboardList />},
-    { id: "confirmed", title: "Order confirmed", icon: <LuThumbsUp />},
-    { id: "preparing", title: "Being prepared", icon: <LuChefHat />},
-    { id: "ready", title: "Ready for service", icon: <LuUtensils />},
-    { id: "served", title: "Order served", icon: <LuCircleCheck />},
+    { id: "PLACED", title: "Order received", icon: <LuClipboardList />},
+    { id: "CONFIRMED", title: "Order confirmed", icon: <LuThumbsUp />},
+    { id: "PREPARING", title: "Being prepared", icon: <LuChefHat />},
+    { id: "READY", title: "Ready for service", icon: <LuUtensils />},
+    { id: "DELIVERED", title: "Order served", icon: <LuCircleCheck />},
 ]
 
 export default function TrackOrder() {
     const [orderNo, setOrderNo] = useState("");
     const [order , setOrder] = useState<OrderResponse | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
     async function submitTrackOrder() {
-        if (!orderNo.trim()) return;
-
-        const foundOrder = typedOrderData.orders.find(
-            (o) => o.orderId === orderNo.trim()
-        );
-
-        if (!foundOrder) {
-            setOrder(null);
-            setError("Order number not found. Please read the message above and try again");
+        if (!orderNo.trim()) {
+            setError("Invalid order number format");
             return;
         }
 
-        setError(null);
-        setOrder(foundOrder);
+        const orderNum: number = Number(orderNo);
+        if (isNaN(orderNum)) {
+            setError("Invalid order number format");
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const foundOrder = await getOrder(orderNum);
+
+            if (!foundOrder) {
+                setOrder(null);
+                setError("Order number not found. Please read the message above and try again");
+                return;
+            }
+
+            setError(null);
+            setOrder(foundOrder);
+        } catch (err) {
+            setError('Failed to fetch order details');
+        } finally {
+            setLoading(false);
+        }
+        // Mock data
+        /*const foundOrder = typedOrderData.orders.find(
+            (o) => o.orderId === orderNo.trim()
+        );*/
     }
 
     function handleReset() {
@@ -60,7 +81,7 @@ export default function TrackOrder() {
         activeIndex = steps.findIndex((s) => s.id === activeStep);
     }
 
-    const served = activeStep === "served";
+    const served = activeStep === "DELIVERED";
 
     return (
         <main>
@@ -91,13 +112,13 @@ export default function TrackOrder() {
                                     className="trackOrderInput"
                                     value={orderNo}
                                     onChange={(e) => setOrderNo(e.target.value)}
-                                    placeholder="019"
+                                    placeholder="e.g 8"
                                     pattern="[0-9]*"
-                                    minLength={3}
+                                    minLength={1}
                                 />
 
                                 <button className="trackOrderButton" type="submit" disabled={!orderNo.trim()}>
-                                    Track Progress
+                                    {loading ? 'Tracking Progress...' : 'Track Progress'}
                                 </button>
 
                                 <p className="trackOrderHint">You can find your order number on your receipt or confirmation page.</p>
