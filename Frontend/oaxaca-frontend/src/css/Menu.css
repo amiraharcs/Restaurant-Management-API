@@ -164,7 +164,7 @@
     object-fit: cover;
 }
 
-section {
+.menu_content section {
     margin-left: 1.2rem;
     margin-right: 1.2rem;
     margin-bottom: 1rem;

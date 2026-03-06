@@ -1,4 +1,7 @@
 
+.main_page {
+  background-color: #0e0a04;
+}
 
 .Title {
   min-height: 100vh;
@@ -8,6 +11,7 @@
   align-items: center;
   position: relative;
   box-sizing: border-box;
+  padding-top: 80px;
   background-image: url("/images/main/mexican_background.jpg");
   background-size: cover;
   background-position: center;
@@ -28,7 +32,7 @@
 }
 
 .main-btn {
-  background: #17684a;
+  background: #f8b607;
   color: #fff;
   border: none;
   border-radius: 3rem;
@@ -44,11 +48,11 @@
 }
 
 .main-btn:hover {
-  background: #168968;
+  background: #f9880e;
   transform: translateY(-1px) scale(1.02);
 }
 .main-btn.track-btn {
-  background: #17684a69;
+  background: #d1b20190;
 }
 
 
