@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./css/Kitchen.css";
 import { LuChevronRight } from "react-icons/lu";
 import NavBarKitchen from "./data/components/NavBarKitchen";
-import OrderDetails from "./data/components/showOrderDetails";
+import KitchenOrderDetails from "./data/components/KitchenOrderDetails";
 import StaffFooter from "./data/components/StaffFooter";
 import StaffWelcome from "./data/components/StaffWelcome";
 import { getAllOrders } from "./api/waiterApi";
@@ -157,10 +157,9 @@ export default function Kitchen() {
             </div>
 
             {showOrderDetails && selectedOrder && (
-                <OrderDetails
+                <KitchenOrderDetails
                     order={selectedOrder}
                     placedAtTime={orderDetailsPlacedAt}
-                    role="kitchen"
                     onClose={() => {
                         setShowOrderDetails(false);
                         setSelectedOrder(null);
