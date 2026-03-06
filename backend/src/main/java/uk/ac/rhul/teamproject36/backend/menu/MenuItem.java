@@ -70,9 +70,9 @@ public final class MenuItem {
     @Column(name = "is_vegetarian")
     private boolean vegetarian;
 
-    /** Whether the item is halal. */
-    @Column(name = "is_halal")
-    private boolean halal;
+    /** Whether the item is meat. */
+    @Column(name = "is_meat")
+    private boolean meat;
 
     /** The item type (FOOD, DESSERT, DRINK). */
     @Enumerated(EnumType.STRING)
@@ -172,12 +172,12 @@ public final class MenuItem {
         this.vegetarian = newVegetarian;
     }
 
-    public boolean isHalal() {
-        return halal;
+    public boolean isMeat() {
+        return meat;
     }
 
-    public void setHalal(final boolean newHalal) {
-        this.halal = newHalal;
+    public void setMeat(boolean meat) {
+        this.meat = meat;
     }
 
     public ItemType getItemType() {
