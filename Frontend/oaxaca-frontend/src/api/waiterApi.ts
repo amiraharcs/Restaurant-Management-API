@@ -141,3 +141,9 @@ export async function deliverOrder(id: number) {
     if (!res.ok) throw new Error(`Deliver order failed: ${res.status}`);
     return res.json();
 }
+
+export async function cancelOrder(id: number) {
+    const res = await fetch(`${API_BASE}/api/orders/${id}/cancel`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Cancel order failed: ${res.status}`);
+    return res.json();
+}

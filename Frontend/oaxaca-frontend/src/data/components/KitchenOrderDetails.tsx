@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import '../../css/Waiter.css';
 import { LuCircleCheck, LuCircleX, LuX } from 'react-icons/lu';
-import { acceptOrder, markReady } from '../../api/waiterApi';
+import { acceptOrder, markReady, cancelOrder } from '../../api/waiterApi';
 
 export default function KitchenOrderDetails({order, placedAtTime, onClose, onOrderUpdated}: any) {
     const [loading, setLoading] = useState(false);
@@ -30,6 +30,19 @@ export default function KitchenOrderDetails({order, placedAtTime, onClose, onOrd
             onClose();
         } catch {
             setError('Failed to mark order as ready');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function orderCancelled() {
+        try {
+            setLoading(true);
+            await cancelOrder(order.id);
+            onOrderUpdated?.();
+            onClose();
+        } catch {
+            setError('Failed to mark order as cancelled');
         } finally {
             setLoading(false);
         }
@@ -87,7 +100,7 @@ export default function KitchenOrderDetails({order, placedAtTime, onClose, onOrd
                                 <LuCircleCheck className='buttonIcons' />
                                 {loading ? 'ACCEPTING...' : 'ACCEPT'}
                             </button>
-                            <button className='popupBtn cancelBtn'>
+                            <button className='popupBtn cancelBtn' onClick={orderCancelled}>
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
                             </button>
@@ -100,7 +113,7 @@ export default function KitchenOrderDetails({order, placedAtTime, onClose, onOrd
                                 <LuCircleCheck className='buttonIcons' />
                                 {loading ? 'UPDATING...' : 'MARK READY'}
                             </button>
-                            <button className='popupBtn cancelBtn'>
+                            <button className='popupBtn cancelBtn' onClick={orderCancelled}>
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
                             </button>
