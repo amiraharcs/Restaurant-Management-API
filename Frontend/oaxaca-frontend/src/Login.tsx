@@ -3,7 +3,7 @@ import './css/Login.css'
 import { LuUser, LuLock, LuEye, LuEyeOff } from 'react-icons/lu'
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "./data/components/NavBar";
-import StaffFooter from "./data/components/StaffFooter";
+import Footer from "./data/components/Footer";
 import { postLogin } from './api/loginApi';
 import { setLoggedInStaffUsername } from "./data/components/staffSession";
 
@@ -110,7 +110,7 @@ export default function Login() {
                 </div>   
             </div>
 
-            <StaffFooter />
+            <Footer />
         </main>
     )
 }
