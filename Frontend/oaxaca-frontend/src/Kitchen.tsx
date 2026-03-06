@@ -27,16 +27,20 @@ export default function Kitchen() {
     const [orders, setOrders] = useState<OrderResponse[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
     const [now, setNow] = useState(Date.now());
     const [showOrderDetails, setShowOrderDetails] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState<OrderResponse | null>(null);
     const [orderDetailsPlacedAt, setOrderDetailsPlacedAt] = useState("");
 
-    async function fetchOrders() {
+    async function fetchOrders(isInitial = false) {
         try {
             setLoading(true);
             const data = await getAllOrders();
             setOrders(data);
+            if (isInitial) {
+                setIsInitialLoad(false);
+            }
         } catch {
             setError("Failed to fetch orders");
         } finally {
@@ -45,7 +49,7 @@ export default function Kitchen() {
     }
 
     useEffect(() => {
-        fetchOrders();
+        fetchOrders(true);
         const interval = setInterval(fetchOrders, 5000);
         return () => clearInterval(interval);
     }, []);
@@ -99,11 +103,14 @@ export default function Kitchen() {
                     <div className="topDivider" />
 
                     <div className="orderList">
-                        {filterOrders(activeTab).length === 0 && (
+                        {isInitialLoad && loading && (
+                            <div className="emptyList">Loading orders...</div>
+                        )}
+
+                        {!isInitialLoad && filterOrders(activeTab).length === 0 && (
                             <div className="emptyList"> No orders in this section </div>
                         )}
 
-                        {loading && <div className="emptyList">Loading orders...</div>}
                         {error && <div className="emptyList">{error}</div>}
 
                         {filterOrders(activeTab).map((order) => {

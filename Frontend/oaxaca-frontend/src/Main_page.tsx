@@ -11,8 +11,6 @@ export default function Home() {
       <main>
         <section className="Title">
           <div className="Title-content">
-            <h1>OAXACA</h1>
-            <p>authentic Mexican street food</p>
             <div className="main-buttons">
               <Link to="/menu" className="main-btn order-btn">Order Now</Link>
               <Link to="/track-order" className="main-btn track-btn">Track Order</Link>

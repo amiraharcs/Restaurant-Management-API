@@ -1,5 +1,6 @@
 .menu_main {
     background-color: #f7f7f7;
+    padding-top: 80px;
 }
 
 .menu_page_title {
@@ -164,7 +165,7 @@
     object-fit: cover;
 }
 
-section {
+.menu_content section {
     margin-left: 1.2rem;
     margin-right: 1.2rem;
     margin-bottom: 1rem;
