@@ -12,7 +12,7 @@ import { getAllOrders } from './api/waiterApi.ts';
 import type { OrderResponse } from './api/waiterApi.ts';
 import WaiterAlertsWaiter from './data/components/WaiterAlertsWaiter.tsx';
 
-type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED";
+type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
 
 function pendingItemsSum(items : { quantity: number }[]) {
     let count = 0;
@@ -95,7 +95,8 @@ export default function Waiter() {
             CONFIRMED: 0,
             PREPARING: 0,
             READY: 0,
-            DELIVERED: 0
+            DELIVERED: 0,
+            CANCELLED: 0
         };
         for ( const s of orders ) {
             count[s.status] += 1;

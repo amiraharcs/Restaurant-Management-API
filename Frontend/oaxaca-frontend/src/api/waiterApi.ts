@@ -1,6 +1,6 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
-export type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED";
+export type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
 
 export type OrderResponse = {
     id: string;
