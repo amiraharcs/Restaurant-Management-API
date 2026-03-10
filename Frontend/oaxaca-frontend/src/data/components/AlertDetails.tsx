@@ -2,10 +2,26 @@ import '../../css/Waiter.css';
 
 export default function AlertDetails({ alert, onClose, onMarkHandled, isOrderReady }: any) {
   function timeAgo(iso: string) {
-    const now = new Date();
-    const created = new Date(iso);
-    const mins = Math.floor((now.getTime() - created.getTime()) / 60000);
-    return mins <= 0 ? "Just now" : `${mins} minute${mins > 1 ? "s" : ""} ago`;
+    const now = Date.now();
+    const createdMs = new Date(iso).getTime();
+    const mins = Math.max(0, Math.floor((now - createdMs) / 60000));
+
+    if (mins < 1) return "Just now";
+    if (mins < 60) return `${mins} minute${mins > 1 ? "s" : ""} ago`;
+
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) {
+      const remainingMins = mins % 60;
+      return remainingMins === 0
+        ? `${hours} hour${hours > 1 ? "s" : ""} ago`
+        : `${hours}h ${remainingMins}m ago`;
+    }
+
+    const days = Math.floor(hours / 24);
+    const remainingHours = hours % 24;
+    return remainingHours === 0
+      ? `${days} day${days > 1 ? "s" : ""} ago`
+      : `${days}d ${remainingHours}h ago`;
   }
 
   return (
