@@ -15,11 +15,27 @@ function pendingItemsSum(items: { quantity: number }[]) {
 }
 
 function calculatePlacedAt(ms: number) {
-    const mins = Math.floor(ms / 60000);
-    if (mins < 1) {
+    const totalMins = Math.floor(ms / 60000);
+    const totalHours = Math.floor(totalMins / 60);
+
+    const days = Math.floor(totalHours / 24);   
+    const mins = totalMins % 60;
+    const hours = totalHours % 24;
+
+    if (totalMins < 1) {
         return "<1 minute ago";
     }
-    return `${mins} minutes ago`;
+    if (totalMins === 1) {
+        return "1 minute ago";
+    }
+    if (days > 0) {
+        return `${days}d ${hours}h ${mins}m ago`;
+    }
+    if (totalHours > 0) {
+        return `${totalHours}h ${mins}m ago`;
+    }
+
+    return `${totalMins} minutes ago`;
 }
 
 export default function Kitchen() {
