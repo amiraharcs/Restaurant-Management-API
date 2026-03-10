@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import './css/Waiter.css';
 import NavBarWaiter from "./data/components/NavBarWaiter";
-import orderData from "./data/waiter.json";
 import mockAlertsData from "./data/mockAlertsData.json";
 import { getTotalNotifications } from "./data/notificationCount.ts";
 import { LuChevronRight } from 'react-icons/lu';
@@ -50,9 +49,6 @@ export default function Waiter() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [isInitialLoad, setIsInitialLoad] = useState(true);
-
-    // dummy data from waiter.json
-    //const orders = (orderData as { orders: Order[]}).orders;
 
     async function fetchOrders(isInitial = false) {
         try {
