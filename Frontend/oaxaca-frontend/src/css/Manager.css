@@ -1,0 +1,14 @@
+.manager_header {
+    margin-bottom: 4px;
+}
+
+.welcomeText {
+    margin-left: 10px;
+    font-weight: 500;
+}
+
+.manager_page {
+    padding: 7% 15%;
+    background-color: #e7e7e7;
+    min-height: 80vh;
+}

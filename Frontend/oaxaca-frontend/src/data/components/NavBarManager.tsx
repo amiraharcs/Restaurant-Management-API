@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { clearLoggedInStaffSession } from "./staffSession";
 import { LuBell, LuUserRound } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
+import "../../css/NavBarManager.css"
 
 export default function NavBarManager() {
     const [show, setShow] = useState(true);
@@ -22,19 +23,19 @@ export default function NavBarManager() {
     }, []);
 
     return (
-        <main>
-      <nav className={`waiterNavbar${show ? "" : " waiterNavbar--hidden"}`}>
-        <NavLink to="/waiter" className="waiterNavbar__brand">
-          <img src="/images/main/logo.png" alt="OAXACA" className="waiterNavbar__logoImg" />
+    <main>
+      <nav className={`managerNavbar${show ? "" : "managerNavbar--hidden"}`}>
+        <NavLink to="/manager" className="managerNavbar__brand">
+          <img src="/images/main/logo.png" alt="OAXACA" className="managerNavbar__logoImg" />
         </NavLink>
 
-        <div className="waiterNavbar__center">
-          <NavLink to="/manage-menu" className="waiterNavbar__link" end>
+        <div className="managerNavbar__center">
+          <NavLink to="/manage-menu" className="managerNavbar__link" end>
             MANAGE MENU
           </NavLink>
           <NavLink
             to="/login"
-            className="waiterNavbar__link"
+            className="managerNavbar__link"
             end
             onClick={clearLoggedInStaffSession}
           >
@@ -42,7 +43,7 @@ export default function NavBarManager() {
           </NavLink>
         </div>
 
-        <div className="waiterNavbar__right">
+        <div className="managerNavbar__right">
           <button
             type="button"
             className="rightIconsButton"
