@@ -6,9 +6,12 @@ import StaffFooter from "./StaffFooter";
 import { SiTicktick } from "react-icons/si";
 import { RxCrossCircled } from "react-icons/rx";
 import EditItem from "./EditItem";
+import { getLoggedInStaffRole } from "./staffSession";
 
 export default function ManageMenuItem() {
     const navigate = useNavigate();
+
+    const role = getLoggedInStaffRole();
 
   const { id } = useParams();
   const [item, setItem] = useState<any>(null);
@@ -100,10 +103,13 @@ export default function ManageMenuItem() {
                 <p className="manage_item_calories">{item.calories} kcal</p>
                 <p className="manage_item_price">£{Number(item.price).toFixed(2)}</p>
             </div>
-            <div className="manage_item_buttons">
+            {role === "MANAGER" ? <div className="manage_item_buttons">
                 <button className="btn btn_edit" onClick={() => { setShowItem(true); setSelectedItem(item); }}>Edit</button>
                 <button className="btn btn_delete" onClick={() => {setShowDeleteConfirm(true)}}>Delete</button>
-            </div>
+            </div> : null}
+            {role === "WAITER" ? <div className="manage_item_buttons">
+                <button className="btn btn_edit">Change Availability</button>
+            </div> : null}
       </div>
     </div>
 

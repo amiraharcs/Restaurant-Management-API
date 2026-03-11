@@ -29,5 +29,5 @@ export function getLoggedInStaffRole() {
 
 export function clearLoggedInStaffSession() {
   localStorage.removeItem(STAFF_USERNAME_KEY);
-  localStorage.removeItem(STAFF_ROLE_KEY)
+  localStorage.removeItem(STAFF_ROLE_KEY);
 }
