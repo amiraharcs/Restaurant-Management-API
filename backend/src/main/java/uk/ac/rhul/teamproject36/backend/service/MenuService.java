@@ -272,4 +272,13 @@ public final class MenuService {
 
         return MenuItemDto.from(item);
     }
+
+    public List<MenuItemDto> getAllMenuItems() {
+        List<MenuItem> items = menuItemRepository.findAll();
+
+        return items.stream()
+                .map(MenuItemDto::from)
+                .toList();
+}
+
 }
