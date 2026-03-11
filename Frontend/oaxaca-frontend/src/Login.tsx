@@ -35,6 +35,8 @@ export default function Login() {
                 navigate("/waiter", {state: { username: res.username }});
             } else if (role === "KITCHEN") {
                 navigate("/kitchen", {state: { username: res.username }});
+            } else if (role === "MANAGER") {
+                console.log("success")
             } else {
                 setLoginError("Your account role is not supported in this app.");
             }
