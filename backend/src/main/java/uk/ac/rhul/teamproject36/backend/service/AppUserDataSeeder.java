@@ -42,6 +42,7 @@ public class AppUserDataSeeder implements CommandLineRunner {
     final String devPassword = environment.getProperty("APP_DEV_USER_PASSWORD", "Passw0rd!");
     upsertUser("waiter01", "waiter01@oaxaca.local", devPassword, "WAITER");
     upsertUser("kitchen01", "kitchen01@oaxaca.local", devPassword, "KITCHEN");
+    upsertUser("manager", "manager@oaxaca.local", devPassword,"MANAGER");
   }
 
   private void upsertUser(final String username,
