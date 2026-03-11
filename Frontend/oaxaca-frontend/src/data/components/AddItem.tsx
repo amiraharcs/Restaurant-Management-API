@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addMenuItem } from "../../api/waiterApi";
+import { addMenuItem } from "../../api/managerApi";
 
 export default function AddItem({ onClose }: any) {
   const [errors, setErrors] = useState({} as Record<string, string>);

@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import AddItem from "./data/components/AddItem.tsx";
 import { SiTicktick } from "react-icons/si";
 import { RxCrossCircled } from "react-icons/rx";
+import { getLoggedInStaffRole } from "./data/components/staffSession.ts";
 
 
 
@@ -23,6 +24,9 @@ export default function ManageMenu() {
     mockAlertsData.mockCallWaiterAlerts || [],
     mockAlertsData.mockOrdersReady || [],
   );
+
+  const role = getLoggedInStaffRole();
+  console.log(role)
 
       const [showAddItem, setShowAddItem] = useState(false)
   
@@ -82,12 +86,12 @@ export default function ManageMenu() {
               <div className="manage_menu_header_row">
                 <h1 className="manage_menu_page_title">Manage Menu</h1>
 
-                <div className="manage_menu_action">
+                {role === "MANAGER" ? <div className="manage_menu_action">
                   <button className="manage_menu_btn add_btn"
                   onClick={() => setShowAddItem(true)}>
                     Add Item
                   </button>
-                </div>
+                </div> : null}
               </div>
                 <hr className='manage_menu_page_title_br' />
             </div>

@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import NavBar from "./data/components/NavBar";
 import Footer from "./data/components/Footer";
 import { postLogin } from './api/loginApi';
-import { setLoggedInStaffUsername } from "./data/components/staffSession";
+import { setLoggedInStaffRole, setLoggedInStaffUsername } from "./data/components/staffSession";
 
 export default function Login() {
     let navigate = useNavigate();
@@ -29,6 +29,10 @@ export default function Login() {
             });
 
             const role = (res.role ?? "").toUpperCase();
+            setLoggedInStaffRole(role)
+            console.log("login response:", res);
+console.log("raw role:", res.role);
+console.log("upper role:", (res.role ?? "").toUpperCase());
             setLoggedInStaffUsername(res.username ?? "");
 
             if (role === "WAITER") {

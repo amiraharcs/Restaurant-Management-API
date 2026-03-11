@@ -69,49 +69,21 @@ export async function fetchMenuItemById(id: number): Promise<MenuItemDto> {
   return res.json();
 }
 
-export async function editMenuItem(id: number, itemData: MenuItemDto): Promise<MenuItemDto> {
-  const res = await fetch(`${API_BASE}/api/menu/menuItem/edit/${id}`, {
-    method: "PUT",
+export async function updateMenuItemAvailability(id: number, available: boolean): Promise<void> {
+  const res = await fetch(`${API_BASE}/api/menu/menuItem/${id}/availability`, {
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(itemData),
+    body: JSON.stringify(
+      {available: available}
+    ),
   });
 
   if (!res.ok) {
-    throw new Error(`Menu item edit failed: ${res.status}`);
+    throw new Error(`Availability Update failed: ${res.status}`);
   }
 
-  return res.json();
-}
-
-export async function deleteMenuItem(id: number): Promise<void> {
-  const res = await fetch(
-    `${API_BASE}/api/menu/menuItem/delete/${id}`,
-    {
-      method: "DELETE",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(`Menu item delete failed: ${res.status}`);
-  }
-}
-
-export async function addMenuItem(itemData: MenuItemDto): Promise<MenuItemDto> {
-  const res = await fetch(`${API_BASE}/api/menu/menuItem/add`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(itemData),
-  });
-
-  if (!res.ok) {
-    throw new Error(`Menu item add failed: ${res.status}`);
-  }
-
-  return res.json();
 }
 
 export async function getAllOrders(): Promise<OrderResponse[]> {
