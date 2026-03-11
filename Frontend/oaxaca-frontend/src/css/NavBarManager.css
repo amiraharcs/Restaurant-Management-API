@@ -1,0 +1,113 @@
+.managerNavbar--hidden {
+    transform: translateY(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.managerNavbar {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background-color: #013525;
+    height: 80px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 28px;
+    box-sizing: border-box;
+}
+
+.managerNavbar__brand {
+    justify-self: start;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.managerNavbar__logoImg {
+    height: 60px;
+    width: auto;
+    display: block;
+}
+
+.managerNavbar__center {
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    gap: 42px;
+    height: 100%;
+}
+
+.managerNavbar__link {
+    position: relative;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+.managerNavbar__link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    background: #ffffff;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.2s ease;
+}
+
+.managerNavbar__link:hover::after,
+.managerNavbar__link.active::after {
+    transform: scaleX(1);
+}
+
+.managerNavbar__right {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.rightIcons {
+    font-size: 30px;
+    color: #ffffff;
+}
+
+.rightIconsButton {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 1200px) {
+    .managerNavbar {
+        grid-template-columns: auto 1fr auto;
+        padding: 0 16px;
+        gap: 10px;
+    }
+
+
+    .managerNavbar__center {
+        gap: 22px;
+    }
+
+    .managerNavbar__link {
+        font-size: 0.95rem;
+    }
+}
