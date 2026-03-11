@@ -1,12 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { deleteMenuItem, fetchMenuItemById } from "../../api/waiterApi";
+import { deleteMenuItem, fetchMenuItemById } from "../../api/managerApi";
 import NavBarWaiter from "./NavBarWaiter";
 import StaffFooter from "./StaffFooter";
 import { SiTicktick } from "react-icons/si";
 import { RxCrossCircled } from "react-icons/rx";
 import EditItem from "./EditItem";
 import { getLoggedInStaffRole } from "./staffSession";
+import { updateMenuItemAvailability } from "../../api/waiterApi";
 
 export default function ManageMenuItem() {
     const navigate = useNavigate();
@@ -44,6 +45,15 @@ export default function ManageMenuItem() {
     const [selectedItem, setSelectedItem] = useState<any>({});
 
   if (!item) return <p>Loading...</p>;
+
+  async function changeAvailability(id: number, availability: boolean) {
+    try {
+        await updateMenuItemAvailability(id, availability)
+        window.location.reload();
+    } catch (error : any) {
+        setError(error.message || "Failed to update item availability. Please try again.");
+    }
+  }
 
   return (
   <div className="manage_item_page">
@@ -108,8 +118,13 @@ export default function ManageMenuItem() {
                 <button className="btn btn_delete" onClick={() => {setShowDeleteConfirm(true)}}>Delete</button>
             </div> : null}
             {role === "WAITER" ? <div className="manage_item_buttons">
-                <button className="btn btn_edit">Change Availability</button>
+                <button className="btn btn_edit" onClick={() => {changeAvailability(item.id, !item.isAvailable)}}>Change Availability</button>
             </div> : null}
+            {error && (
+                <div className="error_box">
+                    <p className="error_box_title" style={{ fontSize: "1rem"}}>There was an error in updating the item: {error}</p>
+                </div>
+            )}
       </div>
     </div>
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { editMenuItem } from "../../api/waiterApi";
+import { editMenuItem } from "../../api/managerApi";
 
 export default function EditItem({item, onClose} : any ) {
 
