@@ -97,37 +97,53 @@ public final class MenuController {
         }
     }
 
-@GetMapping("/menu/menuItem/{id}")
-public ResponseEntity<MenuService.MenuItemDto> getMenuItemById(@PathVariable Long id) {
+        @GetMapping("/menu/menuItem/{id}")
+        public ResponseEntity<MenuService.MenuItemDto> getMenuItemById(@PathVariable Long id) {
 
-    MenuService.MenuItemDto item = menuService.getMenuItembyId(id);
+            MenuService.MenuItemDto item = menuService.getMenuItembyId(id);
+
+            return ResponseEntity.ok(item);
+        }
+
+        @GetMapping("/menu/all")
+        public ResponseEntity<List<MenuService.MenuItemDto>> getAllMenuItems() {
+
+            List<MenuService.MenuItemDto> items = menuService.getAllMenuItems();
+
+            return ResponseEntity.ok(items);
+        }
+
+
 
     return ResponseEntity.ok(item);
-}
 
-@PostMapping("/menu/menuItem/add")
-public ResponseEntity<MenuItem> addMenuItem(@RequestBody final MenuItem item) {
 
-    MenuItem created = menuService.addMenuItem(item);
+        @PostMapping("/menu/menuItem/add")
+        public ResponseEntity<MenuItem> addMenuItem(@RequestBody final MenuItem item) {
 
-    return ResponseEntity.ok(created);
-}
+            MenuItem created = menuService.addMenuItem(item);
 
-@PutMapping("/menu/menuItem/edit/{id}")
-public ResponseEntity<MenuItem> editMenuItem(
-        @PathVariable final Long id,
-        @RequestBody final MenuItem item) {
+            return ResponseEntity.ok(created);
+        }
 
-    MenuItem updated = menuService.editMenuItem(id, item);
+        @PutMapping("/menu/menuItem/edit/{id}")
+        public ResponseEntity<MenuItem> editMenuItem(
+                @PathVariable final Long id,
+                @RequestBody final MenuItem item) {
 
-    return ResponseEntity.ok(updated);
-}
+            MenuItem updated = menuService.editMenuItem(id, item);
 
-@DeleteMapping("/menu/menuItem/delete/{id}")
-public ResponseEntity<Void> deleteMenuItem(@PathVariable final Long id) {
+            return ResponseEntity.ok(updated);
+        }
 
-    menuService.deleteMenuItem(id);
+        @DeleteMapping("/menu/menuItem/delete/{id}")
+        public ResponseEntity<Void> deleteMenuItem(@PathVariable final Long id) {
 
-    return ResponseEntity.noContent().build();
-}
-}
+            menuService.deleteMenuItem(id);
+
+            return ResponseEntity.noContent().build();
+        }
+
+                }
+
+            
