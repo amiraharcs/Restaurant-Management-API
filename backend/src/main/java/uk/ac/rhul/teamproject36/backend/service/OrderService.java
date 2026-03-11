@@ -44,6 +44,7 @@ public class OrderService {
         CustomerOrder order = new CustomerOrder();
         order.setCustomer(newCustomer);
         order.setStatus(OrderStatus.PLACED);
+        order.setTableNumber(request.tableNumber());
 
 
         for (CreateOrderItem itemReq : request.items()) {
@@ -124,8 +125,17 @@ public class OrderService {
       CustomerOrder order = orderRepository.findById(id)
           .orElseThrow(() -> new NotFoundException("order not found: " + id));
 
-      if (order.getStatus() != OrderStatus.PLACED) {
+      if (order.getStatus() != OrderStatus.CONFIRMED) {
         throw new BadRequestException("Invalid status transition: " + order.getStatus());
+      }
+
+      //checks if the item ordered is avaliable.
+      for (OrderItem item : order.getItems()){
+        MenuItem menuItem = item.getMenuItem();
+
+        if (!menuItem.isAvailable()){
+            throw new BadRequestException("Item:"+ menuItem.getName() +"is currently unavaliable.");
+        }
       }
 
       order.setStatus(OrderStatus.PREPARING);
@@ -174,6 +184,64 @@ public class OrderService {
       return result;
     }
 
+
+
+
+
+
+
+
+
+
+    @Transactional(readOnly = true)
+    public List<OrderDto> getOrdersByStatus(OrderStatus status) {
+        List<CustomerOrder> orders = orderRepository.findByStatus(status);
+
+        List<OrderDto> result = new ArrayList<>();
+        for (CustomerOrder order : orders) {
+            result.add(toOrderDto(order));
+        }
+
+        return result;
+    }
+
+    /**
+     * Cancels an order if it is not already DELIVERED or CANCELLED.
+     */
+    @Transactional
+    public OrderDto cancelOrder(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getStatus() == OrderStatus.DELIVERED
+          || order.getStatus() == OrderStatus.CANCELLED) {
+        throw new BadRequestException("Cannot cancel order in status: " + order.getStatus());
+      }
+
+      order.setStatus(OrderStatus.CANCELLED);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
+
+    /**
+     * Marks an order as DELIVERED if it is READY.
+     */
+    @Transactional
+    public OrderDto markDelivered(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getStatus() != OrderStatus.READY) {
+        throw new BadRequestException(
+            "Invalid status transition to DELIVERED from: " + order.getStatus());
+      }
+
+      order.setStatus(OrderStatus.DELIVERED);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
 
 }
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import './css/Waiter.css';
 import NavBarWaiter from "./data/components/NavBarWaiter";
-import orderData from "./data/waiter.json";
 import mockAlertsData from "./data/mockAlertsData.json";
 import { getTotalNotifications } from "./data/notificationCount.ts";
 import { LuChevronRight } from 'react-icons/lu';
@@ -10,8 +9,9 @@ import StaffFooter from "./data/components/StaffFooter";
 import StaffWelcome from "./data/components/StaffWelcome";
 import { getAllOrders } from './api/waiterApi.ts';
 import type { OrderResponse } from './api/waiterApi.ts';
+import WaiterAlertsWaiter from './data/components/WaiterAlertsWaiter.tsx';
 
-type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED";
+type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
 
 function pendingItemsSum(items : { quantity: number }[]) {
     let count = 0;
@@ -48,24 +48,31 @@ export default function Waiter() {
     const [orders, setOrders] = useState<OrderResponse[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-    // dummy data from waiter.json
-    //const orders = (orderData as { orders: Order[]}).orders;
+    async function fetchOrders(isInitial = false) {
+        try {
+            setLoading(true);
+            const data = await getAllOrders();
+            setOrders(data);
+            if (isInitial) {
+                setIsInitialLoad(false);
+            }
+        } catch (err) {
+            setError('Failed to fetch orders');
+        } finally {
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
-        async function fetchOrders() {
-            try {
-                setLoading(true);
-                const data = await getAllOrders();
-                setOrders(data);
-            } catch (err) {
-                setError('Failed to fetch orders');
-            } finally {
-                setLoading(false);
-            }
-        }
+        fetchOrders(true);
 
-        fetchOrders();
+        const interval = setInterval(fetchOrders, 5000);
+
+        return () => {
+            clearInterval(interval);
+        };
     }, []);
 
     function filterOrders(tab : status) {
@@ -84,7 +91,8 @@ export default function Waiter() {
             CONFIRMED: 0,
             PREPARING: 0,
             READY: 0,
-            DELIVERED: 0
+            DELIVERED: 0,
+            CANCELLED: 0
         };
         for ( const s of orders ) {
             count[s.status] += 1;
@@ -113,7 +121,10 @@ export default function Waiter() {
             <NavBarWaiter notificationCount={totalNotifications} />
             
             <div className='waiterPage'>
-                <StaffWelcome />
+                <div className='waiterHeader'>
+                    <StaffWelcome />
+                    <WaiterAlertsWaiter />
+                </div>
 
                 <div className='orderContainer'>
                     <div className='orderTabs'>
@@ -137,8 +148,13 @@ export default function Waiter() {
                     <div className='topDivider' />
 
                     <div className='orderList'>
-                        { (loading && <div className='emptyList'> Orders are currently loading... </div>) || 
-                                    (filterOrders(activeTab).length === 0 && <div className='emptyList'> No orders in this section </div>) }
+                        {isInitialLoad && loading && (
+                            <div className='emptyList'> Orders are currently loading... </div>
+                        )}
+                        
+                        {!isInitialLoad && filterOrders(activeTab).length === 0 && (
+                            <div className='emptyList'> No orders in this section </div>
+                        )}
 
                         {error && <div className='emptyList'> {error} </div> }
 
@@ -179,7 +195,7 @@ export default function Waiter() {
                     </div>
                 </div>
             </div>
-            {showOrderDetails && <OrderDetails order={selectedOrder} placedAtTime={orderDetailsPlacedAt} onClose={() => {
+            {showOrderDetails && <OrderDetails order={selectedOrder} placedAtTime={orderDetailsPlacedAt} onOrderUpdated={fetchOrders} onClose={() => {
                 setShowOrderDetails(false)
                 setSelectedOrder({})
             }}/>}

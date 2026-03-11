@@ -1,6 +1,6 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
-export type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED";
+export type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
 
 export type OrderResponse = {
     id: string;
@@ -12,17 +12,30 @@ export type OrderResponse = {
     items: { menuItemId: number; name: string; quantity: number }[];
 };
 
+export type IngredientDto = {
+  id?: number;
+  name: string;
+};
+
+export type FilterDto = {
+  id?: number;
+  name?: string;
+};
+
 export type MenuItemDto = {
   id?: number;
   name: string;
   description: string;
   price: number;
   calories: number;
-  isAvailable: boolean;
-  ingredients: string[];
-  allergens: string[];
-  filters: string[];
-  image: string;
+  available: boolean;
+  ingredients: IngredientDto[];
+  allergens: String;
+  vegetarian: Boolean;
+  vegan: Boolean;
+  glutenFree: Boolean;
+  meat: Boolean;
+  imageUrl: string;
   itemType: "FOOD" | "DESSERT" | "DRINK";
 };
 
@@ -105,5 +118,35 @@ export async function getAllOrders(): Promise<OrderResponse[]> {
     const res = await fetch(`${API_BASE}/api/orders`);
 
     if (!res.ok) throw new Error(`Get all orders failed: ${res.status}`);
+    return res.json();
+}
+
+export async function acceptOrder(id: number) {
+    const res = await fetch(`${API_BASE}/api/orders/${id}/accept`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Accept order failed: ${res.status}`);
+    return res.json();
+}
+
+export async function markReady(id: number) {
+    const res = await fetch(`${API_BASE}/api/orders/${id}/ready`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Mark ready failed: ${res.status}`);
+    return res.json();
+}
+
+export async function getReadyOrders(): Promise<OrderResponse[]> {
+    const res = await fetch(`${API_BASE}/api/orders/status/READY`);
+    if (!res.ok) throw new Error(`Get ready orders failed: ${res.status}`);
+    return res.json();
+}
+
+export async function deliverOrder(id: number) {
+    const res = await fetch(`${API_BASE}/api/orders/${id}/deliver`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Deliver order failed: ${res.status}`);
+    return res.json();
+}
+
+export async function cancelOrder(id: number) {
+    const res = await fetch(`${API_BASE}/api/orders/${id}/cancel`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Cancel order failed: ${res.status}`);
     return res.json();
 }

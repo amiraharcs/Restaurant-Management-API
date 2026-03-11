@@ -2,19 +2,18 @@ package uk.ac.rhul.teamproject36.backend.service;
 
 import java.awt.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import uk.ac.rhul.teamproject36.backend.menu.Ingredient;
 import uk.ac.rhul.teamproject36.backend.menu.ItemType;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
+import uk.ac.rhul.teamproject36.backend.repository.IngredientRepository;
 import uk.ac.rhul.teamproject36.backend.repository.MenuItemRepository;
 import uk.ac.rhul.teamproject36.backend.repository.MenuRepository;
 
@@ -30,6 +29,8 @@ public final class MenuService {
     /** The repository for filtered menu queries. */
     private final MenuRepository menuRepository;
 
+    private final IngredientRepository ingredientRepository;
+
     /**
      * Constructs a new MenuService with the given repositories.
      *
@@ -37,9 +38,10 @@ public final class MenuService {
      * @param menuRepositoryParam the menu repository for filtering
      */
     public MenuService(final MenuItemRepository repository,
-                       final MenuRepository menuRepositoryParam) {
+                       final MenuRepository menuRepositoryParam, final IngredientRepository ingredientRepository) {
         this.menuItemRepository = repository;
         this.menuRepository = menuRepositoryParam;
+        this.ingredientRepository = ingredientRepository;
     }
 
     /**
@@ -56,7 +58,7 @@ public final class MenuService {
      *
      * @param itemType filter by item type
      * @param vegetarian filter vegetarian items
-     * @param halal filter halal items
+     * @param meat filter meat items
      * @param vegan filter vegan items
      * @param glutenFree filter gluten-free items
      * @param maxCalories maximum calories
@@ -72,8 +74,8 @@ public final class MenuService {
         final boolean vegetarian =
                 filters != null && filters.contains("is_vegetarian");
 
-        final boolean halal =
-                filters != null && filters.contains("is_halal");
+        final boolean meat =
+                filters != null && filters.contains("is_meat");
 
         final boolean vegan =
                 filters != null && filters.contains("is_vegan");
@@ -85,7 +87,7 @@ public final class MenuService {
                 menuRepository.findFiltered(
                         itemType,
                         vegetarian,
-                        halal,
+                        meat,
                         maxCalories,
                         allergen);
 
@@ -97,14 +99,14 @@ public final class MenuService {
      * Builds a list of active filter names based on Boolean values.
      *
      * @param vegetarian vegetarian flag
-     * @param halal halal flag
+     * @param meat meat flag
      * @param vegan vegan flag
      * @param glutenFree gluten-free flag
      * @return list of active filter names
      */
     private List<String> buildActiveFilters(
             final Boolean vegetarian,
-            final Boolean halal,
+            final Boolean meat,
             final Boolean vegan,
             final Boolean glutenFree) {
 
@@ -114,8 +116,8 @@ public final class MenuService {
             filters.add("is_vegetarian");
         }
 
-        if (Boolean.TRUE.equals(halal)) {
-            filters.add("is_halal");
+        if (Boolean.TRUE.equals(meat)) {
+            filters.add("is_meat");
         }
 
         if (Boolean.TRUE.equals(vegan)) {
@@ -222,7 +224,7 @@ public final class MenuService {
             final boolean vegetarian = item.isVegetarian();
             final boolean vegan = item.isVegan();
 
-            // Frontend expects: Vegetarian / Vegan / GlutenFree / Halal / Meat
+            // Frontend expects: Vegetarian / Vegan / GlutenFree / Meat
             if (vegan) {
                 filters.add("Vegan");
                 // Many frontends treat vegan as vegetarian as well
@@ -231,17 +233,14 @@ public final class MenuService {
                 }
             } else if (vegetarian) {
                 filters.add("Vegetarian");
-            } else {
-                // Not vegetarian and not vegan => Meat
-                filters.add("Meat");
             }
 
             if (item.isGlutenFree()) {
                 filters.add("GlutenFree");
             }
 
-            if (item.isHalal()) {
-                filters.add("Halal");
+            if (item.isMeat()) {
+                filters.add("Meat");
             }
 
             return filters;
@@ -273,12 +272,83 @@ public final class MenuService {
         return MenuItemDto.from(item);
     }
 
+
     public List<MenuItemDto> getAllMenuItems() {
         List<MenuItem> items = menuItemRepository.findAll();
 
         return items.stream()
                 .map(MenuItemDto::from)
                 .toList();
+
+    public MenuItem addMenuItem(final MenuItem item) {
+
+        Set<Ingredient> managedIngredients = item.getIngredients()
+                .stream()
+                .map(ingredient -> {
+                    String name = ingredient.getName().trim();
+
+                    return ingredientRepository
+                            .findByNameIgnoreCase(name)
+                            .orElseGet(() -> {
+                                Ingredient newIngredient = new Ingredient();
+                                newIngredient.setName(name);
+                                return ingredientRepository.save(newIngredient);
+                            });
+                })
+                .collect(Collectors.toSet());
+
+        item.setIngredients(managedIngredients);
+    return menuItemRepository.save(item);
+}
+
+public MenuItem editMenuItem(final Long id, final MenuItem updatedItem) {
+
+    MenuItem existing = menuItemRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Menu item not found"));
+
+    existing.setName(updatedItem.getName());
+    existing.setDescription(updatedItem.getDescription());
+    existing.setPrice(updatedItem.getPrice());
+    existing.setCalories(updatedItem.getCalories());
+    existing.setAllergens(updatedItem.getAllergens());
+    existing.setAvailable(updatedItem.isAvailable());
+    existing.setImageUrl(updatedItem.getImageUrl());
+    existing.setVegetarian(updatedItem.isVegetarian());
+    existing.setMeat(updatedItem.isMeat());
+    existing.setVegan(updatedItem.isVegan());
+    existing.setGlutenFree(updatedItem.isGlutenFree());
+    existing.setItemType(updatedItem.getItemType());
+
+    Set<Ingredient> managedIngredients = updatedItem.getIngredients()
+            .stream()
+            .map(ingredient -> {
+                String name = ingredient.getName().trim();
+
+                return ingredientRepository
+                        .findByNameIgnoreCase(name)
+                        .orElseGet(() -> {
+                            Ingredient newIngredient = new Ingredient();
+                            newIngredient.setName(name);
+                            return ingredientRepository.save(newIngredient);
+                        });
+            })
+            .collect(Collectors.toSet());
+
+    existing.setIngredients(managedIngredients);
+
+    existing.setImageUrl(updatedItem.getImageUrl());
+
+    return menuItemRepository.save(existing);
+}
+
+public void deleteMenuItem(final Long id) {
+
+    if (!menuItemRepository.existsById(id)) {
+        throw new EntityNotFoundException("Menu item not found");
+    }
+
+    menuItemRepository.deleteById(id);
+
 }
 
 }

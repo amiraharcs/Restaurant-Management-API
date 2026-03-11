@@ -14,6 +14,7 @@ import PastOrder from './PastOrder'
 import ResetPassword from './ResetPassword'
 import CreateAccount from './CreateAccount'
 import ManageMenuItem from './data/components/ManageMenuItem'
+import PaymentPage from './payment_page'
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Route path='/past-order' element={<PastOrder />} />
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/create-account' element={<CreateAccount />} />
+        <Route path='/payment' element={<PaymentPage />} />     
       </Routes>
     </BrowserRouter>
   )

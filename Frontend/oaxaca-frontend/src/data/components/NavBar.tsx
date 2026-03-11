@@ -24,7 +24,7 @@ export default function NavBar() {
     <div>
       <nav className={`mainNavbar${show ? "" : " mainNavbar--hidden"}`}>
         <NavLink to="/" end className="mainNavbar__brand">
-          OAXACA
+          <img src="/images/main/logo.png" alt="OAXACA" className="mainNavbar__logoImg" />
         </NavLink>
 
         <div className="mainNavbar__center">
@@ -36,6 +36,9 @@ export default function NavBar() {
           </NavLink>
           <NavLink to="/track-order" className="mainNavbar__link">
             TRACK ORDER
+          </NavLink>
+          <NavLink to="/payment" className="mainNavbar__link">
+            PAY NOW
           </NavLink>
           <NavLink to="/about-us" end className="mainNavbar__link">
             ABOUT US

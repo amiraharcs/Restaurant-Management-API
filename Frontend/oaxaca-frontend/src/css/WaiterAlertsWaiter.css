@@ -1,0 +1,74 @@
+.flagTableBtn {
+    background: #0b6b4f;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.flagTableBtn:hover {
+    background: #085c42;
+}
+
+.flagModalBody {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.flagLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.flagInput {
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 15px;
+    background: #f9fafb;
+    outline: none;
+}
+
+.flagInput:focus {
+    border-color: #0b6b4f;
+}
+
+.flagTextarea {
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 15px;
+    font-family: monospace;
+    background: #f9fafb;
+    resize: vertical;
+    outline: none;
+}
+
+.flagTextarea:focus {
+    border-color: #0b6b4f;
+}
+
+.flagError {
+    color: #dc2626;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.flagSubmitBtn {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 12px;
+}

@@ -81,30 +81,11 @@ export default function AddItem({ onClose }: any) {
       "Please enter valid allergens separated by commas";
   }
 }
-    const filtersRaw = formData.get("filters")?.toString().trim() ?? "";
-    const allowedFilters = ["None", "Meat", "GlutenFree", "Vegetarian", "Vegan"];
 
-   if (filtersRaw && filtersRaw.length > 0) {
-
-  const filters = filtersRaw
-    .split(",")
-    .map((v) => v.trim())
-    .filter((v) => v.length > 0);
-
-  if (filters.length === 0) {
-    validationErrors.filters = "Please enter valid filters separated by commas";
-  } else {
-    const invalidFilters = filters.filter(
-      (filter) => !allowedFilters.includes(filter)
-    );
-
-    if (invalidFilters.length > 0) {
-      validationErrors.filters =
-        `Invalid filters: ${invalidFilters.join(", ")}. ` +
-        `Allowed values are: ${allowedFilters.join(", ")}`;
-    }
-  }
-}
+    const vegetarian = formData.get("vegetarian") === "on";
+    const vegan = formData.get("vegan") === "on";
+    const glutenFree = formData.get("glutenFree") === "on";
+    const meat = formData.get("meat") === "on";
 
     const itemType = formData.get("itemType")?.toString().trim() ?? "";
     if (!itemType) {
@@ -143,22 +124,25 @@ export default function AddItem({ onClose }: any) {
         ingredients: ingredientsRaw
           .split(",")
           .map((v) => v.trim())
-          .filter((v) => v.length > 0),
+          .filter((v) => v.length > 0)
+          .map((v) => ({ name: v })),
         allergens: allergensRaw
           .split(",")
           .map((v) => v.trim())
-          .filter((v) => v.length > 0),
-        filters: filtersRaw
-          .split(",")
-          .map((v) => v.trim())
-          .filter((v) => v.length > 0),
+          .filter((v) => v.length > 0)
+          .join(","),
+        vegetarian: vegetarian,
+        vegan: vegan,
+        glutenFree: glutenFree,
+        meat: meat,
         itemType: itemType as "FOOD" | "DRINK" | "DESSERT",
-        isAvailable: isAvailableRaw === "true",
-        image,
+        available: isAvailableRaw === "true",
+        imageUrl: image,
       };
 
       await addMenuItem(newItem);
       onClose?.();
+      window.location.reload();
     } catch (error: any) {
       setErrors({
         api: error.message || "Failed to add product. Please try again.",
@@ -252,15 +236,37 @@ export default function AddItem({ onClose }: any) {
               name="allergens"
             />
 
-            <label className="add_item_form_label" htmlFor="filters">
-              Dietary Filters (optional - comma separated if multiple)
-            </label>
-            <input
-              className="add_item_form_input"
-              id="filters"
-              type="text"
-              name="filters"
-            />
+            <label className="add_item_form_label" htmlFor="filters">Dietary Filters (optional - comma separated if multiple)</label>
+              <div className="add_item_form_filter">
+                  <label>
+                  <input
+                      type="checkbox"
+                      name="vegetarian"
+                  />
+                  Vegetarian
+                  </label>
+                  <label>
+                  <input
+                      type="checkbox"
+                      name="vegan"
+                  />
+                  Vegan
+                  </label>
+                  <label>
+                  <input
+                      type="checkbox"
+                      name="glutenFree"
+                  />
+                  Gluten Free
+                  </label>
+                  <label>
+                  <input
+                      type="checkbox"
+                      name="meat"
+                  />
+                  Meat
+                  </label>
+              </div>
 
             <label className="add_item_form_label" htmlFor="itemType">
               Item Type

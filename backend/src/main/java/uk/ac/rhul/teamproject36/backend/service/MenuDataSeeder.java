@@ -309,7 +309,7 @@ public class MenuDataSeeder implements CommandLineRunner {
         item.setVegetarian(false);
         item.setVegan(false);
         item.setGlutenFree(false);
-        item.setHalal(false);
+        item.setMeat(false);
 
         if (filters == null) return;
 
@@ -320,7 +320,7 @@ public class MenuDataSeeder implements CommandLineRunner {
                 case "Vegetarian" -> item.setVegetarian(true);
                 case "Vegan" -> item.setVegan(true);
                 case "GlutenFree" -> item.setGlutenFree(true);
-                case "Halal" -> item.setHalal(true);
+                case "Meat" -> item.setMeat(true);
                 default -> { /* ignore UI-only labels like "Meat" */ }
             }
         }

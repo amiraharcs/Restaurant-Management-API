@@ -83,36 +83,10 @@ export default function EditItem({item, onClose} : any ) {
             }
         }
 
-        const filtersRaw = formData.get("filters")?.toString().trim() ?? "";
-
-        const allowedFilters = [
-        "None",
-        "Meat",
-        "GlutenFree",
-        "Vegetarian",
-        "Vegan",
-        ];
-
-        if (filtersRaw && filtersRaw.length > 0) {
-            const filters = filtersRaw
-            .split(",")
-            .map((v) => v.trim())
-            .filter((v) => v.length > 0);
-
-            if (filters.length === 0) {
-            validationErrors.filters = "Please enter filters or 'None'";
-            }  else {
-            const invalidFilters = filters.filter(
-            (filter) => !allowedFilters.includes(filter)
-            );
-
-            if (invalidFilters.length > 0) {
-            validationErrors.filters =
-                `Invalid filters: ${invalidFilters.join(", ")}. ` +
-                `Allowed values are: ${allowedFilters.join(", ")}`;
-            }
-        }
-    }
+        const vegetarian = formData.get("vegetarian") === "on";
+        const vegan = formData.get("vegan") === "on";
+        const glutenFree = formData.get("glutenFree") === "on";
+        const meat = formData.get("meat") === "on";
 
         const itemType = formData.get("itemType")?.toString().trim() ?? "";
         if (!itemType) {
@@ -130,6 +104,7 @@ export default function EditItem({item, onClose} : any ) {
         } else if (!image.startsWith("/")) {
             validationErrors.image = "Image path must start with '/'";
         }
+
 
         const isAvailableRaw = formData.get("isAvailable")?.toString().trim() ?? "";
         if (!isAvailableRaw) {
@@ -154,21 +129,24 @@ export default function EditItem({item, onClose} : any ) {
             ingredients: ingredientsRaw
                 .split(",")
                 .map((v) => v.trim())
-                .filter((v) => v.length > 0),
+                .filter((v) => v.length > 0)
+                .map((v) => ({ name: v })),
              allergens: allergensRaw
                 .split(",")
                 .map((v) => v.trim())
-                .filter((v) => v.length > 0),
-            filters: filtersRaw
-                .split(",")
-                .map((v) => v.trim())
-                .filter((v) => v.length > 0),
+                .filter((v) => v.length > 0)
+                .join(","),
+            vegetarian: vegetarian,
+            vegan: vegan,
+            glutenFree: glutenFree,
+            meat: meat,
             itemType: itemType as "FOOD" | "DRINK" | "DESSERT",
-            isAvailable: isAvailableRaw === "true",
-            image: item.image,
+            available: isAvailableRaw === "true",
+            imageUrl: image,
         };
 
         await editMenuItem(item.id, updatedItem)
+        window.location.reload()
     } catch (error: any) {
         setErrors({
             api: error.message || "Failed to update product. Please try again."
@@ -246,13 +224,40 @@ export default function EditItem({item, onClose} : any ) {
                             name="allergens"
                         />
                         <label className="edit_item_form_label" htmlFor="filters">Dietary Filters (optional - comma separated if multiple)</label>
-                        <input
-                            className="edit_item_form_input"
-                            id="filters"
-                            type="text"
-                            defaultValue={item.filters}
-                            name="filters"
-                        />
+                        <div className="edit_item_form_filter">
+                            <label>
+                            <input
+                                type="checkbox"
+                                name="vegetarian"
+                                defaultChecked={item.filters.includes("Vegetarian")}
+                            />
+                            Vegetarian
+                            </label>
+                            <label>
+                            <input
+                                type="checkbox"
+                                name="vegan"
+                                defaultChecked={item.filters.includes("Vegan")}
+                            />
+                            Vegan
+                            </label>
+                            <label>
+                            <input
+                                type="checkbox"
+                                name="glutenFree"
+                                defaultChecked={item.filters.includes("GlutenFree")}
+                            />
+                            Gluten Free
+                            </label>
+                            <label>
+                            <input
+                                type="checkbox"
+                                name="meat"
+                                defaultChecked={item.filters.includes("Meat")}
+                            />
+                            Meat
+                            </label>
+                        </div>
                         <label className="edit_item_form_label" htmlFor="itemType">Item Type</label>
                         <select name="itemType" id="itemType" defaultValue={item.itemType} className="edit_item_form_select">
                             <option value="FOOD">FOOD</option>
@@ -269,7 +274,7 @@ export default function EditItem({item, onClose} : any ) {
                             required
                         />
                         <label className="edit_item_form_label">Availability</label>
-                        <div className="edit_item_radio_group">
+                        <div className="edit_item_radio_group" key={item.id}>
                         <label className="edit_item_radio_label">
                             <input
                             type="radio"

@@ -13,16 +13,23 @@
   width: 100%;
   padding: 0 28px;
   box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }
 
 .mainNavbar__brand {
   justify-self: start;
   text-decoration: none;
-  color: #d41445;
-  font-size: 3.9rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+}
+
+.mainNavbar__logoImg {
+  height: 60px;
+  width: auto;
+  display: block;
 }
 
 .mainNavbar__center {
