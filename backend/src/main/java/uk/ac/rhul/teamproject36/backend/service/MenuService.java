@@ -273,6 +273,7 @@ public final class MenuService {
     }
 
 
+
     public List<MenuItemDto> getAllMenuItems() {
         List<MenuItem> items = menuItemRepository.findAll();
 
@@ -280,6 +281,8 @@ public final class MenuService {
                 .map(MenuItemDto::from)
                 .toList();
     }
+
+
     public MenuItem addMenuItem(final MenuItem item) {
 
         Set<Ingredient> managedIngredients = item.getIngredients()
@@ -348,7 +351,6 @@ public void deleteMenuItem(final Long id) {
     }
 
     menuItemRepository.deleteById(id);
-
 }
 
 }
