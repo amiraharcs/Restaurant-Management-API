@@ -279,7 +279,7 @@ public final class MenuService {
         return items.stream()
                 .map(MenuItemDto::from)
                 .toList();
-
+    }
     public MenuItem addMenuItem(final MenuItem item) {
 
         Set<Ingredient> managedIngredients = item.getIngredients()
