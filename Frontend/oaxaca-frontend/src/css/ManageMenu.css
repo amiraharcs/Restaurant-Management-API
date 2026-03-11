@@ -67,10 +67,12 @@
     margin-bottom: 2rem;
 }
 
-.manage_menu_layout {
+.manage_menu_content {
+  padding: 0 0 10px 21px;
 }
 
-.manage_menu_content {
+.manage_menu_content section {
+  margin-bottom: 30px;
 }
 
 .category_title {
