@@ -317,6 +317,7 @@ public MenuItem editMenuItem(final Long id, final MenuItem updatedItem) {
     existing.setName(updatedItem.getName());
     existing.setDescription(updatedItem.getDescription());
     existing.setPrice(updatedItem.getPrice());
+    existing.setCostToProduce(updatedItem.getCostToProduce());
     existing.setCalories(updatedItem.getCalories());
     existing.setAllergens(updatedItem.getAllergens());
     existing.setAvailable(updatedItem.isAvailable());
@@ -346,6 +347,8 @@ public MenuItem editMenuItem(final Long id, final MenuItem updatedItem) {
 
     existing.setImageUrl(updatedItem.getImageUrl());
 
+    validateProfitMargin(existing);
+    
     return menuItemRepository.save(existing);
 }
 
