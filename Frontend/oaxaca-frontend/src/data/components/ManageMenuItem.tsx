@@ -113,6 +113,7 @@ export default function ManageMenuItem() {
                 <p className="manage_item_calories">{item.calories} kcal</p>
                 <p className="manage_item_price">£{Number(item.price).toFixed(2)}</p>
             </div>
+            <p className="manage_item_costToProduce">Cost To Procude: £{Number(item.costToProduce).toFixed(2)}</p>
             {role === "MANAGER" ? <div className="manage_item_buttons">
                 <button className="btn btn_edit" onClick={() => { setShowItem(true); setSelectedItem(item); }}>Edit</button>
                 <button className="btn btn_delete" onClick={() => {setShowDeleteConfirm(true)}}>Delete</button>

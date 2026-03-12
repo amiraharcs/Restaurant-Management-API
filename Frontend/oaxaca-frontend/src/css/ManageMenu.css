@@ -152,7 +152,7 @@
 }
 
 
-.manage_menu_item_add {
+.manage_menu_item_view {
     margin-top: 0.8rem;
     width: 100%;
     border-radius: 0.3rem;
@@ -169,16 +169,21 @@
 
 }
 
-.manage_menu_item_add_add {
+.manage_menu_item_view_text {
   padding: 0 0 0 0.7rem;
 }
+
+.manage_menu_item_view_disabled {
+  background-color: gray;
+}
+
 
 .manage_menu_item_icon {
   padding: 0 0.7rem 0 0;
   font-size: 1.1rem;
 }
 
-.manage_menu_item_add:hover {
+.manage_menu_item_view:hover {
     background-color: orange;
 }
 
@@ -382,6 +387,17 @@
   font-weight: 600;
   background-color: #dcfce7;
   color: #166534;
+}
+
+.manage_item_costToProduce {
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: #d3f3de;
+  color: #166534;
+  width: fit-content;
+  margin-top: 1rem;
 }
 
 .manage_item_calories {

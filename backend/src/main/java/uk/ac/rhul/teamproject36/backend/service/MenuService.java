@@ -181,6 +181,7 @@ public final class MenuService {
             String name,
             String description,
             BigDecimal price,
+            BigDecimal costToProduce,
             Integer calories,
             boolean isAvailable,
             List<String> ingredients,
@@ -195,6 +196,7 @@ public final class MenuService {
                     item.getName(),
                     item.getDescription(),
                     item.getPrice(),
+                    item.getCostToProduce(),
                     item.getCalories(),
                     item.isAvailable(),
                     item.getIngredients()

@@ -15,6 +15,7 @@ import AddItem from "./data/components/AddItem.tsx";
 import { SiTicktick } from "react-icons/si";
 import { getLoggedInStaffRole } from "./data/components/staffSession.ts";
 import { fetchWaiterMenu } from "./api/waiterApi.ts";
+import NavBarManager from "./data/components/NavBarManager.tsx";
 
 
 
@@ -34,6 +35,7 @@ export default function ManageMenu() {
           name: string;
           description: string;
           price: number;
+          costToProduce: number;
           calories: number;
           isAvailable: boolean;
           ingredients: string[];
@@ -77,7 +79,8 @@ export default function ManageMenu() {
 
   return (
     <main className="">
-      <NavBarWaiter notificationCount={totalNotifications} />
+      {role === "WAITER" && <NavBarWaiter notificationCount={totalNotifications} />}
+      {role === "MANAGER" && <NavBarManager />}
       
         <div className="manage_menu_page">
           <StaffWelcome />
@@ -141,8 +144,8 @@ export default function ManageMenu() {
                                                   <p className='manage_menu_item_price'>£{item.price.toFixed(2)}</p>
                                                 </div>
           
-                                                <div className='manage_menu_item_add'>
-                                                    <p className='manage_menu_item_add_add'>View</p>
+                                                <div className={`manage_menu_item_view ${!item.isAvailable ? "manage_menu_item_view_disabled" : ""}`}>
+                                                    <p className='manage_menu_item_view_text'>View</p>
                                                     {item.isAvailable ? <SiTicktick className="manage_menu_item_icon"/> : <GiCancel className="manage_menu_item_icon"/>}
                                                 </div>
                                             </div>
