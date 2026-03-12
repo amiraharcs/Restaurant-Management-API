@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -47,6 +46,7 @@ public final class MenuItem {
     /** The price of the menu item. */
     @Column(nullable = false, precision = PRICE_PRECISION, scale = PRICE_SCALE)
     private BigDecimal price;
+    private BigDecimal costToProduce;
 
     /** The calorie count of the menu item. */
     private Integer calories;
@@ -130,6 +130,14 @@ public final class MenuItem {
 
     public void setPrice(final BigDecimal newPrice) {
         this.price = newPrice;
+    }
+
+    public BigDecimal getCostToProduce() {
+        return costToProduce;
+    }
+
+    public void setCostToProduce(BigDecimal costToProduce) {
+        this.costToProduce = costToProduce;
     }
 
     public Integer getCalories() {

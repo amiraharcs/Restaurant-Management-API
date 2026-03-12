@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS menu_item (
   description TEXT,
   calories INT CHECK (calories IS NULL OR calories >= 0),
   price NUMERIC(10,2) NOT NULL CHECK (price >= 0),
+  cost_to_produce NUMERIC(10,2) NOT NULL CHECK (cost_to_produce >= 0),
   image_url TEXT,
   is_available BOOLEAN NOT NULL DEFAULT TRUE,
   is_vegetarian BOOLEAN NOT NULL DEFAULT FALSE,
