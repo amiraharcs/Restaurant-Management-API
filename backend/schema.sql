@@ -57,7 +57,8 @@ CREATE TABLE IF NOT EXISTS customer (
 CREATE TABLE IF NOT EXISTS customer_order (
   order_id BIGSERIAL PRIMARY KEY,
   customer_id BIGINT NOT NULL REFERENCES customer (customer_id),
-  order_time TIMESTAMP NOT NULL DEFAULT NOW ()
+  order_time TIMESTAMP NOT NULL DEFAULT NOW (),
+  payment_status VARCHAR(20) NOT NULL DEFAULT 'UNPAID'
 );
 
 CREATE TABLE IF NOT EXISTS order_item (
