@@ -288,6 +288,8 @@ public final class MenuService {
 
     public MenuItem addMenuItem(final MenuItem item) {
 
+        validateProfitMargin(item);
+        
         Set<Ingredient> managedIngredients = item.getIngredients()
                 .stream()
                 .map(ingredient -> {
