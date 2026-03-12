@@ -53,8 +53,7 @@ public class SecurityConfig {
               .requestMatchers(HttpMethod.PUT, "api/menu/menuItem/edit/**").permitAll()
               .requestMatchers(HttpMethod.DELETE, "api/menu/menuItem/delete/**").permitAll()
 
-              .requestMatchers(HttpMethod.PATCH, "/api/menu/menuItem/**/availability")
-    .hasAnyRole("WAITER", "KITCHEN")
+              .requestMatchers(HttpMethod.PATCH, "/api/menu/menuItem/**").permitAll()
 
     .anyRequest().authenticated()
 );
