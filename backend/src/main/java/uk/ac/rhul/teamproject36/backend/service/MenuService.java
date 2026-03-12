@@ -1,15 +1,18 @@
 package uk.ac.rhul.teamproject36.backend.service;
 
-import java.awt.*;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
-
 import uk.ac.rhul.teamproject36.backend.menu.Ingredient;
 import uk.ac.rhul.teamproject36.backend.menu.ItemType;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
@@ -343,6 +346,24 @@ public MenuItem editMenuItem(final Long id, final MenuItem updatedItem) {
 
     return menuItemRepository.save(existing);
 }
+
+private void validateProfitMargin(MenuItem item) {
+
+    BigDecimal cost = item.getCostToProduce();
+    BigDecimal price = item.getPrice();
+
+    if (cost == null || price == null) {
+        throw new IllegalArgumentException("Cost and price must be provided");
+    }
+
+    BigDecimal minimumPrice = cost.divide(new BigDecimal("0.4"), 2, BigDecimal.ROUND_HALF_UP);
+
+    if (price.compareTo(minimumPrice) < 0) {
+        throw new IllegalArgumentException("Price must maintain at least a 60% profit margin");
+    }
+}
+
+
 
 public void deleteMenuItem(final Long id) {
 
