@@ -13,6 +13,7 @@ import uk.ac.rhul.teamproject36.backend.order.Customer;
 import uk.ac.rhul.teamproject36.backend.order.CustomerOrder;
 import uk.ac.rhul.teamproject36.backend.order.OrderItem;
 import uk.ac.rhul.teamproject36.backend.order.OrderStatus;
+import uk.ac.rhul.teamproject36.backend.order.PaymentStatus;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
 import uk.ac.rhul.teamproject36.backend.repository.CustomerRepository;
 import uk.ac.rhul.teamproject36.backend.repository.OrderRepository;
@@ -80,15 +81,15 @@ public class OrderDataSeeder implements CommandLineRunner {
         Customer customer3 = createCustomer("Kanye East", "07720313942");
         Customer customer4 = createCustomer("Druski", "07702225672");
 
-        CustomerOrder order1 = createOrder(customer1, 5, OrderStatus.PLACED, Instant.now());
+        CustomerOrder order1 = createOrder(customer1, 5, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID);
         addOrderItems(order1, menuItems, new int[]{2, 1, 0});
-        CustomerOrder order2 = createOrder(customer2, 3, OrderStatus.PREPARING, Instant.now());
+        CustomerOrder order2 = createOrder(customer2, 3, OrderStatus.PREPARING, Instant.now(), PaymentStatus.UNPAID);
         addOrderItems(order2, menuItems, new int[]{1, 2, 1});
-        CustomerOrder order3 = createOrder(customer3, 8, OrderStatus.READY, Instant.now());
+        CustomerOrder order3 = createOrder(customer3, 8, OrderStatus.READY, Instant.now(), PaymentStatus.UNPAID);
         addOrderItems(order3, menuItems, new int[]{3, 0, 2});
-        CustomerOrder order4 = createOrder(customer4, 2, OrderStatus.PLACED, Instant.now());
+        CustomerOrder order4 = createOrder(customer4, 2, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID);
         addOrderItems(order4, menuItems, new int[]{1, 1, 1});
-        CustomerOrder order5 = createOrder(customer1, 5, OrderStatus.PREPARING, Instant.now());
+        CustomerOrder order5 = createOrder(customer1, 5, OrderStatus.PREPARING, Instant.now(), PaymentStatus.UNPAID);
         addOrderItems(order5, menuItems, new int[]{0, 2, 2});
 
         orderRepository.saveAll(List.of(order1, order2, order3, order4, order5));
@@ -108,11 +109,12 @@ public class OrderDataSeeder implements CommandLineRunner {
         return customerRepository.save(customer);
     }
 
-    private CustomerOrder createOrder(Customer customer, int tableNumber, OrderStatus status, Instant createdAt) {
+    private CustomerOrder createOrder(Customer customer, int tableNumber, OrderStatus status, Instant createdAt, PaymentStatus paymentStatus) {
         CustomerOrder order = new CustomerOrder();
         order.setCustomer(customer);
         order.setTableNumber(tableNumber);
         order.setStatus(status);
+        order.setPaymentStatus(paymentStatus);
         return order;
     }
 
