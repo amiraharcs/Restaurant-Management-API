@@ -384,6 +384,17 @@
   color: #166534;
 }
 
+.manage_item_costToProduce {
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: #d3f3de;
+  color: #166534;
+  width: fit-content;
+  margin-top: 1rem;
+}
+
 .manage_item_calories {
   padding: 3px 7px;
   border-radius: 999px;
