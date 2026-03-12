@@ -9,7 +9,7 @@
 
 .panel {
     width: min(1100px, 100%);
-    background: #0b6b4f;
+    background: #3f987f;
     border-radius: 0 0 200px 200px;
     position: relative;
     overflow: hidden;
@@ -24,7 +24,7 @@
     bottom: -180px;
     width: min(980px, 92%);
     height: 480px;
-    background: #cd9805;
+    background: #3f987f;
     border-radius: 999px;
 }
 
