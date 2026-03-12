@@ -4,10 +4,10 @@ import { deleteMenuItem, fetchMenuItemById } from "../../api/managerApi";
 import NavBarWaiter from "./NavBarWaiter";
 import StaffFooter from "./StaffFooter";
 import { SiTicktick } from "react-icons/si";
-import { RxCrossCircled } from "react-icons/rx";
 import EditItem from "./EditItem";
 import { getLoggedInStaffRole } from "./staffSession";
 import { updateMenuItemAvailability } from "../../api/waiterApi";
+import { GiCancel } from "react-icons/gi";
 
 export default function ManageMenuItem() {
     const navigate = useNavigate();
@@ -63,7 +63,7 @@ export default function ManageMenuItem() {
       <div className="manage_item_card">
             <div className="manage_item_header">
                 <h1 className="manage_item_title">{item.name}</h1>
-                {item.isAvailable ? <SiTicktick className="manage_item_tick"/> : <RxCrossCircled className="manage_item_cross"/>}
+                {item.isAvailable ? <SiTicktick className="manage_item_tick"/> : <GiCancel className="manage_item_cross"/>}
             </div>
             <div className="manage_item_important_info">
                 <span className="info_bubble info_type">

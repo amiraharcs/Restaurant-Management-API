@@ -8,12 +8,11 @@ import { FaFire } from 'react-icons/fa';
 import { LuWheatOff } from "react-icons/lu";
 import { SiVega } from "react-icons/si";
 import { FaLeaf } from "react-icons/fa";
-import { GiMeat } from "react-icons/gi";
+import { GiCancel, GiMeat } from "react-icons/gi";
 import StaffWelcome from "./data/components/StaffWelcome.tsx";
 import { useNavigate } from "react-router-dom";
 import AddItem from "./data/components/AddItem.tsx";
 import { SiTicktick } from "react-icons/si";
-import { RxCrossCircled } from "react-icons/rx";
 import { getLoggedInStaffRole } from "./data/components/staffSession.ts";
 import { fetchWaiterMenu } from "./api/waiterApi.ts";
 
@@ -144,7 +143,7 @@ export default function ManageMenu() {
           
                                                 <div className='manage_menu_item_add'>
                                                     <p className='manage_menu_item_add_add'>View</p>
-                                                    {item.isAvailable ? <SiTicktick className="manage_menu_item_icon"/> : <RxCrossCircled />}
+                                                    {item.isAvailable ? <SiTicktick className="manage_menu_item_icon"/> : <GiCancel className="manage_menu_item_icon"/>}
                                                 </div>
                                             </div>
                                         </div>)
