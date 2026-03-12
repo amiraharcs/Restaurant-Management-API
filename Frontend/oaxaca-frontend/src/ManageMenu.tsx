@@ -143,8 +143,8 @@ export default function ManageMenu() {
                                                   <p className='manage_menu_item_price'>£{item.price.toFixed(2)}</p>
                                                 </div>
           
-                                                <div className='manage_menu_item_add'>
-                                                    <p className='manage_menu_item_add_add'>View</p>
+                                                <div className={`manage_menu_item_view ${!item.isAvailable ? "manage_menu_item_view_disabled" : ""}`}>
+                                                    <p className='manage_menu_item_view_text'>View</p>
                                                     {item.isAvailable ? <SiTicktick className="manage_menu_item_icon"/> : <GiCancel className="manage_menu_item_icon"/>}
                                                 </div>
                                             </div>
