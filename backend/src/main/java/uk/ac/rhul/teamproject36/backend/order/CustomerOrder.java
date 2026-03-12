@@ -33,6 +33,10 @@ public class CustomerOrder {
     @Column(nullable = false)
     private OrderStatus status = OrderStatus.PLACED;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_status", nullable = false)
+    private PaymentStatus paymentStatus = PaymentStatus.UNPAID;
+
     @Column(nullable = false, updatable = false)
     private Instant createdAt = Instant.now();
 
@@ -73,4 +77,14 @@ public class CustomerOrder {
     public void setTableNumber(Integer tableNumber) {
       this.tableNumber = tableNumber;
     }
+
+    public PaymentStatus getPaymentStatus() {
+      return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+      this.paymentStatus = paymentStatus;
+    }
+
+
 }
