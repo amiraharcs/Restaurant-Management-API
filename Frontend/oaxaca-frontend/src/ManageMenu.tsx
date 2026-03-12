@@ -15,6 +15,7 @@ import AddItem from "./data/components/AddItem.tsx";
 import { SiTicktick } from "react-icons/si";
 import { getLoggedInStaffRole } from "./data/components/staffSession.ts";
 import { fetchWaiterMenu } from "./api/waiterApi.ts";
+import NavBarManager from "./data/components/NavBarManager.tsx";
 
 
 
@@ -77,7 +78,8 @@ export default function ManageMenu() {
 
   return (
     <main className="">
-      <NavBarWaiter notificationCount={totalNotifications} />
+      {role === "WAITER" && <NavBarWaiter notificationCount={totalNotifications} />}
+      {role === "MANAGER" && <NavBarManager />}
       
         <div className="manage_menu_page">
           <StaffWelcome />
