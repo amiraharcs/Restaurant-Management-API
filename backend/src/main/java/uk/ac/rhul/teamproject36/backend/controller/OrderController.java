@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import uk.ac.rhul.teamproject36.backend.order.OrderStatus;
 import uk.ac.rhul.teamproject36.backend.service.OrderService;
 import uk.ac.rhul.teamproject36.backend.service.OrderService.OrderDto;
@@ -60,6 +59,11 @@ public class OrderController {
     @PatchMapping("/orders/{id}/ready")
     public OrderDto markReady(@PathVariable Long id) {
       return orderService.markReady(id);
+    }
+
+    @PatchMapping("/orders/{id}/paid")
+    public OrderDto markPaid(@PathVariable Long id) {
+      return orderService.markPaid(id);
     }
 
     @ExceptionHandler(OrderService.BadRequestException.class)

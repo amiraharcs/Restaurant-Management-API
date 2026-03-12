@@ -9,9 +9,11 @@ import uk.ac.rhul.teamproject36.backend.order.Customer;
 import uk.ac.rhul.teamproject36.backend.order.CustomerOrder;
 import uk.ac.rhul.teamproject36.backend.order.OrderItem;
 import uk.ac.rhul.teamproject36.backend.order.OrderStatus;
+import uk.ac.rhul.teamproject36.backend.order.PaymentStatus;
 import uk.ac.rhul.teamproject36.backend.repository.CustomerRepository;
 import uk.ac.rhul.teamproject36.backend.repository.MenuItemRepository;
 import uk.ac.rhul.teamproject36.backend.repository.OrderRepository;
+
 
 @Service
 public class OrderService {
@@ -83,12 +85,17 @@ public class OrderService {
     
     public record OrderItemDto(Long menuItemId, String name, Integer quantity) {}
 
-    public record OrderDto(Long id, OrderStatus status, java.time.Instant createdAt,
+    public record OrderDto(
+        Long id,
+        OrderStatus status,
+        java.time.Instant createdAt,
         Integer tableNumber,
         String customerName,
         String customerPhoneNumber,
-        List<OrderItemDto> items) {
-    }
+        PaymentStatus paymentStatus,
+        List<OrderItemDto> items
+    ) {}
+
 
 
     @Transactional(readOnly = true)
@@ -165,13 +172,10 @@ public class OrderService {
         items.add(new OrderItemDto(it.getMenuItem().getId(), it.getMenuItem().getName(),
             it.getQuantity()));
       }
-      return new OrderDto(order.getId(), order.getStatus(), 
-                            order.getCreatedAt(), 
-                            order.getTableNumber(), 
-                            order.getCustomer().getName(), 
-                            order.getCustomer().getPhoneNumber(), 
-                            items
-                        );
+      return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(),
+          order.getTableNumber(), order.getCustomer().getName(),
+          order.getCustomer().getPhoneNumber(), order.getPaymentStatus(), items);
+
     }
 
     @Transactional(readOnly = true)
@@ -242,6 +246,26 @@ public class OrderService {
 
       return toOrderDto(order);
     }
+
+    /**
+     * Marks an order as PAID if it is currently UNPAID.
+     */
+    @Transactional
+    public OrderDto markPaid(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getPaymentStatus() != PaymentStatus.UNPAID) {
+        throw new BadRequestException(
+            "Invalid payment status transition from: " + order.getPaymentStatus());
+      }
+
+      order.setPaymentStatus(PaymentStatus.PAID);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
+
 
 }
 
