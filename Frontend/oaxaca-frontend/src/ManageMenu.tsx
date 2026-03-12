@@ -34,6 +34,7 @@ export default function ManageMenu() {
           name: string;
           description: string;
           price: number;
+          costToProduce: number;
           calories: number;
           isAvailable: boolean;
           ingredients: string[];
@@ -111,6 +112,7 @@ export default function ManageMenu() {
                                         onClick={() => navigate(`/manage-menu/${item.id}`)}
                                         >
                                             <img className='manage_menu_item_image' src={item.image} alt={item.name} />
+                                            <p>{item.costToProduce}</p>
                                             <div className='manage_menu_item_text'>
                                                 <div className='manage_menu_item_title'>
                                                     <h3>{item.name}</h3>
