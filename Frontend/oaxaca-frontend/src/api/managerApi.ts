@@ -15,6 +15,7 @@ export type MenuItemDto = {
   name: string;
   description: string;
   price: number;
+  costToProduce: number;
   calories: number;
   available: boolean;
   ingredients: IngredientDto[];

@@ -35,6 +35,7 @@ export default function ManageMenu() {
           name: string;
           description: string;
           price: number;
+          costToProduce: number;
           calories: number;
           isAvailable: boolean;
           ingredients: string[];
