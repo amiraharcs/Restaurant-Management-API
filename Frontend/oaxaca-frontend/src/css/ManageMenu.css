@@ -240,13 +240,13 @@
 .manage_item_tick {
   font-size: 1.5rem;
   color: #1f8f3a;
-  padding-top: 6px;
 }
 
 .manage_item_cross {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: #d41445;
-  padding-top: 6px;
+  padding-bottom: 4px;
+  
 }
 
 .manage_item_important_info {
