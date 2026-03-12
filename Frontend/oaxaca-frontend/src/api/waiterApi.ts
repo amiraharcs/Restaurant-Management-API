@@ -23,21 +23,20 @@ export type FilterDto = {
 };
 
 export type MenuItemDto = {
-  id?: number;
+  id: number;
   name: string;
   description: string;
   price: number;
   calories: number;
-  available: boolean;
-  ingredients: IngredientDto[];
-  allergens: String;
-  vegetarian: Boolean;
-  vegan: Boolean;
-  glutenFree: Boolean;
-  meat: Boolean;
-  imageUrl: string;
+  isAvailable: boolean;
+  ingredients: string[];
+  allergens: string[];
+  filters: string[];
+  image: string;
   itemType: "FOOD" | "DESSERT" | "DRINK";
 };
+
+export type MenuGrouped = Record<"FOOD" | "DESSERT" | "DRINK", MenuItemDto[]>;
 
 export async function confirmOrder(id : number) {
     const res = await fetch(`${API_BASE}/api/orders/${id}/confirm`, {
@@ -57,6 +56,12 @@ export async function getOrder(id : number): Promise<OrderResponse> {
 
     if (!res.ok) throw new Error(`Get order failed: ${res.status}`);
     return res.json();
+}
+
+export async function fetchWaiterMenu(): Promise<MenuItemDto[]> {
+  const res = await fetch(`${API_BASE}/api/menu/all`);
+  if (!res.ok) throw new Error(`Menu fetch failed: ${res.status}`);
+  return res.json();
 }
 
 export async function fetchMenuItemById(id: number): Promise<MenuItemDto> {

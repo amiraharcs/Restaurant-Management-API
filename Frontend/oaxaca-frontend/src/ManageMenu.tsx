@@ -4,7 +4,6 @@ import "./css/ManageMenu.css";
 import mockAlertsData from "./data/mockAlertsData.json";
 import { getTotalNotifications } from "./data/notificationCount.ts";
 import { useState, useEffect } from "react";
-import { fetchMenu } from './api/menuApi';
 import { FaFire } from 'react-icons/fa';
 import { LuWheatOff } from "react-icons/lu";
 import { SiVega } from "react-icons/si";
@@ -16,6 +15,7 @@ import AddItem from "./data/components/AddItem.tsx";
 import { SiTicktick } from "react-icons/si";
 import { RxCrossCircled } from "react-icons/rx";
 import { getLoggedInStaffRole } from "./data/components/staffSession.ts";
+import { fetchWaiterMenu } from "./api/waiterApi.ts";
 
 
 
@@ -57,12 +57,13 @@ export default function ManageMenu() {
               setLoading(true);
               setError("");
   
-              const data = await fetchMenu()
+              const data = await fetchWaiterMenu()
               const mapped: MenuData = {
-                  main: data.FOOD ?? [],
-                  dessert: data.DESSERT ?? [],
-                  drinks: data.DRINK ?? []
+                main: data.filter(item => item.itemType === "FOOD"),
+                dessert: data.filter(item => item.itemType === "DESSERT"),
+                drinks: data.filter(item => item.itemType === "DRINK"),
               }
+              console.log(mapped)
               setProducts(mapped)
           } catch (e: any) {
               setError(e?.message ?? "Failed to load menu")
@@ -107,7 +108,6 @@ export default function ManageMenu() {
                             )}
                             <div className='manage_menu_items_div'>
                                 {items.map((item) =>
-                                    item.isAvailable && (
                                         <div key={item.id ?? item.name} className='manage_menu_item'
                                         onClick={() => navigate(`/manage-menu/${item.id}`)}
                                         >
@@ -148,7 +148,7 @@ export default function ManageMenu() {
                                                 </div>
                                             </div>
                                         </div>)
-                                )}
+                                }
                             </div>
                         </section>
                     ))}
