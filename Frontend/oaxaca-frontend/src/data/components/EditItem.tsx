@@ -11,6 +11,7 @@ export default function EditItem({item, onClose} : any ) {
         name?: string;
         description?: string;
         price?: string;
+        costToProduce?: string;
         calories?: string;
         ingredients?: string;
         allergens?: string;
@@ -45,6 +46,20 @@ export default function EditItem({item, onClose} : any ) {
             validationErrors.price = "Price must be a number";
         } else if (price <= 0) {
             validationErrors.price = "Price must be greater than 0";
+        }
+
+        const costRaw = formData.get("costToProduce")?.toString().trim() ?? "";
+        const cost = Number(costRaw);
+
+        if (!costRaw) {
+            validationErrors.costToProduce = "Cost to produce is required";
+        } else if (Number.isNaN(cost)) {
+            validationErrors.costToProduce = "Cost must be a number";
+        } else if (cost <= 0) {
+            validationErrors.costToProduce = "Cost must be greater than 0";
+        } else if (!Number.isNaN(price) && cost > price * 0.4) {
+            validationErrors.costToProduce =
+                "Cost must be at most 40% of the price (minimum 60% profit margin)";
         }
 
         const caloriesRaw = formData.get("calories")?.toString().trim() ?? "";
@@ -125,6 +140,7 @@ export default function EditItem({item, onClose} : any ) {
             name: name,
             description: description,
             price: price,
+            costToProduce: cost,
             calories: calories,
             ingredients: ingredientsRaw
                 .split(",")
@@ -193,8 +209,18 @@ export default function EditItem({item, onClose} : any ) {
                             id="price"
                             type="number"
                             step="0.01"
-                            defaultValue={item.price}
+                            defaultValue={Number(item.price).toFixed(2)}
                             name="price"
+                            required
+                        />
+                        <label className="edit_item_form_label" htmlFor="costToProduce">Cost To Produce (£)</label>
+                        <input
+                            className="edit_item_form_input"
+                            id="costToProduce"
+                            type="number"
+                            step="0.01"
+                            defaultValue={Number(item.costToProduce).toFixed(2)}
+                            name="costToProduce"
                             required
                         />
                         <label className="edit_item_form_label" htmlFor="calories">Calories (kcal)</label>
