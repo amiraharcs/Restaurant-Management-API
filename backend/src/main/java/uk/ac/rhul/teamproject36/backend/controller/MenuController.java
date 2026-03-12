@@ -92,7 +92,7 @@ public final class MenuController {
      * @param request the availability update request body
      * @return HTTP status indicating the result
      */
-    @PatchMapping("/menu/{id}/availability")
+    @PatchMapping("/menu/menuItem/{id}/availability")
     public ResponseEntity<Void> updateAvailability(
             @PathVariable final Long id,
             @RequestBody final AvailabilityUpdateRequest request) {
