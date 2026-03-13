@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import '../../css/Waiter.css';
-import { LuCircleCheck, LuCircleX, LuX } from 'react-icons/lu';
-import { cancelOrder, confirmOrder, deliverOrder } from '../../api/waiterApi';
+import { LuCircleCheck, LuCircleX, LuX, LuCircleDollarSign } from 'react-icons/lu';
+import { cancelOrder, confirmOrder, deliverOrder, markPaidOrder } from '../../api/waiterApi';
 
 export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdated}: any) {
     const [loading, setLoading] = useState(false);
@@ -41,6 +41,19 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
             onClose();
         } catch {
             setError('Failed to mark order as cancelled');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function orderPaid() {
+        try {
+            setLoading(true);
+            await markPaidOrder(order.id);
+            onOrderUpdated?.();
+            onClose();
+        } catch {
+            setError('Failed to mark order as paid');
         } finally {
             setLoading(false);
         }
@@ -106,6 +119,10 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
                             </button>
+                            <button className={`popupBtn paidBtn ${order.paymentStatus === "PAID" ? "disabled" : ""}`} onClick={orderPaid} disabled={order.paymentStatus === "PAID"}>
+                                <LuCircleDollarSign className='buttonIcons' />
+                                PAID
+                            </button>
                         </div>
                     )}
 
@@ -118,6 +135,10 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                             <button className='popupBtn cancelBtn' onClick={orderCancelled}>
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
+                            </button>
+                            <button className={`popupBtn paidBtn ${order.paymentStatus === "PAID" ? "disabled" : ""}`} onClick={orderPaid} disabled={order.paymentStatus === "PAID"}>
+                                <LuCircleDollarSign className='buttonIcons' />
+                                PAID
                             </button>
                         </div>
                     )}
@@ -132,6 +153,10 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
                             </button>
+                            <button className={`popupBtn paidBtn ${order.paymentStatus === "PAID" ? "disabled" : ""}`} onClick={orderPaid} disabled={order.paymentStatus === "PAID"}>
+                                <LuCircleDollarSign className='buttonIcons' />
+                                PAID
+                            </button>
                         </div>
                     )}
 
@@ -144,6 +169,19 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                             <button className='popupBtn cancelBtn' onClick={orderCancelled}>
                                 <LuCircleX className='buttonIcons' />
                                 CANCEL
+                            </button>
+                            <button className={`popupBtn paidBtn ${order.paymentStatus === "PAID" ? "disabled" : ""}`} onClick={orderPaid} disabled={order.paymentStatus === "PAID"}>
+                                <LuCircleDollarSign className='buttonIcons' />
+                                PAID
+                            </button>
+                        </div>
+                    )}
+
+                    {order.status === "DELIVERED" && (
+                        <div className='orderDetailsButtons'>
+                            <button className={`popupBtn paidBtn ${order.paymentStatus === "PAID" ? "disabled" : ""}`} onClick={orderPaid} disabled={order.paymentStatus === "PAID"}>
+                                <LuCircleDollarSign className='buttonIcons' />
+                                PAID
                             </button>
                         </div>
                     )}

@@ -130,3 +130,9 @@ export async function cancelOrder(id: number) {
     if (!res.ok) throw new Error(`Cancel order failed: ${res.status}`);
     return res.json();
 }
+
+export async function markPaidOrder(id: number) {
+    const res = await fetch(`${API_BASE}/api/orders/${id}/paid`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Marking order as PAID failed: ${res.status}`);
+    return res.json();
+}
