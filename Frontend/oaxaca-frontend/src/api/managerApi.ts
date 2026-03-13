@@ -11,17 +11,20 @@ export type FilterDto = {
 };
 
 export type MenuItemDto = {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   price: number;
   costToProduce: number;
   calories: number;
-  isAvailable: boolean;
-  ingredients: string[];
-  allergens: string[];
-  filters: string[];
-  image: string;
+  available: boolean;
+  ingredients: IngredientDto[];
+  allergens: String;
+  vegetarian: Boolean;
+  vegan: Boolean;
+  glutenFree: Boolean;
+  meat: Boolean;
+  imageUrl: string;
   itemType: "FOOD" | "DESSERT" | "DRINK";
 };
 
