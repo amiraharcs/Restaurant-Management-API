@@ -532,6 +532,30 @@
   margin-top: 0px;
 }
 
+.edit_item_form_new_price_info {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+
+.edit_item_form_minimum_price_text {
+  color: orange;
+  font-weight: 600;
+}
+
+.edit_item_form_percentage {
+  font-weight: 600;
+}
+
+.negative_percentage {
+  color: palevioletred;
+}
+
+.positive_percentage {
+  color:palegreen;
+}
+
 .edit_item_form_filter {
   display: flex;
   flex-direction: row;
@@ -545,6 +569,7 @@
   margin-bottom: 2px;
   margin-top: 0.1rem;
 }
+
 
 .edit_item_radio_group {
   display: flex;
