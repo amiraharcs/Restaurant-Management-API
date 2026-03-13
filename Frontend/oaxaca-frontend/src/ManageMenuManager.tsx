@@ -99,7 +99,7 @@ export default function ManageMenu() {
                             <div className='manage_menu_items_div'>
                                 {items.map((item) =>
                                         <div key={item.id ?? item.name} className='manage_menu_item'
-                                        onClick={() => navigate(`/manage-menu/${item.id}`)}
+                                        onClick={() => navigate(`/manage-menu-manager/${item.id}`)}
                                         >
                                             <img className='manage_menu_item_image' src={item.image} alt={item.name} />
                                             <div className='manage_menu_item_text'>

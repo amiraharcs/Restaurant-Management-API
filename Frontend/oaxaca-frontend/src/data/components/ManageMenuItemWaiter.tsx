@@ -9,27 +9,14 @@ import { getLoggedInStaffRole } from "./staffSession";
 import { updateMenuItemAvailability } from "../../api/waiterApi";
 import { GiCancel } from "react-icons/gi";
 
-export default function ManageMenuItem() {
+export default function ManageMenuItemWaiter() {
     const navigate = useNavigate();
-
-    const role = getLoggedInStaffRole();
 
   const { id } = useParams();
   const [item, setItem] = useState<any>(null);
 
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
   const [error, setError] = useState<string | null>(null);
 
-  const handleConfirmDelete = async () => {
-    try {
-        await deleteMenuItem(item.id);
-        setShowDeleteConfirm(false);
-        navigate("/manage-menu");
-    } catch (error : any) {
-        setError(error.message || "Failed to delete item. Please try again.");
-    }
-};
 
   useEffect(() => {
     async function loadItem() {
@@ -41,10 +28,10 @@ export default function ManageMenuItem() {
     
   }, [id]);
 
-    const [showItem, setShowItem] = useState(false);
-    const [selectedItem, setSelectedItem] = useState<any>({});
+  if (!item) {
+  return <div>Loading...</div>;
+}
 
-  if (!item) return <p>Loading...</p>;
 
   async function changeAvailability(id: number, availability: boolean) {
     try {
@@ -113,14 +100,9 @@ export default function ManageMenuItem() {
                 <p className="manage_item_calories">{item.calories} kcal</p>
                 <p className="manage_item_price">£{Number(item.price).toFixed(2)}</p>
             </div>
-            <p className="manage_item_costToProduce">Cost To Procude: £{Number(item.costToProduce).toFixed(2)}</p>
-            {role === "MANAGER" ? <div className="manage_item_buttons">
-                <button className="btn btn_edit" onClick={() => { setShowItem(true); setSelectedItem(item); }}>Edit</button>
-                <button className="btn btn_delete" onClick={() => {setShowDeleteConfirm(true)}}>Delete</button>
-            </div> : null}
-            {role === "WAITER" ? <div className="manage_item_buttons">
+            <div className="manage_item_buttons">
                 <button className="btn btn_edit" onClick={() => {changeAvailability(item.id, !item.isAvailable)}}>Change Availability</button>
-            </div> : null}
+            </div>
             {error && (
                 <div className="error_box">
                     <p className="error_box_title" style={{ fontSize: "1rem"}}>There was an error in updating the item: {error}</p>
@@ -130,47 +112,6 @@ export default function ManageMenuItem() {
     </div>
 
     <StaffFooter />
-
-    {showItem && <EditItem item={selectedItem} onClose={() => {
-                setShowItem(false)
-                setSelectedItem({})
-            }} />}
-
-    {showDeleteConfirm && (
-    <div className="confirm_delete_main">
-        <div className="confirm_delete_main_backdrop" onClick={() => {setShowDeleteConfirm(false)}}></div>
-        <div className="confirm_delete_main_content">
-            <button
-                className="confirm_delete_main_close"
-                onClick={() => {setShowDeleteConfirm(false)}}
-            >
-                x
-            </button>
-            <h3 className="confirm_delete_main_title">Confirm Delete</h3>
-            <p>Are you sure you want to delete this item?</p>
-            <p className="delete-warning">This action cannot be undone.</p>
-            <div className="confirm_delete_buttons">
-                <button 
-                    className="btn_cancel"
-                    onClick={() => {setShowDeleteConfirm(false)}}
-                >
-                    Cancel
-                </button>
-                <button 
-                    className="btn_delete_confirm"
-                    onClick={handleConfirmDelete}
-                >
-                    Yes, Delete
-                </button>
-            </div>
-            {error && (
-                <div className="error_box">
-                    <p className="error_box_title" style={{ fontSize: "1rem"}}>There was an error in deleting the item: {error}</p>
-                </div>
-            )}
-        </div>
-    </div>
-)}
   </div>
   );
 }
