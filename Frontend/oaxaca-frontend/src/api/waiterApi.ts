@@ -1,6 +1,7 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
 export type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
+export type paymentStatus = "UNPAID" | "PAID";
 
 export type OrderResponse = {
     id: string;
@@ -9,6 +10,7 @@ export type OrderResponse = {
     tableNumber: number;
     customerName: string;
     customerPhoneNumber: string;
+    paymentStatus: paymentStatus;
     items: { menuItemId: number; name: string; quantity: number }[];
 };
 
@@ -126,5 +128,11 @@ export async function deliverOrder(id: number) {
 export async function cancelOrder(id: number) {
     const res = await fetch(`${API_BASE}/api/orders/${id}/cancel`, { method: "PATCH" });
     if (!res.ok) throw new Error(`Cancel order failed: ${res.status}`);
+    return res.json();
+}
+
+export async function markPaidOrder(id: number) {
+    const res = await fetch(`${API_BASE}/api/orders/${id}/paid`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Marking order as PAID failed: ${res.status}`);
     return res.json();
 }

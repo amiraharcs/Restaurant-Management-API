@@ -17,7 +17,7 @@
 }
 
 .waiterPage {
-    padding: 7% 15%;
+    padding: 7% 5%;
     background-color: #e7e7e7;
     min-height: 80vh;
 }
@@ -25,7 +25,7 @@
 .orderTabs {
     display: flex;
     gap: 2%;
-    width: 97.2%;
+    width: 100%;
     padding: 20px;
 }
 
@@ -50,6 +50,10 @@
     color: white;
 }
 
+.orderTab.warning {
+    color: red;
+}
+
 .orderTitle {
     background: #FFFFFF;
     border-radius: 14px;
@@ -72,7 +76,7 @@
 
 .orderRow {
     display: grid;
-    grid-template-columns: 20% 1px 30% 0.5px 25% auto;
+    grid-template-columns: 1.5fr 1px 2fr 1px 1.5fr auto;
     align-items: center;
     gap: 18px;
     background: #e5e7eb;
@@ -87,6 +91,14 @@
     background: #d1d5db
 }
 
+.orderRow.unpaid {
+    border-left: 4px solid red;
+}
+
+.orderRow.paid {
+    border-left: 4px solid #27ae60;
+}
+
 .orderLeft {
     display: grid;
     gap: 10px;
@@ -97,6 +109,21 @@
     align-items: center;
     justify-content: space-between;
     gap: 14px;
+}
+
+.paymentBadge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 12px;
+    border-radius: 6px;
+}
+
+.paymentBadge.unpaid {
+    color: red;
+}
+
+.paymentBadge.paid {
+    color: #27ae60;
 }
 
 .orderId {
@@ -272,6 +299,11 @@
     font-weight: 400;
 }
 
+.infoValue.warning {
+    font-weight: 800;
+    color: red;
+}
+
 .orderDetailsItems {
     border-radius: 14px;
     padding: 12px 12px;
@@ -346,6 +378,15 @@
 
 .cancelBtn:hover {
     background: orange;
+}
+
+.paidBtn {
+    background-color: #27ae60;
+    color: white;
+}
+
+.paidBtn:hover {
+    background-color: orange;
 }
 
 .popupBtn:disabled,

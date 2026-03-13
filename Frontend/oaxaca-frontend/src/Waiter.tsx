@@ -12,6 +12,7 @@ import type { OrderResponse } from './api/waiterApi.ts';
 import WaiterAlertsWaiter from './data/components/WaiterAlertsWaiter.tsx';
 
 type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
+type paymentStatus = "UNPAID" | "PAID";
 
 function pendingItemsSum(items : { quantity: number }[]) {
     let count = 0;
@@ -44,7 +45,7 @@ function calculatePlacedAt(ms : number) {
 }
 
 export default function Waiter() {
-    const [activeTab, setActiveTab] = useState<status>("PLACED");
+    const [activeTab, setActiveTab] = useState<status | paymentStatus>("PLACED");
     const [orders, setOrders] = useState<OrderResponse[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -75,10 +76,15 @@ export default function Waiter() {
         };
     }, []);
 
-    function filterOrders(tab : status) {
+    function filterOrders(tab : status | paymentStatus) {
         if (tab === "PLACED") {
             return orders.filter((order) => 
                 order.status === "PLACED" || order.status === "CONFIRMED"
+            );
+        }
+        if (tab === "UNPAID") {
+            return orders.filter((order) => 
+                (order.status === "READY" || order.status === "DELIVERED") && order.paymentStatus === "UNPAID"
             );
         }
         const activeOrders = orders.filter((order) => order.status === tab);
@@ -96,6 +102,19 @@ export default function Waiter() {
         };
         for ( const s of orders ) {
             count[s.status] += 1;
+        }
+        return count;
+    }
+
+    function calculatePaymentTabs() {
+        const count = {
+            UNPAID: 0,
+            PAID: 0
+        };
+        for ( const s of orders ) {
+            if (s.status === "READY" || s.status === "DELIVERED") {
+                count[s.paymentStatus] += 1;
+            }
         }
         return count;
     }
@@ -139,6 +158,10 @@ export default function Waiter() {
                         <button className={`orderTab ${activeTab === "READY" ? "active" : ""}`} onClick={() => setActiveTab("READY")}>
                             Ready ({calculateTabs().READY})
                         </button>
+
+                        <button className={`orderTab ${activeTab === "UNPAID" ? "active" : ""} ${calculatePaymentTabs().UNPAID > 0 ? "warning" : ""}`} onClick={() => setActiveTab("UNPAID")}>
+                            Unpaid ({calculatePaymentTabs().UNPAID})
+                        </button>
                     </div>
 
                     <div className='orderTitle'>
@@ -163,10 +186,13 @@ export default function Waiter() {
                             const ageMs = now - placedMs;
 
                             return (
-                                <div key={order.id} className='orderRow' role='button' onClick={() => {setShowOrderDetails(true); setSelectedOrder(order); setorderDetailsPlacedAt(calculatePlacedAt(ageMs));}}>
+                                <div key={order.id} className={`orderRow ${order.paymentStatus === "UNPAID" ? "unpaid" : "paid"}`} role='button' onClick={() => {setShowOrderDetails(true); setSelectedOrder(order); setorderDetailsPlacedAt(calculatePlacedAt(ageMs));}}>
                                     <div className='orderLeft'>
                                         <div className='orderTopLeft'>
                                             <div className='orderId'>Order #{order.id}</div>
+                                            <div className={`paymentBadge ${order.paymentStatus === "UNPAID" ? "unpaid" : "paid"}`}>
+                                                {order.paymentStatus}
+                                            </div>
                                         </div>
                                         <div className='orderCustomerName'>{order.customerName}</div>
                                     </div>
