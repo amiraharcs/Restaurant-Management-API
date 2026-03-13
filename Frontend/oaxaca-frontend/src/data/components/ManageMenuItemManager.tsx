@@ -128,9 +128,9 @@ export default function ManageMenuItemManager() {
                     </div>
                 )}
             <div className="manage_item_buttons">
-                <button className="btn btn_edit" onClick={() => {changeAvailability(item.id, !item.isAvailable)}}>Change Availability</button>
+                <button className="btn btn_availability" onClick={() => {changeAvailability(item.id, !item.isAvailable)}}>Change Availability</button>
             </div>
-            <div className="manage_item_buttons">
+            <div className="manage_item_buttons_manager">
                 <button className="btn btn_edit" onClick={() => { setShowItem(true); setSelectedItem(item); }}>Edit</button>
                 <button className="btn btn_delete" onClick={() => {setShowDeleteConfirm(true)}}>Delete</button>
             </div>

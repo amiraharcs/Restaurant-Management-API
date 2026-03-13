@@ -424,6 +424,7 @@
   display: flex;
   gap: 8px;
   align-items: center;
+  cursor: pointer;
 }
 
 .manage_item_extraInfo_manager {
@@ -461,7 +462,13 @@
 .manage_item_buttons {
   display: flex;
   gap: 12px;
-  margin-top: 1.5rem; 
+  margin-top: 1.0rem; 
+}
+
+.manage_item_buttons_manager {
+  display: flex;
+  gap: 12px;
+  margin-top: 0.5rem; 
 }
 
 .btn {
@@ -473,6 +480,15 @@
   cursor: pointer;
   transition: all 0.2s ease;
   width: 100%;
+}
+
+.btn_availability {
+  background-color: #76a7ec;
+  color: #213079;
+}
+
+.btn_availability:hover {
+  background-color: #8bb8f7;
 }
 
 .btn_edit {

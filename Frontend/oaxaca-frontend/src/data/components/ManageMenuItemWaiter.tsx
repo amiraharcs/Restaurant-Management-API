@@ -101,7 +101,7 @@ export default function ManageMenuItemWaiter() {
                 <p className="manage_item_price_waiter">£{Number(item.price).toFixed(2)}</p>
             </div>
             <div className="manage_item_buttons">
-                <button className="btn btn_edit" onClick={() => {changeAvailability(item.id, !item.isAvailable)}}>Change Availability</button>
+                <button className="btn btn_availability" onClick={() => {changeAvailability(item.id, !item.isAvailable)}}>Change Availability</button>
             </div>
             {error && (
                 <div className="error_box">
