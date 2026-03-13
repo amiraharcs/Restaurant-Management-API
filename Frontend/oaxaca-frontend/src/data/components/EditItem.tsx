@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { editMenuItem } from "../../api/managerApi";
+import { FaArrowTrendUp } from "react-icons/fa6";
 
 export default function EditItem({item, onClose} : any ) {
 
@@ -171,6 +172,32 @@ export default function EditItem({item, onClose} : any ) {
 
     }
 
+    const [costToProduce, changeCostToProduce] = useState<number> (item.costToProduce)
+    const [minimumPrice, changeMinimumPrice] = useState<number | null>(null)
+    const [pricePercentage, changePricePercentage] = useState<number | null>()
+    
+
+    const giveMinimumPrice = (e : any) =>  {
+        const costToProduce = Number(e.target.value);
+        if (!isNaN(costToProduce)) {
+            const minPrice = costToProduce / 0.4;
+            changeMinimumPrice(minPrice);
+            changeCostToProduce(costToProduce)
+        } else {
+            changeMinimumPrice(null);
+    } 
+    }
+
+    const givePricePercentage = (e : any) => {
+        const price = Number(e.target.value);
+        if (!isNaN(price)) {
+            const marginPercentage = price > 0 ? (((price - costToProduce) / price) * 100) : 0;
+            changePricePercentage(marginPercentage)
+        } else {
+            changePricePercentage(null)
+        }
+    }
+
     return (
         <div className="edit_item_main" onClick={onClose}>
             <div className="edit_item_main_backdrop">
@@ -203,16 +230,6 @@ export default function EditItem({item, onClose} : any ) {
                             name="description"
                             required
                         />
-                        <label className="edit_item_form_label" htmlFor="price">Price (£)</label>
-                        <input
-                            className="edit_item_form_input"
-                            id="price"
-                            type="number"
-                            step="0.01"
-                            defaultValue={Number(item.price).toFixed(2)}
-                            name="price"
-                            required
-                        />
                         <label className="edit_item_form_label" htmlFor="costToProduce">Cost To Produce (£)</label>
                         <input
                             className="edit_item_form_input"
@@ -220,9 +237,25 @@ export default function EditItem({item, onClose} : any ) {
                             type="number"
                             step="0.01"
                             defaultValue={Number(item.costToProduce).toFixed(2)}
+                            onChange={giveMinimumPrice}
                             name="costToProduce"
                             required
                         />
+                        <label className="edit_item_form_label" htmlFor="price">Price (£)</label>
+                        <input
+                            className="edit_item_form_input"
+                            id="price"
+                            type="number"
+                            step="0.01"
+                            defaultValue={Number(item.price).toFixed(2)}
+                            onChange={givePricePercentage}
+                            name="price"
+                            required
+                        />
+                        <div className="edit_item_form_new_price_info">
+                            {minimumPrice && <p className="edit_item_form_minimum_price_text">Minimum allowed price: £{minimumPrice.toFixed(2)}</p>}
+                            {pricePercentage != null && <p className={`edit_item_form_percentage ${pricePercentage < 60 ? `negative_percentage` : `positive_percentage`}`}><FaArrowTrendUp /> {pricePercentage.toFixed(2)}%</p>}
+                        </div>
                         <label className="edit_item_form_label" htmlFor="calories">Calories (kcal)</label>
                         <input
                             className="edit_item_form_input"
