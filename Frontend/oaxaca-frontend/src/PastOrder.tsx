@@ -9,18 +9,19 @@ import { LuChevronRight } from 'react-icons/lu';
 import "./css/Waiter.css";
 
 type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
+type paymentStatus = "UNPAID" | "PAID";
 
-function pendingItemsSum(items : { quantity: number }[]) {
+function pendingItemsSum(items: { quantity: number }[]) {
     let count = 0;
     Object.values(items).forEach((item) => count += item.quantity)
     return count;
 }
 
-function calculatePlacedAt(ms : number) {
+function calculatePlacedAt(ms: number) {
     const totalMins = Math.floor(ms / 60000);
     const totalHours = Math.floor(totalMins / 60);
 
-    const days = Math.floor(totalHours / 24);   
+    const days = Math.floor(totalHours / 24);
     const mins = totalMins % 60;
     const hours = totalHours % 24;
 
@@ -41,7 +42,7 @@ function calculatePlacedAt(ms : number) {
 }
 
 export default function PastOrder() {
-    const [activeTab, setActiveTab] = useState<status>("PLACED");
+    const [activeTab, setActiveTab] = useState<status | paymentStatus>("PAID");
     const [orders, setOrders] = useState<OrderResponse[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -72,10 +73,15 @@ export default function PastOrder() {
         };
     }, []);
 
-    function filterOrders(tab : status) {
+    function filterOrders(tab: status | paymentStatus) {
         if (tab === "PLACED") {
-            return orders.filter((order) => 
+            return orders.filter((order) =>
                 order.status === "PLACED" || order.status === "CONFIRMED"
+            );
+        }
+        if (tab === "PAID") {
+            return orders.filter((order) => 
+                order.status === "DELIVERED" && order.paymentStatus === "PAID"
             );
         }
         const activeOrders = orders.filter((order) => order.status === tab);
@@ -91,8 +97,21 @@ export default function PastOrder() {
             DELIVERED: 0,
             CANCELLED: 0
         };
-        for ( const s of orders ) {
+        for (const s of orders) {
             count[s.status] += 1;
+        }
+        return count;
+    }
+
+    function calculatePaymentTabs() {
+        const count = {
+            UNPAID: 0,
+            PAID: 0
+        };
+        for (const s of orders) {
+            if (s.status === "DELIVERED") {
+                count[s.paymentStatus] += 1;
+            }
         }
         return count;
     }
@@ -120,8 +139,8 @@ export default function PastOrder() {
                 <div className='orderContainer'>
                     <div className='orderTabs'>
                         {/*  IGNORE THIS, WILL UPDATE WHEN PAID/UNPAID API IS FINISHED!!!   */}
-                        <button className={`orderTab ${activeTab === "PLACED" ? "active" : ""}`} onClick={() => setActiveTab("PLACED")}>
-                            Placeholder Tab for Completed and Paid Orders ({calculateTabs().PLACED})
+                        <button className={`orderTab ${activeTab === "PAID" ? "active" : ""}`} onClick={() => setActiveTab("PAID")}>
+                            Completed & Paid ({calculatePaymentTabs().PAID})
                         </button>
 
                         <button className={`orderTab ${activeTab === "CANCELLED" ? "active" : ""}`} onClick={() => setActiveTab("CANCELLED")}>
@@ -151,10 +170,13 @@ export default function PastOrder() {
                             const ageMs = now - placedMs;
 
                             return (
-                                <div key={order.id} className='orderRow' role='button' onClick={() => { setShowOrderDetails(true); setSelectedOrder(order); setorderDetailsPlacedAt(calculatePlacedAt(ageMs)); }}>
+                                <div key={order.id} className={`orderRow ${order.paymentStatus === "UNPAID" ? "unpaid" : "paid"}`} role='button' onClick={() => { setShowOrderDetails(true); setSelectedOrder(order); setorderDetailsPlacedAt(calculatePlacedAt(ageMs)); }}>
                                     <div className='orderLeft'>
                                         <div className='orderTopLeft'>
                                             <div className='orderId'>Order #{order.id}</div>
+                                            <div className={`paymentBadge ${order.paymentStatus === "UNPAID" ? "unpaid" : "paid"}`}>
+                                                {order.paymentStatus}
+                                            </div>
                                         </div>
                                         <div className='orderCustomerName'>{order.customerName}</div>
                                     </div>
