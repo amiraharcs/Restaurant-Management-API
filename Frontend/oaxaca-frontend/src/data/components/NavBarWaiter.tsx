@@ -53,7 +53,7 @@ export default function NavBarWaiter({
           <NavLink to="/past-order" className="waiterNavbar__link">
             PAST ORDERS
           </NavLink>
-          <NavLink to="/manage-menu" className="waiterNavbar__link" end>
+          <NavLink to="/manage-menu-waiter" className="waiterNavbar__link" end>
             MANAGE MENU
           </NavLink>
           <NavLink

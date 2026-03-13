@@ -9,14 +9,15 @@ import Alerts from './Alerts'
 import Order from './Order'
 import TrackOrder from './TrackOrder'
 import AboutUs from './AboutUs'
-import ManageMenu from './ManageMenu'
 import PastOrder from './PastOrder'
 import ResetPassword from './ResetPassword'
 import CreateAccount from './CreateAccount'
-import ManageMenuItem from './data/components/ManageMenuItem'
 import PaymentPage from './payment_page'
 import Manager from './Manager'
-
+import ManageMenuWaiter from './ManageMenuWaiter'
+import ManageMenuManager from './ManageMenuManager'
+import ManageMenuItemWaiter from '../src/data/components/ManageMenuItemWaiter'
+import ManageMenuItemManager from '../src/data/components/ManageMenuItemManager'
 
 function App() {
 
@@ -33,8 +34,10 @@ function App() {
         <Route path='/order' element={<Order />} />
         <Route path='/track-order' element={<TrackOrder />} />
         <Route path='/about-us' element={<AboutUs />} />
-        <Route path='/manage-menu' element={<ManageMenu />} />
-        <Route path="/manage-menu/:id" element={<ManageMenuItem />} />
+        <Route path='/manage-menu-waiter' element={<ManageMenuWaiter />} />
+        <Route path='/manage-menu-manager' element={<ManageMenuManager />} />
+        <Route path="/manage-menu-waiter/:id" element={<ManageMenuItemWaiter />} />
+        <Route path="/manage-menu-manager/:id" element={<ManageMenuItemManager />} />
         <Route path='/past-order' element={<PastOrder />} />
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/create-account' element={<CreateAccount />} />

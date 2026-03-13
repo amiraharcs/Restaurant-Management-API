@@ -1,8 +1,5 @@
-import NavBarWaiter from "./data/components/NavBarWaiter";
 import StaffFooter from "./data/components/StaffFooter";
 import "./css/ManageMenu.css";
-import mockAlertsData from "./data/mockAlertsData.json";
-import { getTotalNotifications } from "./data/notificationCount.ts";
 import { useState, useEffect } from "react";
 import { FaFire } from 'react-icons/fa';
 import { LuWheatOff } from "react-icons/lu";
@@ -13,20 +10,12 @@ import StaffWelcome from "./data/components/StaffWelcome.tsx";
 import { useNavigate } from "react-router-dom";
 import AddItem from "./data/components/AddItem.tsx";
 import { SiTicktick } from "react-icons/si";
-import { getLoggedInStaffRole } from "./data/components/staffSession.ts";
-import { fetchWaiterMenu } from "./api/waiterApi.ts";
 import NavBarManager from "./data/components/NavBarManager.tsx";
+import { fetchManagerrMenu } from "./api/managerApi.ts";
 
 
 
 export default function ManageMenu() {
-  const totalNotifications = getTotalNotifications(
-    mockAlertsData.mockCallWaiterAlerts || [],
-    mockAlertsData.mockOrdersReady || [],
-  );
-
-  const role = getLoggedInStaffRole();
-  console.log(role)
 
       const [showAddItem, setShowAddItem] = useState(false)
   
@@ -58,7 +47,7 @@ export default function ManageMenu() {
               setLoading(true);
               setError("");
   
-              const data = await fetchWaiterMenu()
+              const data = await fetchManagerrMenu()
               const mapped: MenuData = {
                 main: data.filter(item => item.itemType === "FOOD"),
                 dessert: data.filter(item => item.itemType === "DESSERT"),
@@ -79,8 +68,7 @@ export default function ManageMenu() {
 
   return (
     <main className="">
-      {role === "WAITER" && <NavBarWaiter notificationCount={totalNotifications} />}
-      {role === "MANAGER" && <NavBarManager />}
+      <NavBarManager />
       
         <div className="manage_menu_page">
           <StaffWelcome />
@@ -89,12 +77,12 @@ export default function ManageMenu() {
               <div className="manage_menu_header_row">
                 <h1 className="manage_menu_page_title">Manage Menu</h1>
 
-                {role === "MANAGER" ? <div className="manage_menu_action">
+                <div className="manage_menu_action">
                   <button className="manage_menu_btn add_btn"
                   onClick={() => setShowAddItem(true)}>
                     Add Item
                   </button>
-                </div> : null}
+                </div>
               </div>
                 <hr className='manage_menu_page_title_br' />
             </div>
@@ -111,7 +99,7 @@ export default function ManageMenu() {
                             <div className='manage_menu_items_div'>
                                 {items.map((item) =>
                                         <div key={item.id ?? item.name} className='manage_menu_item'
-                                        onClick={() => navigate(`/manage-menu/${item.id}`)}
+                                        onClick={() => navigate(`/manage-menu-manager/${item.id}`)}
                                         >
                                             <img className='manage_menu_item_image' src={item.image} alt={item.name} />
                                             <div className='manage_menu_item_text'>

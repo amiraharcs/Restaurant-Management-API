@@ -28,6 +28,12 @@ export type MenuItemDto = {
   itemType: "FOOD" | "DESSERT" | "DRINK";
 };
 
+export async function fetchManagerrMenu(): Promise<MenuItemDto[]> {
+  const res = await fetch(`${API_BASE}/api/menu/all`);
+  if (!res.ok) throw new Error(`Menu fetch failed: ${res.status}`);
+  return res.json();
+}
+
 export async function fetchMenuItemById(id: number): Promise<MenuItemDto> {
   const res = await fetch(`${API_BASE}/api/menu/menuItem/${id}`);
 

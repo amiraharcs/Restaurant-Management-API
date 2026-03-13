@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { addMenuItem } from "../../api/managerApi";
+import { FaArrowTrendUp } from "react-icons/fa6";
 
 export default function AddItem({ onClose }: any) {
   const [errors, setErrors] = useState({} as Record<string, string>);
@@ -166,6 +167,32 @@ export default function AddItem({ onClose }: any) {
     }
   }
 
+      const [costToProduce, changeCostToProduce] = useState<number> (0)
+    const [minimumPrice, changeMinimumPrice] = useState<number | null>(null)
+    const [pricePercentage, changePricePercentage] = useState<number | null>()
+    
+
+    const giveMinimumPrice = (e : any) =>  {
+        const costToProduce = Number(e.target.value);
+        if (!isNaN(costToProduce)) {
+            const minPrice = costToProduce / 0.4;
+            changeMinimumPrice(minPrice);
+            changeCostToProduce(costToProduce)
+        } else {
+            changeMinimumPrice(null);
+    } 
+    }
+
+    const givePricePercentage = (e : any) => {
+        const price = Number(e.target.value);
+        if (!isNaN(price)) {
+            const marginPercentage = price > 0 ? (((price - costToProduce) / price) * 100) : 0;
+            changePricePercentage(marginPercentage)
+        } else {
+            changePricePercentage(null)
+        }
+    }
+
   return (
     <div className="add_item_main" onClick={onClose}>
       <div className="add_item_main_backdrop"></div>
@@ -208,6 +235,17 @@ export default function AddItem({ onClose }: any) {
               required
             />
 
+            <label className="add_item_form_label" htmlFor="costToProduce">Cost To Produce (£)</label>
+            <input
+                className="add_item_form_input"
+                id="costToProduce"
+                type="number"
+                step="0.01"
+                name="costToProduce"
+                onChange={giveMinimumPrice}
+                required
+            />
+
             <label className="add_item_form_label" htmlFor="price">
               Price (£)
             </label>
@@ -217,18 +255,13 @@ export default function AddItem({ onClose }: any) {
               type="number"
               step="0.01"
               name="price"
+              onChange={givePricePercentage}
               required
             />
-
-            <label className="add_item_form_label" htmlFor="costToProduce">Cost To Produce (£)</label>
-            <input
-                className="add_item_form_input"
-                id="costToProduce"
-                type="number"
-                step="0.01"
-                name="costToProduce"
-                required
-            />
+            <div className="edit_item_form_new_price_info">
+                {minimumPrice && <p className="edit_item_form_minimum_price_text">Minimum allowed price: £{minimumPrice.toFixed(2)}</p>}
+                {pricePercentage != null && <p className={`edit_item_form_percentage ${pricePercentage < 60 ? `negative_percentage` : `positive_percentage`}`}><FaArrowTrendUp /> {pricePercentage.toFixed(2)}%</p>}
+            </div>
 
             <label className="add_item_form_label" htmlFor="calories">
               Calories (kcal)
