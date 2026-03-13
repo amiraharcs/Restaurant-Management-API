@@ -172,9 +172,10 @@ export default function EditItem({item, onClose} : any ) {
 
     }
 
-    const [minimumPrice, changeMinimumPrice] = useState<number | null>(item.price)
-    const [pricePercentage, changePricePercentage] = useState<number | null>()
     const [costToProduce, changeCostToProduce] = useState<number> (item.costToProduce)
+    const [minimumPrice, changeMinimumPrice] = useState<number | null>(null)
+    const [pricePercentage, changePricePercentage] = useState<number | null>()
+    
 
     const giveMinimumPrice = (e : any) =>  {
         const costToProduce = Number(e.target.value);
