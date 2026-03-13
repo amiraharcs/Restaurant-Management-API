@@ -159,7 +159,7 @@ export default function Waiter() {
                             Ready ({calculateTabs().READY})
                         </button>
 
-                        <button className={`orderTab ${activeTab === "UNPAID" ? "active" : ""}`} onClick={() => setActiveTab("UNPAID")}>
+                        <button className={`orderTab ${activeTab === "UNPAID" ? "active" : ""} ${calculatePaymentTabs().UNPAID > 0 ? "warning" : ""}`} onClick={() => setActiveTab("UNPAID")}>
                             Unpaid ({calculatePaymentTabs().UNPAID})
                         </button>
                     </div>
@@ -186,10 +186,13 @@ export default function Waiter() {
                             const ageMs = now - placedMs;
 
                             return (
-                                <div key={order.id} className='orderRow' role='button' onClick={() => {setShowOrderDetails(true); setSelectedOrder(order); setorderDetailsPlacedAt(calculatePlacedAt(ageMs));}}>
+                                <div key={order.id} className={`orderRow ${order.paymentStatus === "UNPAID" ? "unpaid" : "paid"}`} role='button' onClick={() => {setShowOrderDetails(true); setSelectedOrder(order); setorderDetailsPlacedAt(calculatePlacedAt(ageMs));}}>
                                     <div className='orderLeft'>
                                         <div className='orderTopLeft'>
                                             <div className='orderId'>Order #{order.id}</div>
+                                            <div className={`paymentBadge ${order.paymentStatus === "UNPAID" ? "unpaid" : "paid"}`}>
+                                                {order.paymentStatus}
+                                            </div>
                                         </div>
                                         <div className='orderCustomerName'>{order.customerName}</div>
                                     </div>
