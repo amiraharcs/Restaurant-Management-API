@@ -30,7 +30,7 @@ public class OrderService {
 
     public record CreateOrderRequest(String name, String phoneNumber, Integer tableNumber, List<CreateOrderItem> items) {}
     public record CreateOrderItem(Long menuItemId, Integer quantity) {}
-    public record CreateOrderResponse(Long orderId, OrderStatus status) {}
+    public record CreateOrderResponse(Long orderId, OrderStatus status, PaymentStatus paymentStatus) {}
 
     @Transactional
     public CreateOrderResponse createOrder(CreateOrderRequest request) {
@@ -46,6 +46,7 @@ public class OrderService {
         CustomerOrder order = new CustomerOrder();
         order.setCustomer(newCustomer);
         order.setStatus(OrderStatus.PLACED);
+        order.setPaymentStatus(PaymentStatus.UNPAID);
         order.setTableNumber(request.tableNumber());
 
 
@@ -72,7 +73,7 @@ public class OrderService {
         }
 
         CustomerOrder saved = orderRepository.save(order);
-        return new CreateOrderResponse(saved.getId(), saved.getStatus());
+        return new CreateOrderResponse(saved.getId(), saved.getStatus(), saved.getPaymentStatus());
     }
 
     public static class BadRequestException extends RuntimeException {
