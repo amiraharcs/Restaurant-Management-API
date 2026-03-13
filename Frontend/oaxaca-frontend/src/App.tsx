@@ -9,7 +9,6 @@ import Alerts from './Alerts'
 import Order from './Order'
 import TrackOrder from './TrackOrder'
 import AboutUs from './AboutUs'
-import ManageMenu from './ManageMenuWaiter'
 import PastOrder from './PastOrder'
 import ResetPassword from './ResetPassword'
 import CreateAccount from './CreateAccount'
@@ -19,7 +18,6 @@ import ManageMenuWaiter from './ManageMenuWaiter'
 import ManageMenuManager from './ManageMenuManager'
 import ManageMenuItemWaiter from '../src/data/components/ManageMenuItemWaiter'
 import ManageMenuItemManager from '../src/data/components/ManageMenuItemManager'
-g
 
 function App() {
 

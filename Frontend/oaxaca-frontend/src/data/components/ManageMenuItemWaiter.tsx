@@ -96,9 +96,9 @@ export default function ManageMenuItemWaiter() {
                     </div>
                 </div>
             </div>
-            <div className="manage_item_price_calories">
-                <p className="manage_item_calories">{item.calories} kcal</p>
-                <p className="manage_item_price">£{Number(item.price).toFixed(2)}</p>
+            <div className="manage_item_price_calories_waiter">
+                <p className="manage_item_calories_waiter">{item.calories} kcal</p>
+                <p className="manage_item_price_waiter">£{Number(item.price).toFixed(2)}</p>
             </div>
             <div className="manage_item_buttons">
                 <button className="btn btn_edit" onClick={() => {changeAvailability(item.id, !item.isAvailable)}}>Change Availability</button>

@@ -373,14 +373,14 @@
   font-weight: 500;
 }
 
-.manage_item_price_calories {
+.manage_item_price_calories_waiter {
   margin-top: 1rem;
   display: flex;
   flex-direction: row;
   gap: 2rem;
 }
 
-.manage_item_price {
+.manage_item_price_waiter {
   padding: 3px 7px;
   border-radius: 999px;
   font-size: 1.1rem;
@@ -389,24 +389,73 @@
   color: #166534;
 }
 
-.manage_item_costToProduce {
-  padding: 3px 7px;
-  border-radius: 999px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  background-color: #d3f3de;
-  color: #166534;
-  width: fit-content;
-  margin-top: 1rem;
-}
-
-.manage_item_calories {
+.manage_item_calories_waiter {
   padding: 3px 7px;
   border-radius: 999px;
   font-size: 1.1rem;
   font-weight: 600;
   background-color: #ffedd5;
   color: #9a3412;
+}
+
+.manage_item_price_calories_manager {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1rem;
+  gap: 2rem;
+}
+
+.manage_item_calories_manager {
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #ffedd5;
+  color: #9a3412;
+}
+
+.manage_item_price_manager {
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: #dcfce7;
+  color: #166534;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.manage_item_extraInfo_manager {
+  background: #f2f2f2;
+  border-radius: 14px;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.manage_item_costToProduce_manager {
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background-color: rgb(245, 206, 219);
+  color: #f03450;
+  width: fit-content;
+}
+
+.manage_item_profit_manager {
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  background-color: palegreen;
+  color: green;
+
+  padding: 3px 8px;
+  border-radius: 999px;
+
+  width: fit-content;
 }
 
 .manage_item_buttons {

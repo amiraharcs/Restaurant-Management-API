@@ -9,6 +9,7 @@ import { getLoggedInStaffRole } from "./staffSession";
 import { updateMenuItemAvailability } from "../../api/waiterApi";
 import { GiCancel } from "react-icons/gi";
 import NavBarManager from "./NavBarManager";
+import { FaRegArrowAltCircleDown, FaRegArrowAltCircleUp } from "react-icons/fa";
 
 export default function ManageMenuItemManager() {
     const navigate = useNavigate();
@@ -20,6 +21,8 @@ export default function ManageMenuItemManager() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
+
+  const [showCostInfo, setShowCostInfo] = useState(false);
 
   const handleConfirmDelete = async () => {
     try {
@@ -109,11 +112,21 @@ export default function ManageMenuItemManager() {
                     </div>
                 </div>
             </div>
-            <div className="manage_item_price_calories">
-                <p className="manage_item_calories">{item.calories} kcal</p>
-                <p className="manage_item_price">£{Number(item.price).toFixed(2)}</p>
-            </div>
-            <p className="manage_item_costToProduce">Cost To Procude: £{Number(item.costToProduce).toFixed(2)}</p>
+                <div className="manage_item_price_calories_manager">
+                    <p className="manage_item_calories_manager">{item.calories} kcal</p>
+                    <div className="manage_item_price_manager" onClick={() => setShowCostInfo(!showCostInfo)}>
+                        <p className="">£{Number(item.price).toFixed(2)}</p>
+                        {showCostInfo === false ? <FaRegArrowAltCircleDown /> : <FaRegArrowAltCircleUp />}
+                    </div>
+                </div>
+                {showCostInfo && (
+                    <div className="manage_item_extraInfo_manager">
+                    <p className="manage_item_costToProduce_manager">Cost: £{Number(item.costToProduce).toFixed(2)}</p>
+                    <p className="manage_item_profit_manager">
+                        {(((item.price - item.costToProduce) / item.price) * 100).toFixed(2)}% Profit
+                    </p>
+                    </div>
+                )}
             <div className="manage_item_buttons">
                 <button className="btn btn_edit" onClick={() => {changeAvailability(item.id, !item.isAvailable)}}>Change Availability</button>
             </div>
