@@ -75,6 +75,10 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                             <p className='infoKey'>Status :</p>
                             <p className='infoValue'>{order.status.toUpperCase()}</p>
                         </div>
+                        <div className='infoRow'>
+                            <p className='infoKey'>Paid :</p>
+                            <p className={`infoValue ${order.paymentStatus === "UNPAID" ? "warning" : ""}`}>{order.paymentStatus.toUpperCase()}</p>
+                        </div>
                     </div>
 
                     <div className='orderDetailsItems'>

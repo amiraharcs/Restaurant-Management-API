@@ -272,6 +272,11 @@
     font-weight: 400;
 }
 
+.infoValue.warning {
+    font-weight: 800;
+    color: red;
+}
+
 .orderDetailsItems {
     border-radius: 14px;
     padding: 12px 12px;
