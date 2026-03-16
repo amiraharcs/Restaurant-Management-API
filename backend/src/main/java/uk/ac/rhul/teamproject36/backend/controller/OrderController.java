@@ -91,5 +91,12 @@ public class OrderController {
       return orderService.markDelivered(id);
     }
 
+    @PatchMapping("/orders/{id}/items")
+    public OrderDto addOrderItem(@PathVariable Long id,
+        @RequestBody OrderService.AddOrderItemRequest request) {
+      return orderService.addOrderItem(id, request);
+    }
+
+
   }
 
