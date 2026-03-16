@@ -21,11 +21,14 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MenuItemRepository menuItemRepository;
     private final CustomerRepository customerRepository;
+    private final AssignmentService assignmentService;
 
-    public OrderService(OrderRepository orderRepository, MenuItemRepository menuItemRepository, CustomerRepository customerRepository) {
+    public OrderService(OrderRepository orderRepository, MenuItemRepository menuItemRepository,
+        CustomerRepository customerRepository, AssignmentService assignmentService) {
         this.orderRepository = orderRepository;
         this.menuItemRepository = menuItemRepository;
         this.customerRepository = customerRepository;
+        this.assignmentService = assignmentService;
     }
 
     public record CreateOrderRequest(String name, String phoneNumber, Integer tableNumber, List<CreateOrderItem> items) {}
@@ -73,6 +76,7 @@ public class OrderService {
         }
 
         CustomerOrder saved = orderRepository.save(order);
+        assignmentService.assignFromBuffer();
         return new CreateOrderResponse(saved.getId(), saved.getStatus(), saved.getPaymentStatus());
     }
 
@@ -94,7 +98,8 @@ public class OrderService {
         String customerName,
         String customerPhoneNumber,
         PaymentStatus paymentStatus,
-        List<OrderItemDto> items
+        List<OrderItemDto> items,
+        String assignedWaiter  // null when order is still in buffer
     ) {}
 
 
@@ -173,10 +178,11 @@ public class OrderService {
         items.add(new OrderItemDto(it.getMenuItem().getId(), it.getMenuItem().getName(),
             it.getQuantity()));
       }
+      String waiterUsername = order.getAssignedWaiter() != null
+          ? order.getAssignedWaiter().getUsername() : null;
       return new OrderDto(order.getId(), order.getStatus(), order.getCreatedAt(),
           order.getTableNumber(), order.getCustomer().getName(),
-          order.getCustomer().getPhoneNumber(), order.getPaymentStatus(), items);
-
+          order.getCustomer().getPhoneNumber(), order.getPaymentStatus(), items, waiterUsername);
     }
 
     @Transactional(readOnly = true)
@@ -197,6 +203,16 @@ public class OrderService {
 
 
 
+
+    @Transactional(readOnly = true)
+    public List<OrderDto> getOrdersByWaiter(String username) {
+        List<CustomerOrder> orders = orderRepository.findByAssignedWaiterUsername(username);
+        List<OrderDto> result = new ArrayList<>();
+        for (CustomerOrder order : orders) {
+            result.add(toOrderDto(order));
+        }
+        return result;
+    }
 
     @Transactional(readOnly = true)
     public List<OrderDto> getOrdersByStatus(OrderStatus status) {
@@ -244,6 +260,7 @@ public class OrderService {
 
       order.setStatus(OrderStatus.DELIVERED);
       orderRepository.save(order);
+      assignmentService.assignFromBuffer(); // decrement frees a slot; pull next from buffer
 
       return toOrderDto(order);
     }

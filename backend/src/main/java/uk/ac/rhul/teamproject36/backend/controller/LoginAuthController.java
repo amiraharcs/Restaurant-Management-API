@@ -5,12 +5,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.ac.rhul.teamproject36.backend.auth.AppUser;
 import uk.ac.rhul.teamproject36.backend.dataTransferObjects.LoginRequest;
 import uk.ac.rhul.teamproject36.backend.dataTransferObjects.LoginResponse;
+import uk.ac.rhul.teamproject36.backend.repository.AppUserRepository;
+import uk.ac.rhul.teamproject36.backend.service.AssignmentService;
 
 /**
  * REST controller for user authentication. (replaces default http.basic())
@@ -22,16 +26,15 @@ import uk.ac.rhul.teamproject36.backend.dataTransferObjects.LoginResponse;
 @RequestMapping("/api/auth")
 public class LoginAuthController {
 
-  /** The authentication manager for validation. */
   private final AuthenticationManager authManager;
+  private final AppUserRepository userRepo;
+  private final AssignmentService assignmentService;
 
-  /**
-   * Constructor for authentication controller.
-   *
-   * @param newAuthManager validates user credentials.
-   */
-  public LoginAuthController(AuthenticationManager newAuthManager) {
+  public LoginAuthController(AuthenticationManager newAuthManager,
+      AppUserRepository userRepo, AssignmentService assignmentService) {
     this.authManager = newAuthManager;
+    this.userRepo = userRepo;
+    this.assignmentService = assignmentService;
   }
 
   /**
@@ -57,6 +60,25 @@ public class LoginAuthController {
       role = role.substring("ROLE_".length());
     }
 
+    // Mark waiter as online, then try to pull from the buffer
+    if ("WAITER".equals(role)) {
+      userRepo.findByUsername(user.getUsername()).ifPresent(u -> {
+        u.setOnShift(true);
+        userRepo.save(u);
+      });
+      assignmentService.assignFromBuffer();
+    }
+
     return ResponseEntity.ok(new LoginResponse(user.getUsername(), role));
+  }
+
+  /** Called when a waiter logs out — marks them offline. */
+  @PostMapping("/logout/{username}")
+  public ResponseEntity<Void> logout(@PathVariable String username) {
+    userRepo.findByUsername(username).ifPresent((AppUser u) -> {
+      u.setOnShift(false);
+      userRepo.save(u);
+    });
+    return ResponseEntity.ok().build();
   }
 }
