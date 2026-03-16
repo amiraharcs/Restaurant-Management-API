@@ -1,8 +1,6 @@
 import NavBarWaiter from "./data/components/NavBarWaiter.tsx";
 import StaffFooter from "./data/components/StaffFooter.tsx";
 import "./css/ManageMenu.css";
-import mockAlertsData from "./data/mockAlertsData.json";
-import { getTotalNotifications } from "./data/notificationCount.ts";
 import { useState, useEffect } from "react";
 import { FaFire } from 'react-icons/fa';
 import { LuWheatOff } from "react-icons/lu";
@@ -15,11 +13,6 @@ import { SiTicktick } from "react-icons/si";
 import { fetchWaiterMenu } from "./api/waiterApi.ts";
 
 export default function ManageMenu() {
-  const totalNotifications = getTotalNotifications(
-    mockAlertsData.mockCallWaiterAlerts || [],
-    mockAlertsData.mockOrdersReady || [],
-  );
-  
       type MenuItemType = {
           id?: number;
           name: string;
@@ -69,7 +62,7 @@ export default function ManageMenu() {
 
   return (
     <main className="">
-      <NavBarWaiter notificationCount={totalNotifications} />
+      <NavBarWaiter />
       
         <div className="manage_menu_page">
           <StaffWelcome />

@@ -40,6 +40,10 @@ public final class AppUser {
   @Column(name = "is_active", nullable = false)
   private boolean active;
 
+  /** Whether a waiter is currently logged in and available for order assignment. */
+  @Column(name = "on_shift", nullable = false)
+  private boolean onShift = false;
+
   public Long getUserId() {
     return userId;
   }
@@ -82,5 +86,13 @@ public final class AppUser {
 
   public void setActive(final boolean isUserActive) {
     this.active = isUserActive;
+  }
+
+  public boolean isOnShift() {
+    return onShift;
+  }
+
+  public void setOnShift(final boolean onShift) {
+    this.onShift = onShift;
   }
 }

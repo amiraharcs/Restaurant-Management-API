@@ -41,8 +41,11 @@ public class AppUserDataSeeder implements CommandLineRunner {
 
     final String devPassword = environment.getProperty("APP_DEV_USER_PASSWORD", "Passw0rd!");
     upsertUser("waiter01", "waiter01@oaxaca.local", devPassword, "WAITER");
+    upsertUser("waiter02", "waiter02@oaxaca.local", devPassword, "WAITER");
+    upsertUser("waiter03", "waiter03@oaxaca.local", devPassword, "WAITER");
     upsertUser("kitchen01", "kitchen01@oaxaca.local", devPassword, "KITCHEN");
-    upsertUser("manager", "manager@oaxaca.local", devPassword,"MANAGER");
+    upsertUser("kitchen02", "kitchen02@oaxaca.local", devPassword, "KITCHEN");
+    upsertUser("manager", "manager@oaxaca.local", devPassword, "MANAGER");
   }
 
   private void upsertUser(final String username,
@@ -55,6 +58,7 @@ public class AppUserDataSeeder implements CommandLineRunner {
     user.setPasswordHash(passwordEncoder.encode(plainPassword));
     user.setRole(role);
     user.setActive(true);
+    user.setOnShift(false); // waiters go on shift only when they log in
     appUserRepository.save(user);
   }
 }

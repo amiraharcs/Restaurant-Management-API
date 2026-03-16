@@ -91,12 +91,17 @@ public class OrderController {
       return orderService.markDelivered(id);
     }
 
+    // Returns all orders assigned to the given waiter
+    @GetMapping("/orders/waiter/{username}")
+    public List<OrderDto> getOrdersByWaiter(@PathVariable String username) {
+      return orderService.getOrdersByWaiter(username);
+    }
+
     @PatchMapping("/orders/{id}/items")
     public OrderDto addOrderItem(@PathVariable Long id,
         @RequestBody OrderService.AddOrderItemRequest request) {
       return orderService.addOrderItem(id, request);
     }
-
 
   }
 
