@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import uk.ac.rhul.teamproject36.backend.auth.AppUser;
 
 @Entity
 @Table(name = "customer_order")
@@ -86,5 +87,12 @@ public class CustomerOrder {
       this.paymentStatus = paymentStatus;
     }
 
+    // The waiter assigned to handle this order (null = sitting in buffer)
+    @ManyToOne
+    @JoinColumn(name = "assigned_waiter_id")
+    private AppUser assignedWaiter;
+
+    public AppUser getAssignedWaiter() { return assignedWaiter; }
+    public void setAssignedWaiter(AppUser waiter) { this.assignedWaiter = waiter; }
 
 }
