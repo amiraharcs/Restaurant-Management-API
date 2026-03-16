@@ -136,3 +136,14 @@ export async function markPaidOrder(id: number) {
     if (!res.ok) throw new Error(`Marking order as PAID failed: ${res.status}`);
     return res.json();
 }
+
+export async function getWaiterOrders(username: string): Promise<OrderResponse[]> {
+    const res = await fetch(`${API_BASE}/api/orders/waiter/${username}`);
+    if (!res.ok) throw new Error(`Get waiter orders failed: ${res.status}`);
+    return res.json();
+}
+
+export async function setWaiterOffline(username: string): Promise<void> {
+    const res = await fetch(`${API_BASE}/api/auth/logout/${username}`, { method: "POST" });
+    if (!res.ok) throw new Error(`Logout failed: ${res.status}`);
+}

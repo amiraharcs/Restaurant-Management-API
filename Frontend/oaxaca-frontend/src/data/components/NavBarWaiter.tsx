@@ -3,7 +3,8 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { LuBell, LuUserRound } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
-import { clearLoggedInStaffSession } from "./staffSession";
+import { clearLoggedInStaffSession, getLoggedInStaffUsername } from "./staffSession";
+import { setWaiterOffline } from "../../api/waiterApi";
 
 type NavBarWaiterProps = {
   notificationCount?: number;
@@ -60,7 +61,11 @@ export default function NavBarWaiter({
             to="/login"
             className="waiterNavbar__link"
             end
-            onClick={clearLoggedInStaffSession}
+            onClick={() => {
+              const username = getLoggedInStaffUsername();
+              if (username) setWaiterOffline(username);
+              clearLoggedInStaffSession();
+            }}
           >
             LOGOUT
           </NavLink>

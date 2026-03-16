@@ -7,8 +7,9 @@ import { LuChevronRight } from 'react-icons/lu';
 import OrderDetails from './data/components/showOrderDetails';
 import StaffFooter from "./data/components/StaffFooter";
 import StaffWelcome from "./data/components/StaffWelcome";
-import { getAllOrders } from './api/waiterApi.ts';
+import { getWaiterOrders } from './api/waiterApi.ts';
 import type { OrderResponse } from './api/waiterApi.ts';
+import { getLoggedInStaffUsername } from './data/components/staffSession';
 import WaiterAlertsWaiter from './data/components/WaiterAlertsWaiter.tsx';
 
 type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
@@ -54,7 +55,8 @@ export default function Waiter() {
     async function fetchOrders(isInitial = false) {
         try {
             setLoading(true);
-            const data = await getAllOrders();
+            const username = getLoggedInStaffUsername() ?? "";
+            const data = await getWaiterOrders(username);
             setOrders(data);
             if (isInitial) {
                 setIsInitialLoad(false);
