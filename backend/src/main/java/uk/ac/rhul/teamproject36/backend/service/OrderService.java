@@ -31,6 +31,9 @@ public class OrderService {
     public record CreateOrderRequest(String name, String phoneNumber, Integer tableNumber, List<CreateOrderItem> items) {}
     public record CreateOrderItem(Long menuItemId, Integer quantity) {}
     public record CreateOrderResponse(Long orderId, OrderStatus status, PaymentStatus paymentStatus) {}
+    public record AddOrderItemRequest(Long menuItemId, Integer quantity) {
+    }
+
 
     @Transactional
     public CreateOrderResponse createOrder(CreateOrderRequest request) {
