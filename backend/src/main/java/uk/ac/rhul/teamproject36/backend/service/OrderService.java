@@ -34,6 +34,9 @@ public class OrderService {
     public record CreateOrderRequest(String name, String phoneNumber, Integer tableNumber, List<CreateOrderItem> items) {}
     public record CreateOrderItem(Long menuItemId, Integer quantity) {}
     public record CreateOrderResponse(Long orderId, OrderStatus status, PaymentStatus paymentStatus) {}
+    public record AddOrderItemRequest(Long menuItemId, Integer quantity) {
+    }
+
 
     @Transactional
     public CreateOrderResponse createOrder(CreateOrderRequest request) {
@@ -195,15 +198,6 @@ public class OrderService {
       return result;
     }
 
-
-
-
-
-
-
-
-
-
     @Transactional(readOnly = true)
     public List<OrderDto> getOrdersByWaiter(String username) {
         List<CustomerOrder> orders = orderRepository.findByAssignedWaiterUsername(username);
@@ -266,6 +260,40 @@ public class OrderService {
     }
 
     /**
+     * Allows waiter to add an item to an existing order (for upselling).
+     */
+    @Transactional
+    public OrderDto addOrderItem(Long orderId, AddOrderItemRequest request) {
+      CustomerOrder order = orderRepository.findById(orderId)
+          .orElseThrow(() -> new NotFoundException("order not found: " + orderId));
+
+      // validate request
+      if (request == null || request.menuItemId() == null) {
+        throw new BadRequestException("menuItemId is required");
+      }
+      if (request.quantity() == null || request.quantity() <= 0) {
+        throw new BadRequestException("quantity must be > 0");
+      }
+
+      MenuItem menuItem = menuItemRepository.findById(request.menuItemId())
+          .orElseThrow(() -> new NotFoundException("menu item not found: " + request.menuItemId()));
+
+      if (!menuItem.isAvailable()) {
+        throw new BadRequestException("menu item is not available: " + request.menuItemId());
+      }
+
+      // add the new item
+      OrderItem orderItem = new OrderItem();
+      orderItem.setMenuItem(menuItem);
+      orderItem.setQuantity(request.quantity());
+      order.addItem(orderItem);
+
+      CustomerOrder saved = orderRepository.save(order);
+      return toOrderDto(saved);
+    }
+
+
+    /**
      * Marks an order as PAID if it is currently UNPAID.
      */
     @Transactional
@@ -283,7 +311,6 @@ public class OrderService {
 
       return toOrderDto(order);
     }
-
 
 }
 
