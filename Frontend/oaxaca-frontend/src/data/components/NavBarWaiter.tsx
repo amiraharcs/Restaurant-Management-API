@@ -5,14 +5,10 @@ import { LuBell, LuUserRound } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
 import { clearLoggedInStaffSession, getLoggedInStaffUsername } from "./staffSession";
 import { setWaiterOffline } from "../../api/waiterApi";
+import { fetchCallWaiterAlerts } from "../../api/alertsApi";
 
-type NavBarWaiterProps = {
-  notificationCount?: number;
-};
-
-export default function NavBarWaiter({
-  notificationCount = 0,
-}: NavBarWaiterProps) {
+export default function NavBarWaiter() {
+  const [notificationCount, setNotificationCount] = useState(0);
   let navigate = useNavigate();
   const [show, setShow] = useState(true);
   const lastScrollY = useRef(window.scrollY);
@@ -26,6 +22,18 @@ export default function NavBarWaiter({
   }
 
 
+
+  useEffect(() => {
+    async function loadAlerts() {
+      try {
+        const alerts = await fetchCallWaiterAlerts();
+        setNotificationCount(alerts.filter(a => !a.handled).length);
+      } catch {}
+    }
+    loadAlerts();
+    const interval = setInterval(loadAlerts, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

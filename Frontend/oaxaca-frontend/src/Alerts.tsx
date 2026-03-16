@@ -3,7 +3,6 @@ import NavBarWaiter from "./data/components/NavBarWaiter";
 import AlertDetails from "./data/components/AlertDetails";
 import "./css/Alerts.css";
 
-import { getTotalNotifications } from "./data/notificationCount.ts";
 import StaffFooter from "./data/components/StaffFooter.tsx";
 import {
   fetchCallWaiterAlerts,
@@ -126,14 +125,10 @@ export default function Alerts() {
 
   const unhandledCallWaiterAlerts = callWaiterAlerts.filter((a) => !a.handled);
   const unhandledOrdersReady = ordersReady;
-  const totalNotifications = getTotalNotifications(
-    unhandledCallWaiterAlerts,
-    unhandledOrdersReady,
-  );
 
   return (
     <main>
-      <NavBarWaiter notificationCount={totalNotifications} />
+      <NavBarWaiter />
 
       <div className="alertsPage">
         <StaffWelcome />

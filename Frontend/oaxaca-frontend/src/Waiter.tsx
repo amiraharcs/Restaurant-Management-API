@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import './css/Waiter.css';
 import NavBarWaiter from "./data/components/NavBarWaiter";
-import mockAlertsData from "./data/mockAlertsData.json";
-import { getTotalNotifications } from "./data/notificationCount.ts";
 import { LuChevronRight } from 'react-icons/lu';
 import OrderDetails from './data/components/showOrderDetails';
 import StaffFooter from "./data/components/StaffFooter";
@@ -132,14 +130,9 @@ export default function Waiter() {
     const [selectedOrder, setSelectedOrder] = useState({});
     const [orderDetailsPlacedAt, setorderDetailsPlacedAt] = useState("");
 
-    const totalNotifications = getTotalNotifications(
-        mockAlertsData.mockCallWaiterAlerts || [],
-        mockAlertsData.mockOrdersReady || [],
-    );
-
     return (
         <main>
-            <NavBarWaiter notificationCount={totalNotifications} />
+            <NavBarWaiter />
             
             <div className='waiterPage'>
                 <div className='waiterHeader'>
