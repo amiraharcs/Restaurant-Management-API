@@ -113,7 +113,9 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
             }
 
             await addItemToOrder(order.id, requestType);
-            await markUnpaidOrder(order.id);
+            if (order.paymentStatus === "PAID") {
+                await markUnpaidOrder(order.id);
+            }
             onOrderUpdated?.();
             setShowAddItem(false);
             onClose();
