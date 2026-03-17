@@ -88,3 +88,13 @@ export async function addMenuItem(itemData: MenuItemDto): Promise<MenuItemDto> {
 
   return res.json();
 }
+
+export async function fetchEmployeeData(): Promise<any> {
+  const res = await fetch(`${API_BASE}/api/employee/data`);
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch employee data: ${res.status}`);
+  }
+
+  return res.json();
+}

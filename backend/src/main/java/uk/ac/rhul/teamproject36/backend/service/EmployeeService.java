@@ -27,7 +27,7 @@ public class EmployeeService {
     }
 
     public List<EmployeeDataResponse> getAllEmployeeData() {
-        List<AppUser> employees = appUserRepository.findAll();
+        List<AppUser> employees = appUserRepository.findByRoleNot("MANAGER");
 
         List<EmployeeDataResponse> response = new ArrayList<>();
 
