@@ -7,6 +7,8 @@ import type { OrderResponse } from './api/waiterApi.ts';
 import OrderDetails from './data/components/showOrderDetails';
 import { LuChevronRight } from 'react-icons/lu';
 import "./css/Waiter.css";
+import { getLoggedInStaffRole } from "./data/components/staffSession.ts";
+import NavBarKitchen from "./data/components/NavBarKitchen.tsx";
 
 type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
 type paymentStatus = "UNPAID" | "PAID";
@@ -129,7 +131,7 @@ export default function PastOrder() {
 
     return (
         <main>
-            <NavBarWaiter />
+            {getLoggedInStaffRole() === "WAITER" ? <NavBarWaiter /> : <NavBarKitchen />}
 
             <div className='waiterPage'>
                 <div className='waiterHeader'>
@@ -138,7 +140,6 @@ export default function PastOrder() {
 
                 <div className='orderContainer'>
                     <div className='orderTabs'>
-                        {/*  IGNORE THIS, WILL UPDATE WHEN PAID/UNPAID API IS FINISHED!!!   */}
                         <button className={`orderTab ${activeTab === "PAID" ? "active" : ""}`} onClick={() => setActiveTab("PAID")}>
                             Completed & Paid ({calculatePaymentTabs().PAID})
                         </button>
