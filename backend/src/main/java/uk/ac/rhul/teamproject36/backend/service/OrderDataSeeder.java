@@ -83,13 +83,13 @@ public class OrderDataSeeder implements CommandLineRunner {
 
         CustomerOrder order1 = createOrder(customer1, 5, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID);
         addOrderItems(order1, menuItems, new int[]{2, 1, 0});
-        CustomerOrder order2 = createOrder(customer2, 3, OrderStatus.PREPARING, Instant.now(), PaymentStatus.UNPAID);
+        CustomerOrder order2 = createOrder(customer2, 3, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID);
         addOrderItems(order2, menuItems, new int[]{1, 2, 1});
-        CustomerOrder order3 = createOrder(customer3, 8, OrderStatus.READY, Instant.now(), PaymentStatus.UNPAID);
+        CustomerOrder order3 = createOrder(customer3, 8, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID);
         addOrderItems(order3, menuItems, new int[]{3, 0, 2});
         CustomerOrder order4 = createOrder(customer4, 2, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID);
         addOrderItems(order4, menuItems, new int[]{1, 1, 1});
-        CustomerOrder order5 = createOrder(customer1, 5, OrderStatus.PREPARING, Instant.now(), PaymentStatus.UNPAID);
+        CustomerOrder order5 = createOrder(customer1, 5, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID);
         addOrderItems(order5, menuItems, new int[]{0, 2, 2});
 
         orderRepository.saveAll(List.of(order1, order2, order3, order4, order5));

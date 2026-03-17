@@ -66,6 +66,11 @@ public class OrderController {
       return orderService.markPaid(id);
     }
 
+    @PatchMapping("/orders/{id}/unpaid")
+    public OrderDto markUnpaid(@PathVariable Long id) {
+      return orderService.markUnpaid(id);
+    }
+
     @ExceptionHandler(OrderService.BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadRequest(OrderService.BadRequestException ex) {

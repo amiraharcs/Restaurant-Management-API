@@ -2,6 +2,7 @@ package uk.ac.rhul.teamproject36.backend.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
@@ -282,11 +283,21 @@ public class OrderService {
         throw new BadRequestException("menu item is not available: " + request.menuItemId());
       }
 
-      // add the new item
-      OrderItem orderItem = new OrderItem();
-      orderItem.setMenuItem(menuItem);
-      orderItem.setQuantity(request.quantity());
-      order.addItem(orderItem);
+      // check if item already exists in order
+      Optional<OrderItem> existingItem = order.getItems().stream()
+          .filter(i -> i.getMenuItem().getId().equals(request.menuItemId()))
+          .findFirst();
+
+      if (existingItem.isPresent()) {
+          // increment quantity
+          existingItem.get().setQuantity(existingItem.get().getQuantity() + request.quantity());
+      } else {
+          // add the new item
+          OrderItem orderItem = new OrderItem();
+          orderItem.setMenuItem(menuItem);
+          orderItem.setQuantity(request.quantity());
+          order.addItem(orderItem);
+      }
 
       CustomerOrder saved = orderRepository.save(order);
       return toOrderDto(saved);
@@ -307,6 +318,25 @@ public class OrderService {
       }
 
       order.setPaymentStatus(PaymentStatus.PAID);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
+
+     /**
+     * Marks an order as UNPAID if it is currently PAID.
+     */
+    @Transactional
+    public OrderDto markUnpaid(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getPaymentStatus() != PaymentStatus.PAID) {
+        throw new BadRequestException(
+            "Invalid payment status transition from: " + order.getPaymentStatus());
+      }
+
+      order.setPaymentStatus(PaymentStatus.UNPAID);
       orderRepository.save(order);
 
       return toOrderDto(order);

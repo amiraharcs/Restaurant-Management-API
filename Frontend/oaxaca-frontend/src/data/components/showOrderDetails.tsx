@@ -1,11 +1,53 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../css/Waiter.css';
-import { LuCircleCheck, LuCircleX, LuX, LuCircleDollarSign } from 'react-icons/lu';
-import { cancelOrder, confirmOrder, deliverOrder, markPaidOrder } from '../../api/waiterApi';
+import { LuCircleCheck, LuCircleX, LuX, LuCircleDollarSign, LuPlus } from 'react-icons/lu';
+import { cancelOrder, confirmOrder, deliverOrder, markPaidOrder, addItemToOrder, markUnpaidOrder } from '../../api/waiterApi';
+import type { AddItemType } from '../../api/waiterApi';
+import { fetchMenu } from '../../api/menuApi'
 
 export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdated}: any) {
     const [loading, setLoading] = useState(false);
+    const [loadingMenu, setLoadingMenu] = useState(false);
     const [error, setError] = useState("");
+    const [showAddItem, setShowAddItem] = useState(false);
+    const [menuItems, setMenuItems] = useState<MenuData>({ main: [], dessert: [], drinks: [] });
+
+    type MenuItemType = {
+        id?: number;
+        name: string;
+        description: string;
+        price: number;
+        calories: number;
+        isAvailable: boolean;
+        ingredients: string[];
+        allergens: string[];
+        filters: string[];
+        image: string;
+        itemType?: string;
+    };
+    type MenuData = Record<string, MenuItemType[]>;
+
+    useEffect(() => {
+        async function loadMenu() {
+            try {
+                setLoadingMenu(true);
+                setError("");
+    
+                const data = await fetchMenu()
+                const mapped: MenuData = {
+                    main: data.FOOD ?? [],
+                    dessert: data.DESSERT ?? [],
+                    drinks: data.DRINK ?? []
+                }
+                setMenuItems(mapped)
+            } catch (e: any) {
+                setError(e?.message ?? "Failed to load menu")
+            } finally {
+                setLoadingMenu(false);
+            }
+        }
+        loadMenu()
+    }, []);
 
     async function orderConfirmed() {
         try {
@@ -59,6 +101,31 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
         }
     }
 
+    async function handleAddItem(item : MenuItemType) {
+        if (!item.id) return;
+
+        try {
+            setLoading(true);
+
+            const requestType: AddItemType = {
+                menuItemId: item.id,
+                quantity: 1
+            }
+
+            await addItemToOrder(order.id, requestType);
+            if (order.paymentStatus === "PAID") {
+                await markUnpaidOrder(order.id);
+            }
+            onOrderUpdated?.();
+            setShowAddItem(false);
+            onClose();
+        } catch {
+            setError('Failed to add item to order');
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <main className="orderDetailsMain">
             <div className="orderDetailsBackdrop" onClick={onClose} />
@@ -104,6 +171,46 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                                     <p>{item.name}</p>
                                 </div>
                             ))}
+                            {(order.status === "PLACED" || order.status === "CONFIRMED" || order.status === "PREPARING") && (
+                                <div className='addItemWrapper'>
+                                    <button className='addItemButton' onClick={() => setShowAddItem(opened => !opened)}>
+                                        <LuPlus className='buttonIcons' />
+                                        ADD MENU
+                                    </button>
+                                    {showAddItem && (
+                                        <div className="modalOverlay">
+                                            <div className="modalBackdrop" onClick={() => setShowAddItem(false)} />
+                                            <div className="modalContent">
+                                                <div className="modalHeader">
+                                                    <p className="modalTitle">Add Item</p>
+                                                </div>
+                                                <div className="modalBody">
+                                                    {loadingMenu ? (
+                                                        <p className='addItemEmpty'>Loading menu...</p>
+                                                    ) : (
+                                                        Object.entries(menuItems).map(([category, items]) =>
+                                                            items.length > 0 && (
+                                                                <div key={category}>
+                                                                    <p className='addItemCategory'>{category.toUpperCase()}</p>
+                                                                    {items.filter(item => item.isAvailable).map(item => (
+                                                                        <button 
+                                                                            key={item.id} 
+                                                                            className='addItemOption'
+                                                                            onClick={() => handleAddItem(item)}
+                                                                        >
+                                                                            {item.name}
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
+                                                            )
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
 
