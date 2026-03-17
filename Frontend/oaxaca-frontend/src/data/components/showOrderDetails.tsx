@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import '../../css/Waiter.css';
-import { LuCircleCheck, LuCircleX, LuX, LuCircleDollarSign } from 'react-icons/lu';
+import { LuCircleCheck, LuCircleX, LuX, LuCircleDollarSign, LuPlus } from 'react-icons/lu';
 import { cancelOrder, confirmOrder, deliverOrder, markPaidOrder } from '../../api/waiterApi';
 
 export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdated}: any) {
@@ -104,6 +104,14 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                                     <p>{item.name}</p>
                                 </div>
                             ))}
+                            {(order.status === "PLACED" || order.status === "CONFIRMED" || order.status === "PREPARING") && (
+                                <div>
+                                    <button className={`addItemButton`}>
+                                        <LuPlus className='buttonIcons' />
+                                        ADD ITEM
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
 

@@ -337,6 +337,27 @@
     min-width: 26px;
 }
 
+.addItemButton {
+    width: 100%;
+    background: #d9d9d9;
+    margin-top: 6px;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 10px;
+    display: flex;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.addItemButton:hover {
+    background: orange;
+}
+
 .orderDetailsButtons {
     display: flex;
     gap: 12px;
