@@ -14,6 +14,11 @@ export type OrderResponse = {
     items: { menuItemId: number; name: string; quantity: number }[];
 };
 
+export type AddItemType = {
+  menuItemId: number;
+  quantity: number;
+};
+
 export type IngredientDto = {
   id?: number;
   name: string;
@@ -91,7 +96,6 @@ export async function updateMenuItemAvailability(id: number, available: boolean)
   if (!res.ok) {
     throw new Error(`Availability Update failed: ${res.status}`);
   }
-
 }
 
 export async function getAllOrders(): Promise<OrderResponse[]> {
@@ -146,4 +150,18 @@ export async function getWaiterOrders(username: string): Promise<OrderResponse[]
 export async function setWaiterOffline(username: string): Promise<void> {
     const res = await fetch(`${API_BASE}/api/auth/logout/${username}`, { method: "POST" });
     if (!res.ok) throw new Error(`Logout failed: ${res.status}`);
+}
+
+export async function addItemToOrder(id: number, request: AddItemType): Promise<void> {
+  const res = await fetch(`${API_BASE}/api/orders/${id}/items`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(request),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Add Item to Order ${id} failed: ${res.status}`);
+  }
 }

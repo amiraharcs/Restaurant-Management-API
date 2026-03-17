@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import '../../css/Waiter.css';
 import { LuCircleCheck, LuCircleX, LuX, LuCircleDollarSign, LuPlus } from 'react-icons/lu';
-import { cancelOrder, confirmOrder, deliverOrder, markPaidOrder } from '../../api/waiterApi';
+import { cancelOrder, confirmOrder, deliverOrder, markPaidOrder, addItemToOrder } from '../../api/waiterApi';
+import type { AddItemType } from '../../api/waiterApi';
 import { fetchMenu } from '../../api/menuApi'
 
 export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdated}: any) {
@@ -100,6 +101,28 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
         }
     }
 
+    async function handleAddItem(item : MenuItemType) {
+        if (!item.id) return;
+
+        try {
+            setLoading(true);
+
+            const requestType: AddItemType = {
+                menuItemId: item.id,
+                quantity: 1
+            }
+
+            await addItemToOrder(order.id, requestType);
+            onOrderUpdated?.();
+            setShowAddItem(false);
+            onClose();
+        } catch {
+            setError('Failed to add item to order');
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <main className="orderDetailsMain">
             <div className="orderDetailsBackdrop" onClick={onClose} />
@@ -167,7 +190,13 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                                                                 <div key={category}>
                                                                     <p className='addItemCategory'>{category.toUpperCase()}</p>
                                                                     {items.filter(item => item.isAvailable).map(item => (
-                                                                        <button key={item.id} className='addItemOption'>{item.name}</button>
+                                                                        <button 
+                                                                            key={item.id} 
+                                                                            className='addItemOption'
+                                                                            onClick={() => handleAddItem(item)}
+                                                                        >
+                                                                            {item.name}
+                                                                        </button>
                                                                     ))}
                                                                 </div>
                                                             )
