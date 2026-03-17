@@ -323,5 +323,24 @@ public class OrderService {
       return toOrderDto(order);
     }
 
+     /**
+     * Marks an order as UNPAID if it is currently PAID.
+     */
+    @Transactional
+    public OrderDto markUnpaid(Long id) {
+      CustomerOrder order = orderRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("order not found: " + id));
+
+      if (order.getPaymentStatus() != PaymentStatus.PAID) {
+        throw new BadRequestException(
+            "Invalid payment status transition from: " + order.getPaymentStatus());
+      }
+
+      order.setPaymentStatus(PaymentStatus.UNPAID);
+      orderRepository.save(order);
+
+      return toOrderDto(order);
+    }
+
 }
 
