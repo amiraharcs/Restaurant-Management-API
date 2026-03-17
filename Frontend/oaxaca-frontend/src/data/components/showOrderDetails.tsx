@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../../css/Waiter.css';
 import { LuCircleCheck, LuCircleX, LuX, LuCircleDollarSign, LuPlus } from 'react-icons/lu';
-import { cancelOrder, confirmOrder, deliverOrder, markPaidOrder, addItemToOrder } from '../../api/waiterApi';
+import { cancelOrder, confirmOrder, deliverOrder, markPaidOrder, addItemToOrder, markUnpaidOrder } from '../../api/waiterApi';
 import type { AddItemType } from '../../api/waiterApi';
 import { fetchMenu } from '../../api/menuApi'
 
@@ -113,6 +113,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
             }
 
             await addItemToOrder(order.id, requestType);
+            await markUnpaidOrder(order.id);
             onOrderUpdated?.();
             setShowAddItem(false);
             onClose();

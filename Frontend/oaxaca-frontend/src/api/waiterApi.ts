@@ -141,6 +141,12 @@ export async function markPaidOrder(id: number) {
     return res.json();
 }
 
+export async function markUnpaidOrder(id: number) {
+    const res = await fetch(`${API_BASE}/api/orders/${id}/unpaid`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Marking order as UNPAID failed: ${res.status}`);
+    return res.json();
+}
+
 export async function getWaiterOrders(username: string): Promise<OrderResponse[]> {
     const res = await fetch(`${API_BASE}/api/orders/waiter/${username}`);
     if (!res.ok) throw new Error(`Get waiter orders failed: ${res.status}`);
