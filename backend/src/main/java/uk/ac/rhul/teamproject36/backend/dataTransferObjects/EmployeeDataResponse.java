@@ -10,15 +10,25 @@ public class EmployeeDataResponse {
     private Boolean isActive;
     private Boolean onShift;
 
+    private BigDecimal totalSales;
+    private Integer totalOrders;
+    private Integer totalItemsSold;
+
     private List<EmployeeOrderInfoResponse> employeeOrders;
 
-    public EmployeeDataResponse(Long employeeId, String username, String role, boolean isActive, boolean onShift, List<EmployeeOrderInfoResponse> employeeOrders) {
+    public EmployeeDataResponse() {
+    }
+
+    public EmployeeDataResponse(Long employeeId, String username, String role, boolean isActive, boolean onShift, BigDecimal totalSales, Integer totalOrders, Integer totalItemsSold, List<EmployeeOrderInfoResponse> employeeOrders) {
         this.employeeId = employeeId;
         this.username = username;
         this.role = role;
         this.isActive = isActive;
         this.onShift = onShift;
         this.employeeOrders = employeeOrders;
+        this.totalSales = totalSales;
+        this.totalOrders = totalOrders;
+        this.totalItemsSold = totalItemsSold;
     }
 
     public Long getEmployeeId() {
@@ -59,6 +69,30 @@ public class EmployeeDataResponse {
 
     public void setOnShift(Boolean onShift) {
         this.onShift = onShift;
+    }
+
+    public BigDecimal getTotalSales() {
+        return totalSales;
+    }
+
+    public void setTotalSales(BigDecimal totalSales) {
+        this.totalSales = totalSales;
+    }
+
+    public Integer getTotalOrders() {
+        return totalOrders;
+    }
+
+    public void setTotalOrders(Integer totalOrders) {
+        this.totalOrders = totalOrders;
+    }
+
+    public Integer getTotalItemsSold() {
+        return totalItemsSold;
+    }
+
+    public void setTotalItemsSold(Integer totalItemsSold) {
+        this.totalItemsSold = totalItemsSold;
     }
 
     public List<EmployeeOrderInfoResponse> getEmployeeOrders() {

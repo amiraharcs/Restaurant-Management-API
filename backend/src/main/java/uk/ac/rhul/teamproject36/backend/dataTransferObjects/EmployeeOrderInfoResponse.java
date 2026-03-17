@@ -13,6 +13,9 @@ public class EmployeeOrderInfoResponse {
     private LocalDateTime orderDateTime;
     private OrderStatus status;
 
+    public EmployeeOrderInfoResponse() {
+    }
+
     public EmployeeOrderInfoResponse(OrderStatus status, LocalDateTime orderDateTime, Integer numberOfItems, BigDecimal orderTotal) {
         this.status = status;
         this.orderDateTime = orderDateTime;
