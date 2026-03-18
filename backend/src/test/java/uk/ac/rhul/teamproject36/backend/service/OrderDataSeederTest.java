@@ -1,6 +1,7 @@
 package uk.ac.rhul.teamproject36.backend.service;
 
 import org.junit.jupiter.api.Test;
+import uk.ac.rhul.teamproject36.backend.repository.AppUserRepository;
 import uk.ac.rhul.teamproject36.backend.repository.CustomerRepository;
 import uk.ac.rhul.teamproject36.backend.repository.MenuItemRepository;
 import uk.ac.rhul.teamproject36.backend.repository.OrderItemRepository;
@@ -16,12 +17,13 @@ class OrderDataSeederTest {
         CustomerRepository customerRepo = mock(CustomerRepository.class);
         OrderItemRepository orderItemRepo = mock(OrderItemRepository.class);
         MenuItemRepository menuRepo = mock(MenuItemRepository.class);
+        AppUserRepository userRepo = mock(AppUserRepository.class);
 
         when(orderRepo.count()).thenReturn(0L);
         when(menuRepo.count()).thenReturn(0L);
 
         OrderDataSeeder seeder =
-                new OrderDataSeeder(orderRepo, customerRepo, orderItemRepo, menuRepo);
+                new OrderDataSeeder(orderRepo, customerRepo, orderItemRepo, menuRepo, userRepo);
 
         seeder.run();
     }
