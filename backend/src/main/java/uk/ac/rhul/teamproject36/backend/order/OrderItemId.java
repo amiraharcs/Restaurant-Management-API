@@ -19,4 +19,17 @@ public class OrderItemId implements Serializable {
 
     public Long getMenuItem() { return menuItem; }
     public void setMenuItem(Long menuItem) { this.menuItem = menuItem; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItemId that = (OrderItemId) o;
+        return Objects.equals(order, that.order) && Objects.equals(menuItem, that.menuItem);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(order, menuItem);
+    }
 }
