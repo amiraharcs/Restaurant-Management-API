@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.rhul.teamproject36.backend.auth.AppUser;
@@ -22,6 +23,7 @@ import uk.ac.rhul.teamproject36.backend.repository.*;
  * Seeds some orders at backend startup.
  */
 @Component
+@Order(3)
 public class OrderDataSeeder implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(OrderDataSeeder.class);
@@ -97,9 +99,9 @@ public class OrderDataSeeder implements CommandLineRunner {
 
         CustomerOrder order1 = createOrder(customer1, 5, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter01);
         addOrderItems(order1, menuItems, new int[]{2, 1, 0});
-        CustomerOrder order2 = createOrder(customer2, 3, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter01);
+        CustomerOrder order2 = createOrder(customer2, 3, OrderStatus.PLACED, yesterday, PaymentStatus.UNPAID, waiter01);
         addOrderItems(order2, menuItems, new int[]{1, 2, 1});
-        CustomerOrder order3 = createOrder(customer3, 8, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter02);
+        CustomerOrder order3 = createOrder(customer3, 8, OrderStatus.PLACED, lastMonth, PaymentStatus.UNPAID, waiter02);
         addOrderItems(order3, menuItems, new int[]{3, 0, 2});
         CustomerOrder order4 = createOrder(customer4, 2, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter02);
         addOrderItems(order4, menuItems, new int[]{1, 1, 1});
