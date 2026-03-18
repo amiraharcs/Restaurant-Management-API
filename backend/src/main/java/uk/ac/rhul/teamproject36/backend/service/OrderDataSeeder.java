@@ -86,17 +86,39 @@ public class OrderDataSeeder implements CommandLineRunner {
         AppUser waiter02 = appUserRepository.findByUsername("waiter02").orElseThrow();
         AppUser waiter03 = appUserRepository.findByUsername("waiter03").orElseThrow();
 
+        Instant yesterday = Instant.now().minus(1, ChronoUnit.DAYS);
+        Instant twoDaysAgo = Instant.now().minus(2, ChronoUnit.DAYS);
+        Instant lastWeek = Instant.now().minus(7, ChronoUnit.DAYS);
+        Instant lastMonth = Instant.now().minus(30, ChronoUnit.DAYS);
+
 
         CustomerOrder order1 = createOrder(customer1, 5, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter01);
         addOrderItems(order1, menuItems, new int[]{2, 1, 0});
         CustomerOrder order2 = createOrder(customer2, 3, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter01);
         addOrderItems(order2, menuItems, new int[]{1, 2, 1});
+        order2.setCreatedAt(yesterday);
+        orderRepository.save(order2);
         CustomerOrder order3 = createOrder(customer3, 8, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter02);
         addOrderItems(order3, menuItems, new int[]{3, 0, 2});
         CustomerOrder order4 = createOrder(customer4, 2, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter02);
         addOrderItems(order4, menuItems, new int[]{1, 1, 1});
+        order3.setCreatedAt(lastMonth);
+        orderRepository.save(order3);
         CustomerOrder order5 = createOrder(customer1, 5, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter03);
         addOrderItems(order5, menuItems, new int[]{0, 2, 2});
+        order4.setCreatedAt(lastMonth);
+        orderRepository.save(order4);
+
+//        CustomerOrder order6 = createOrder(customer1, 5, OrderStatus.PLACED, yesterday, PaymentStatus.UNPAID, waiter01);
+//        addOrderItems(order6, menuItems, new int[]{2, 1, 0});
+//        CustomerOrder order7 = createOrder(customer2, 3, OrderStatus.PLACED, twoDaysAgo, PaymentStatus.UNPAID, waiter01);
+//        addOrderItems(order7, menuItems, new int[]{1, 2, 1});
+//        CustomerOrder order8 = createOrder(customer3, 8, OrderStatus.PLACED, lastWeek, PaymentStatus.UNPAID, waiter02);
+//        addOrderItems(order8, menuItems, new int[]{3, 0, 2});
+//        CustomerOrder order9 = createOrder(customer4, 2, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter02);
+//        addOrderItems(order9, menuItems, new int[]{1, 1, 1});
+//        CustomerOrder order10 = createOrder(customer1, 5, OrderStatus.PLACED, lastMonth, PaymentStatus.UNPAID, waiter03);
+//        addOrderItems(order10, menuItems, new int[]{0, 2, 2});
 
         orderRepository.saveAll(List.of(order1, order2, order3, order4, order5));
 
@@ -115,7 +137,7 @@ public class OrderDataSeeder implements CommandLineRunner {
         return customerRepository.save(customer);
     }
 
-    private CustomerOrder createOrder(Customer customer, int tableNumber, OrderStatus status, Instant createdAt, PaymentStatus paymentStatus, AppUser waiter) {
+    private CustomerOrder createOrder(Customer customer, int tableNumber, OrderStatus status, PaymentStatus paymentStatus, AppUser waiter) {
         CustomerOrder order = new CustomerOrder();
         order.setCustomer(customer);
         order.setTableNumber(tableNumber);
