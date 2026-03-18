@@ -129,10 +129,15 @@ export default function Manager() {
                                 const stats = getEmployeeStats(employee);
                                 return (
                                 <div className={`employee_individual ${employee.onShift ? `OnShift` : `notOnShift`}`} key={employee.employeeId}
-                                onClick={() => {
-                                    setSelectedEmployee(employee);
-                                    setShowDetail(true);
-                                }}
+                                onClick={
+                                    isWaiter
+                                    ? () => {
+                                        setSelectedEmployee(employee);
+                                        setShowDetail(true);
+                                        }
+                                    : undefined
+                                }
+                                style={{ cursor: isWaiter ? "pointer" : "default" }}
                                 >
                                     <div className="employee_username">
                                         <p>{employee.username}</p>
