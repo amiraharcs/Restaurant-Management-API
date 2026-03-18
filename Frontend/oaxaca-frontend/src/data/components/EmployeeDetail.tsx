@@ -69,6 +69,7 @@ const status_styles = {
                     <p className="employee_detail_stat_value">{employee.totalItemsSold}</p>
                 </div>
             </div>
+            <p className="employee_detail_stat_notice">* The stats are all time</p>
             <div className="employee_detail_orders_section">
                 <h3 className="employee_detail_orders_title">Recent Orders</h3>
 

@@ -149,11 +149,11 @@ export default function Manager() {
                                             <p className="employee_stat_text">£{stats.totalSales.toFixed(2)}</p>
                                         </div>
                                         <div className="employee_total_items employee_stats">
-                                            <p className="employee_stats_p">Total Items Sold:</p>
+                                            <p className="employee_stats_p">Total Items Sold</p>
                                             <p className="employee_stat_text">{stats.totalItemsSold}</p>
                                         </div>
                                         <div className="employee_total_orders employee_stats">
-                                            <p className="employee_stats_p">Total Orders:</p>
+                                            <p className="employee_stats_p">Total Orders</p>
                                             <p className="employee_stat_text">{stats.totalOrders}</p>
                                         </div>
                                         </>

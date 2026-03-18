@@ -108,18 +108,20 @@ public class OrderDataSeeder implements CommandLineRunner {
         CustomerOrder order5 = createOrder(customer1, 5, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter03);
         addOrderItems(order5, menuItems, new int[]{0, 2, 2});
 
-//        CustomerOrder order6 = createOrder(customer1, 5, OrderStatus.PLACED, yesterday, PaymentStatus.UNPAID, waiter01);
-//        addOrderItems(order6, menuItems, new int[]{2, 1, 0});
-//        CustomerOrder order7 = createOrder(customer2, 3, OrderStatus.PLACED, twoDaysAgo, PaymentStatus.UNPAID, waiter01);
-//        addOrderItems(order7, menuItems, new int[]{1, 2, 1});
-//        CustomerOrder order8 = createOrder(customer3, 8, OrderStatus.PLACED, lastWeek, PaymentStatus.UNPAID, waiter02);
-//        addOrderItems(order8, menuItems, new int[]{3, 0, 2});
-//        CustomerOrder order9 = createOrder(customer4, 2, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter02);
-//        addOrderItems(order9, menuItems, new int[]{1, 1, 1});
-//        CustomerOrder order10 = createOrder(customer1, 5, OrderStatus.PLACED, lastMonth, PaymentStatus.UNPAID, waiter03);
-//        addOrderItems(order10, menuItems, new int[]{0, 2, 2});
+        CustomerOrder order6 = createOrder(customer1, 8, OrderStatus.PLACED, lastWeek, PaymentStatus.UNPAID, waiter01);
+        addOrderItems(order6, menuItems, new int[]{2, 1, 0, 1});
+        CustomerOrder order7 = createOrder(customer4, 3, OrderStatus.PLACED, twoDaysAgo, PaymentStatus.UNPAID, waiter01);
+        addOrderItems(order7, menuItems, new int[]{1, 0, 0, 0, 2});
+        CustomerOrder order8 = createOrder(customer3, 8, OrderStatus.PLACED, lastMonth, PaymentStatus.UNPAID, waiter02);
+        addOrderItems(order8, menuItems, new int[]{0, 0, 0, 1, 0, 0, 0 ,0, 2});
+        CustomerOrder order9 = createOrder(customer2, 7, OrderStatus.PLACED, Instant.now(), PaymentStatus.UNPAID, waiter02);
+        addOrderItems(order9, menuItems, new int[]{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2});
+        CustomerOrder order10 = createOrder(customer2, 1, OrderStatus.PLACED, lastMonth, PaymentStatus.UNPAID, waiter03);
+        addOrderItems(order10, menuItems, new int[]{0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1});
+        CustomerOrder order11 = createOrder(customer1, 1, OrderStatus.PLACED, lastMonth, PaymentStatus.UNPAID, waiter03);
+        addOrderItems(order11, menuItems, new int[]{0, 1, 0, 0, 1, 0, 0, 1, 0, 2, 0, 0, 1});
 
-        orderRepository.saveAll(List.of(order1, order2, order3, order4, order5));
+        orderRepository.saveAll(List.of(order1, order2, order3, order4, order5, order6, order7, order8, order9, order10, order11));
 
         log.info("Seeded {} orders with items", orderRepository.count());
 
