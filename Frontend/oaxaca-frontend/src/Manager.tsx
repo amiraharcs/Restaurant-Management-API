@@ -99,43 +99,48 @@ export default function Manager() {
 
                     <hr />
 
-                    <select name="time_frame"
-                        id="time_frame"
-                        value={employeeDataTimeFrame}
-                        onChange={(e) => setEmployeeDataTimeFrame(e.target.value)}
-                    >
-                        <option value="today">Today</option>
-                        <option value="month">This Month</option>
-                        <option value="year">This Year</option>
-                        <option value="total">Total</option>
-                    </select>
-
-                    <div className="employee_data">
-                        {employees.filter((employee) => employee.role === activeTab)
-                        .map( (employee) =>  {
-                            const stats = getEmployeeStats(employee);
-
-                            return (
-                            <div className="employee_individual" key={employee.employeeId}>
-                                <div>
-                                    <p>{employee.username}</p>
+                   <div className="employee_main">
+                       <div className="employee-filter">
+                            <label className="employee-filter_label" htmlFor="timeFrame">
+                                Time Frame
+                            </label>
+                            <select
+                                id="timeFrame"
+                                className="employee-filter_select"
+                                value={employeeDataTimeFrame}
+                                onChange={(e) => setEmployeeDataTimeFrame(e.target.value)}
+                            >
+                                <option value="today">Today</option>
+                                <option value="month">This Month</option>
+                                <option value="year">This Year</option>
+                                <option value="total">Total</option>
+                            </select>
+                        </div>
+                        <div className="employee_data">
+                            {employees.filter((employee) => employee.role === activeTab)
+                            .map( (employee) =>  {
+                                const stats = getEmployeeStats(employee);
+                                return (
+                                <div className={`employee_individual ${employee.onShift ? `OnShift` : `notOnShift`}`} key={employee.employeeId}>
+                                    <div className="employee_username">
+                                        <p>{employee.username}</p>
+                                    </div>
+                                    <div className="employee_total_sales">
+                                        <p>Total Sales</p>
+                                        <p className="employee_stat_text">£{stats.totalSales.toFixed(2)}</p>
+                                    </div>
+                                    <div className="employee_total_items">
+                                        <p>Total Items Sold:</p>
+                                        <p className="employee_stat_text">{stats.totalItemsSold}</p>
+                                    </div>
+                                    <div className="employee_total_orders">
+                                        <p>Total Orders:</p>
+                                        <p className="employee_stat_text">{stats.totalOrders}</p>
+                                    </div>
                                 </div>
-                                <div className="employee_total_sales">
-                                    <p>Total Sales</p>
-                                    <p>{stats.totalSales.toFixed(2)}</p>
-                                </div>
-                                <div className="employee_total_sales">
-                                    <p>Total Items Sold:</p>
-                                    <p>{stats.totalItemsSold}</p>
-                                </div>
-                                <div className="employee_total_sales">
-                                    <p>Total Orders:</p>
-                                    <p>{stats.totalOrders}</p>
-                                </div>
-
-                            </div>
-                        )})}
-                    </div>
+                            )})}
+                        </div>
+                   </div>
                 </div>
             </div>
             

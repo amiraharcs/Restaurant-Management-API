@@ -19,6 +19,10 @@
     margin-top: 12px;
 }
 
+.employee_main {
+    padding: 20px;
+}
+
 .employee_Tabs {
     display: flex;
     gap: 2%;
@@ -54,9 +58,36 @@
     margin-left: 20px;
 }
 
+.employee-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 300px;
+
+}
+
+.employee-filter_label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.employee-filter_select {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  background-color: #f9fafb;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.employee-filter_select:hover {
+  border-color: #9ca3af;
+}
+
+
 .employee_data {
-    margin-top: 1rem;
-    margin: 20px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -73,6 +104,39 @@
     justify-content: space-between;
 }
 
+.OnShift {
+    border-left: 5px solid palegreen;
+}
+
+.notOnShift {
+    border-left: 5px solid palevioletred;
+}
+
+.employee_username {
+    display: flex;
+    align-items: center;
+}
+
 .employee_total_sales {
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.employee_total_items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.employee_total_orders {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.employee_stat_text {
+    font-size: 2rem;
+    font-weight: 500;
+    color: #9C51B6;
 }
