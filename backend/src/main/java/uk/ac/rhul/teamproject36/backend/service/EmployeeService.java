@@ -41,9 +41,8 @@ public class EmployeeService {
 
             List<CustomerOrder> employeeOrders =  orderRepository.findByAssignedWaiterUsername(dto.getUsername());
 
-            BigDecimal employeTotalSales = BigDecimal.ZERO;
+            BigDecimal employeeTotalSales = BigDecimal.ZERO;
             Integer employeeTotalItems = 0;
-            Integer employeeTotalOrders = employeeOrders.size();
 
             List<EmployeeOrderInfoResponse> orderInfo = new ArrayList<>();
 
@@ -66,11 +65,15 @@ public class EmployeeService {
                 orderDto.setStatus(order.getStatus());
                 orderDto.setNumberOfItems(totalItems);
 
-                employeTotalSales.add(total);
+                employeeTotalSales = employeeTotalSales.add(total);
                 employeeTotalItems += (totalItems);
 
                 orderInfo.add(orderDto);
             }
+
+            dto.setTotalSales(employeeTotalSales);
+            dto.setTotalItemsSold(employeeTotalItems);
+            dto.setTotalOrders(employeeOrders.size());
 
             dto.setEmployeeOrders(orderInfo);
 
