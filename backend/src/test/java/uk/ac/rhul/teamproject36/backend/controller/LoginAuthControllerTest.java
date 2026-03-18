@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
+
 import uk.ac.rhul.teamproject36.backend.auth.AppUser;
 import uk.ac.rhul.teamproject36.backend.dataTransferObjects.LoginRequest;
 import uk.ac.rhul.teamproject36.backend.dataTransferObjects.LoginResponse;
@@ -32,11 +32,15 @@ class LoginAuthControllerTest {
         request.setUsername("amir");
         request.setPassword("secret");
 
-        User principal = User.withUsername("amir")
-                .password("ignored")
-                .roles("WAITER")
-                .build();
-
+        org.springframework.security.core.userdetails.User principal =
+                new org.springframework.security.core.userdetails.User(
+                        "amir",
+                        "ignored",
+                        java.util.List.of(
+                                new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_WAITER")
+                        )
+                );
+        
         Authentication authentication = mock(Authentication.class);
         when(authentication.getPrincipal()).thenReturn(principal);
         when(authManager.authenticate(any())).thenReturn(authentication);
@@ -71,10 +75,14 @@ class LoginAuthControllerTest {
         request.setUsername("chef");
         request.setPassword("secret");
 
-        User principal = User.withUsername("chef")
-                .password("ignored")
-                .roles("KITCHEN")
-                .build();
+        org.springframework.security.core.userdetails.User principal =
+                new org.springframework.security.core.userdetails.User(
+                        "chef",
+                        "ignored",
+                        java.util.List.of(
+                                new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_KITCHEN")
+                        )
+                );
 
         Authentication authentication = mock(Authentication.class);
         when(authentication.getPrincipal()).thenReturn(principal);
