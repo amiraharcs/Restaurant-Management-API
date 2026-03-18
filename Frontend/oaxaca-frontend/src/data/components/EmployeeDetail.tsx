@@ -27,7 +27,8 @@ const status_styles = {
             </button>
             <div className="employee_detail_header">
                 <h3 className="employee_detail_title">{employee.username}</h3>
-                <div className="employee_detail_header_box">
+            </div>
+            <div className="employee_detail_header_box">
                     <span className="employee_detail_header_box_span">
                         <p>On Shift</p>
                         {employee.onShift ? <SiTicktick className="employee_tick"/> : <GiCancel className="employee_cross"/>}
@@ -37,7 +38,6 @@ const status_styles = {
                         {employee.active ? <SiTicktick className="employee_tick"/> : <GiCancel className="employee_cross"/>}
                     </span>
                 </div>
-            </div>
             <div className="employee_detail_info">
                 <div className="employee_detail_info_row">
                     <span className="employee_detail_info_label">Employee ID</span>
