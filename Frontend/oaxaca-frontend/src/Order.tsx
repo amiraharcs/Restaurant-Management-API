@@ -5,6 +5,7 @@ import NavBar from "./data/components/NavBar";
 import { useState } from "react";
 import Footer from "./data/components/Footer";
 import { placeOrder } from "./api/orderApi";
+import { SiTicktick } from "react-icons/si";
 
 export default function Order() {
   const location = useLocation();
@@ -184,10 +185,20 @@ export default function Order() {
             >
               x
             </button>
-            <h3 className="confirm_order_main_title">Order Confirmed!</h3>
-            <p>Thank you for ordering with us.</p>
-            <p>Your order Id: {orderResponse?.orderId}</p>
-            <p>Your food will be ready soon.</p>
+            <div className="confirm_order_container">
+              <div className="confirm_order_card">
+                <SiTicktick className="confirm_order_tick"/>
+                <h3 className="confirm_order_main_title">Order Confirmed!</h3>
+                <p>Thank you for ordering with us.</p>
+                <p>Your food is being prepared and will be ready soon.</p>
+                <div className="confirm_order_id_box">
+                  <span className="confirm_order_id_label">Order ID:</span>
+                  <span className="confirm_order_id_value">
+                    #{orderResponse?.orderId}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
