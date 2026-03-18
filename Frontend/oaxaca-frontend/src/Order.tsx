@@ -180,7 +180,7 @@ export default function Order() {
               className="confirm_order_main_close"
               onClick={() => {
                 showConfirmedOrder(false);
-                navigate("/");
+                navigate("/track-order");
               }}
             >
               x
