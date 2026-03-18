@@ -55,6 +55,8 @@ public class SecurityConfig {
 
               .requestMatchers(HttpMethod.PATCH, "/api/menu/menuItem/**").permitAll()
 
+              .requestMatchers(HttpMethod.GET, "/api/employee/**").permitAll()
+
     .anyRequest().authenticated()
 );
     return http.build();

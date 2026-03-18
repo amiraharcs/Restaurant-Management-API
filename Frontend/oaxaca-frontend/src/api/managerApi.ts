@@ -28,6 +28,29 @@ export type MenuItemDto = {
   itemType: "FOOD" | "DESSERT" | "DRINK";
 };
 
+export type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
+
+export type EmployeeOrderInfoResponse = {
+    orderTotal: number;
+    numberOfItems: number;
+    orderDateTime: string;
+    status: status;
+};
+
+export type EmployeeDataResponse = {
+    employeeId: number;
+    username: string;
+    role: string;
+    active: boolean;
+    onShift: boolean;
+
+    totalSales: number;
+    totalOrders: number;
+    totalItemsSold: number;
+
+    employeeOrders: EmployeeOrderInfoResponse[];
+};
+
 export async function fetchManagerrMenu(): Promise<MenuItemDto[]> {
   const res = await fetch(`${API_BASE}/api/menu/all`);
   if (!res.ok) throw new Error(`Menu fetch failed: ${res.status}`);
@@ -84,6 +107,16 @@ export async function addMenuItem(itemData: MenuItemDto): Promise<MenuItemDto> {
 
   if (!res.ok) {
     throw new Error(`Menu item add failed: ${res.status}`);
+  }
+
+  return res.json();
+}
+
+export async function fetchEmployeeData(): Promise<EmployeeDataResponse[]> {
+  const res = await fetch(`${API_BASE}/api/employee/data`);
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch employee data: ${res.status}`);
   }
 
   return res.json();

@@ -20,4 +20,6 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
   // Waiters currently on shift
   List<AppUser> findByRoleAndOnShiftTrue(String role);
+
+  List<AppUser> findByRoleNot(String role);
 }

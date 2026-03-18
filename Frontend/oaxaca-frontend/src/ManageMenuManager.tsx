@@ -38,8 +38,8 @@ export default function ManageMenu() {
   
       // Backend provides FOOD/DESSERT/DRINK. Frontend UI uses main/dessert/drinks.
       const [products, setProducts] = useState<MenuData>({ main: [], dessert: [], drinks: [] });
-      const [loading, setLoading] = useState<boolean>(true);
-      const [error, setError] = useState<string>("");
+        const [loading, setLoading] = useState<boolean>(true);
+        const [error, setError] = useState<string>("");
   
       useEffect(() => {
           async function loadMenu() {

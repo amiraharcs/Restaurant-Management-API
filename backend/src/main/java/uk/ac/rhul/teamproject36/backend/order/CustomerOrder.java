@@ -61,6 +61,10 @@ public class CustomerOrder {
 
     public Instant getCreatedAt() { return createdAt; }
 
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public List<OrderItem> getItems() { return items; }
 
     public void addItem(OrderItem item) {
