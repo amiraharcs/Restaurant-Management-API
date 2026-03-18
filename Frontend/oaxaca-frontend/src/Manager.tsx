@@ -106,7 +106,7 @@ export default function Manager() {
                     <hr />
 
                    <div className="employee_main">
-                       <div className="employee-filter">
+                       {activeTab === "WAITER" &&<div className="employee-filter">
                             <label className="employee-filter_label" htmlFor="timeFrame">
                                 Time Frame
                             </label>
@@ -121,7 +121,7 @@ export default function Manager() {
                                 <option value="year">This Year</option>
                                 <option value="total">Total</option>
                             </select>
-                        </div>
+                        </div>}
                         <div className="employee_data">
                             {employees.filter((employee) => employee.role === activeTab)
                             .map( (employee) =>  {
