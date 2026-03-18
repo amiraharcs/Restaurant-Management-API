@@ -183,11 +183,51 @@
     flex-direction: column;
     border-radius: 0.8rem;
     overflow: hidden;
-    padding: 0rem 2rem 1rem 2rem;
+    padding: 2rem 2rem 1rem 2rem;
+    
+}
+
+.confirm_order_tick {
+    font-size: 3rem;
+    color: #22c55e;
+    background-color: #d7f1dd;
+    padding: 10px;
+    border-radius: 50%;
 }
 
 .confirm_order_main_title {
-    margin-top: 2rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-top: 0.3rem;
+}
+
+.confirm_order_card p {
+    font-size: 0.95rem;
+    color: #848383;
+    margin: 0;
+}
+
+.confirm_order_id_box {
+    margin-top: 0.5rem;
+    background: #ececec;
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirm_order_id_label {
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.confirm_order_id_value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #22c55e;
 }
 
 .confirm_order_main_close {
