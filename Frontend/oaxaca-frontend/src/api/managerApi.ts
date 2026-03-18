@@ -41,7 +41,7 @@ export type EmployeeDataResponse = {
     employeeId: number;
     username: string;
     role: string;
-    isActive: boolean;
+    active: boolean;
     onShift: boolean;
 
     totalSales: number;

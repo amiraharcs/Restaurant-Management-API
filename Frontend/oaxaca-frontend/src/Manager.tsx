@@ -3,6 +3,7 @@ import StaffWelcome from "./data/components/StaffWelcome";
 import "./css/Manager.css"
 import { act, useEffect, useState } from "react";
 import { fetchEmployeeData, type EmployeeDataResponse } from "./api/managerApi";
+import EmployeeDetail from "./data/components/EmployeeDetail";
 
 export default function Manager() {
 
@@ -13,6 +14,9 @@ export default function Manager() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
     const [employees, setEmployees] = useState<EmployeeDataResponse[]>([]);
+
+    const [showDetail, setShowDetail] = useState<boolean>(false)
+    const [selectedEmployee, setSelectedEmployee] = useState<EmployeeDataResponse | null>(null);
 
     const [employeeDataTimeFrame, setEmployeeDataTimeFrame] = useState<string>("today");
 
@@ -121,19 +125,24 @@ export default function Manager() {
                             .map( (employee) =>  {
                                 const stats = getEmployeeStats(employee);
                                 return (
-                                <div className={`employee_individual ${employee.onShift ? `OnShift` : `notOnShift`}`} key={employee.employeeId}>
+                                <div className={`employee_individual ${employee.onShift ? `OnShift` : `notOnShift`}`} key={employee.employeeId}
+                                onClick={() => {
+                                    setSelectedEmployee(employee);
+                                    setShowDetail(true);
+                                }}
+                                >
                                     <div className="employee_username">
                                         <p>{employee.username}</p>
                                     </div>
-                                    <div className="employee_total_sales">
+                                    <div className="employee_total_sales employee_stats">
                                         <p>Total Sales</p>
                                         <p className="employee_stat_text">£{stats.totalSales.toFixed(2)}</p>
                                     </div>
-                                    <div className="employee_total_items">
+                                    <div className="employee_total_items employee_stats">
                                         <p>Total Items Sold:</p>
                                         <p className="employee_stat_text">{stats.totalItemsSold}</p>
                                     </div>
-                                    <div className="employee_total_orders">
+                                    <div className="employee_total_orders employee_stats">
                                         <p>Total Orders:</p>
                                         <p className="employee_stat_text">{stats.totalOrders}</p>
                                     </div>
@@ -143,6 +152,13 @@ export default function Manager() {
                    </div>
                 </div>
             </div>
+
+            {showDetail && selectedEmployee && (
+                <EmployeeDetail
+                    setShowDetail={setShowDetail}
+                    employee={selectedEmployee}
+                />
+            )}
             
         </main>
     )
