@@ -4,6 +4,8 @@ import "./css/Manager.css"
 import { act, useEffect, useState } from "react";
 import { fetchEmployeeData, type EmployeeDataResponse } from "./api/managerApi";
 import EmployeeDetail from "./data/components/EmployeeDetail";
+import { SiTicktick } from "react-icons/si";
+import { GiCancel } from "react-icons/gi";
 
 export default function Manager() {
 
@@ -123,6 +125,7 @@ export default function Manager() {
                         <div className="employee_data">
                             {employees.filter((employee) => employee.role === activeTab)
                             .map( (employee) =>  {
+                                const isWaiter = employee.role === "WAITER";
                                 const stats = getEmployeeStats(employee);
                                 return (
                                 <div className={`employee_individual ${employee.onShift ? `OnShift` : `notOnShift`}`} key={employee.employeeId}
@@ -134,18 +137,37 @@ export default function Manager() {
                                     <div className="employee_username">
                                         <p>{employee.username}</p>
                                     </div>
-                                    <div className="employee_total_sales employee_stats">
-                                        <p>Total Sales</p>
-                                        <p className="employee_stat_text">£{stats.totalSales.toFixed(2)}</p>
-                                    </div>
-                                    <div className="employee_total_items employee_stats">
-                                        <p>Total Items Sold:</p>
-                                        <p className="employee_stat_text">{stats.totalItemsSold}</p>
-                                    </div>
-                                    <div className="employee_total_orders employee_stats">
-                                        <p>Total Orders:</p>
-                                        <p className="employee_stat_text">{stats.totalOrders}</p>
-                                    </div>
+                                     {isWaiter ? (
+                                        <>
+                                        <div className="employee_total_sales employee_stats">
+                                            <p className="employee_stats_p">Total Sales</p>
+                                            <p className="employee_stat_text">£{stats.totalSales.toFixed(2)}</p>
+                                        </div>
+                                        <div className="employee_total_items employee_stats">
+                                            <p className="employee_stats_p">Total Items Sold:</p>
+                                            <p className="employee_stat_text">{stats.totalItemsSold}</p>
+                                        </div>
+                                        <div className="employee_total_orders employee_stats">
+                                            <p className="employee_stats_p">Total Orders:</p>
+                                            <p className="employee_stat_text">{stats.totalOrders}</p>
+                                        </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                        <div className="employee_total_orders employee_stats">
+                                            <p className="employee_stats_p">Employee ID</p>
+                                            <p className="employee_stat_text">{employee.employeeId}</p>
+                                        </div>
+                                         <div className="employee_total_sales employee_stats">
+                                            <p className="employee_stats_p">Role</p>
+                                            <p className="employee_stat_text">{employee.role}</p>
+                                        </div>
+                                        <div className="employee_total_items employee_stats">
+                                            <p className="employee_stats_p">Active</p>
+                                            {employee.active ? <SiTicktick className="employee_tick_main"/> : <GiCancel className="employee_cross_main"/>}
+                                        </div>
+                                        </>
+                                    )}
                                 </div>
                             )})}
                         </div>

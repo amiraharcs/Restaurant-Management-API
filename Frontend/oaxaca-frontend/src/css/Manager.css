@@ -137,10 +137,27 @@
     align-items: center;
 }
 
+.employee_stats_p {
+    font-size: 1.15rem;
+    font-weight: 500;
+} 
+
 .employee_stat_text {
     font-size: 2rem;
     font-weight: 500;
     color: #9C51B6;
+}
+
+.employee_tick_main {
+    margin-top: 0.2rem;
+    font-size: 2rem;
+    color: #1f8f3a;
+}
+
+.employee_cross_main {
+    margin-top: 0.2rem;
+  font-size: 2rem;
+  color: #d41445;
 }
 
 /******More details******/
