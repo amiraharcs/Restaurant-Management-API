@@ -1,14 +1,14 @@
-import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { clearLoggedInStaffSession } from "./staffSession";
-import { LuBell, LuUserRound } from "react-icons/lu";
+import { LuLogOut } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
 import "../../css/NavBarManager.css"
 
 export default function NavBarManager() {
     const [show, setShow] = useState(true);
     const lastScrollY = useRef(window.scrollY);
-    
+    const navigate = useNavigate();
+
     useEffect(() => {
         const handleScroll = () => {
         if (window.scrollY > lastScrollY.current && window.scrollY > 60) {
@@ -22,27 +22,27 @@ export default function NavBarManager() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    function handleLogout() {
+        clearLoggedInStaffSession();
+        navigate("/login");
+    }
+
     return (
     <main>
-      <nav className={`managerNavbar${show ? "" : "managerNavbar--hidden"}`}>
+      <nav className={`managerNavbar${show ? "" : " managerNavbar--hidden"}`}>
         <NavLink to="/manager" className="managerNavbar__brand">
           <img src="/images/main/logo.png" alt="OAXACA" className="managerNavbar__logoImg" />
         </NavLink>
 
         <div className="managerNavbar__center">
+          <NavLink to="/manager/overview" className="managerNavbar__link" end>
+            OVERVIEW
+          </NavLink>
           <NavLink to="/manager" className="managerNavbar__link" end>
             EMPLOYEE DATA
           </NavLink>
           <NavLink to="/manage-menu-manager" className="managerNavbar__link" end>
             MANAGE MENU
-          </NavLink>
-          <NavLink
-            to="/login"
-            className="managerNavbar__link"
-            end
-            onClick={clearLoggedInStaffSession}
-          >
-            LOGOUT
           </NavLink>
         </div>
 
@@ -50,8 +50,9 @@ export default function NavBarManager() {
           <button
             type="button"
             className="rightIconsButton"
+            onClick={handleLogout}
           >
-            <LuUserRound className="rightIcons" />
+            <LuLogOut className="rightIcons" />
           </button>
         </div>
       </nav>
