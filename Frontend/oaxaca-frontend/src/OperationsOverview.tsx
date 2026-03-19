@@ -56,8 +56,8 @@ function TableBox({ tableNumber, orders, alerts }: TableBoxProps) {
         <div className={`table_box${isEmpty ? " empty" : ""}`}>
             <div className={`table_box_header${isEmpty ? " empty_header" : ""}`}>
                 <span>Table {tableNumber}</span>
-                {activeOrders.length > 0 && (
-                    <span className="table_order_count">{activeOrders.length}</span>
+                {(activeOrders.length + tableAlerts.length) > 0 && (
+                    <span className="table_order_count">{activeOrders.length + tableAlerts.length}</span>
                 )}
             </div>
             <div className="table_inner_toggle">
@@ -80,6 +80,10 @@ function TableBox({ tableNumber, orders, alerts }: TableBoxProps) {
                         ? <span className="table_empty_msg">No active orders</span>
                         : activeOrders.map(order => (
                             <div key={order.id} className="order_row">
+                                <div className="order_row_top">
+                                    <span className="order_row_id">Order #{order.id}</span>
+                                    <span className="order_row_time">{timeAgo(order.createdAt)}</span>
+                                </div>
                                 <span className="order_row_waiter">
                                     {order.assignedWaiter ?? "Unassigned"}
                                 </span>
