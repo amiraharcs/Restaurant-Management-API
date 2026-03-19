@@ -3,10 +3,8 @@ package uk.ac.rhul.teamproject36.backend.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
 import uk.ac.rhul.teamproject36.backend.order.Customer;
 import uk.ac.rhul.teamproject36.backend.order.CustomerOrder;
@@ -35,10 +33,10 @@ public class OrderService {
     }
 
     public record CreateOrderRequest(String name, String phoneNumber, Integer tableNumber, List<CreateOrderItem> items) {}
-    public record CreateOrderItem(Long menuItemId, Integer quantity, String customisations) {}
+    public record CreateOrderItem(Long menuItemId, Integer quantity) {}
     public record CreateOrderResponse(Long orderId, OrderStatus status, PaymentStatus paymentStatus) {}
-    public record AddOrderItemRequest(Long menuItemId, Integer quantity, String customisations) {}
-    
+    public record AddOrderItemRequest(Long menuItemId, Integer quantity) {
+    }
 
 
     @Transactional
@@ -77,8 +75,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             orderItem.setMenuItem(menuItem);
             orderItem.setQuantity(itemReq.quantity());
-            orderItem.setCustomisations(itemReq.customisations());
-            
+
             order.addItem(orderItem);
         }
 
@@ -95,7 +92,7 @@ public class OrderService {
         public NotFoundException(String msg) { super(msg); }
     }
     
-    public record OrderItemDto(Long menuItemId, String name, Integer quantity, String customisations) {}
+    public record OrderItemDto(Long menuItemId, String name, Integer quantity) {}
 
     public record OrderDto(
         Long id,
@@ -182,12 +179,8 @@ public class OrderService {
     private OrderDto toOrderDto(CustomerOrder order) {
       List<OrderItemDto> items = new ArrayList<>();
       for (var it : order.getItems()) {
-        items.add(new OrderItemDto(
-        it.getMenuItem().getId(),
-        it.getMenuItem().getName(),
-        it.getQuantity(),
-        it.getCustomisations()
-    ));
+        items.add(new OrderItemDto(it.getMenuItem().getId(), it.getMenuItem().getName(),
+            it.getQuantity()));
       }
       String waiterUsername = order.getAssignedWaiter() != null
           ? order.getAssignedWaiter().getUsername() : null;
@@ -303,7 +296,6 @@ public class OrderService {
           OrderItem orderItem = new OrderItem();
           orderItem.setMenuItem(menuItem);
           orderItem.setQuantity(request.quantity());
-          orderItem.setCustomisations(request.customisations());
           order.addItem(orderItem);
       }
 
