@@ -12,6 +12,7 @@ export type OrderResponse = {
     customerPhoneNumber: string;
     paymentStatus: paymentStatus;
     items: { menuItemId: number; name: string; quantity: number }[];
+    assignedWaiter?: string | null;
 };
 
 export type AddItemType = {

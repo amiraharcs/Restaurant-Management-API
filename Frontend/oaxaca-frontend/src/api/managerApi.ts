@@ -1,3 +1,5 @@
+import type { OrderResponse } from "./waiterApi";
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
 export type IngredientDto = {
@@ -109,6 +111,12 @@ export async function addMenuItem(itemData: MenuItemDto): Promise<MenuItemDto> {
     throw new Error(`Menu item add failed: ${res.status}`);
   }
 
+  return res.json();
+}
+
+export async function fetchAllOrders(): Promise<OrderResponse[]> {
+  const res = await fetch(`${API_BASE}/api/orders`);
+  if (!res.ok) throw new Error(`Orders fetch failed: ${res.status}`);
   return res.json();
 }
 
