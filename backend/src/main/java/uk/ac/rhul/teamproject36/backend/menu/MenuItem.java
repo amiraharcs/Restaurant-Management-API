@@ -87,6 +87,11 @@ public final class MenuItem {
     @Column(name = "is_gluten_free")
     private boolean glutenFree;
 
+    /**customisations to order */
+    @Column(columnDefinition = "TEXT", nullable = true)
+    private String availableCustomisations;
+    
+    
     /**
      * Ingredients of the menu item.
      */
@@ -222,4 +227,14 @@ public final class MenuItem {
     public void setIngredients(final Set<Ingredient> newIngredients) {
         this.ingredients = newIngredients;
     }
+
+    public String getAvailableCustomisations() {
+        return availableCustomisations;
+    }
+
+    public void setAvailableCustomisations(String availableCustomisations) {
+        this.availableCustomisations = availableCustomisations;
+    }
+
+
 }
