@@ -168,7 +168,7 @@
 .employee_detail_main {
     position: fixed;
     inset: 0;
-    z-index: 2;
+    z-index: 101;
     display: flex;
     justify-content: center;
     align-items: center;
