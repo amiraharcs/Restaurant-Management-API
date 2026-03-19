@@ -1,0 +1,70 @@
+.about_page {
+  min-height: 100vh;
+  background: #f7f7f7;
+  font-family: 'Poppins', sans-serif;
+}
+
+.about_hero {
+  background: linear-gradient(135deg, #013525 0%, #0b6b4f 50%, #1a9e73 100%);
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.about_hero_logo {
+  height: 80px;
+  filter: brightness(0) invert(1);
+}
+
+.about_hero_tagline {
+  color: #d1fae5;
+  font-size: 1.15rem;
+  font-weight: 500;
+  text-align: center;
+  max-width: 520px;
+  margin: 0;
+}
+
+.about_section {
+  padding: 60px 24px;
+}
+
+.about_section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 14px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about_section p {
+  font-size: 1rem;
+  line-height: 1.85;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.about_white {
+  background: #fff;
+  text-align: center;
+}
+
+.about_white h2 { color: #013525; }
+.about_white p  { color: #374151; }
+
+.about_green {
+  background: #013525;
+  text-align: center;
+}
+
+.about_green h2 { color: #fff; }
+.about_green p  { color: #d1fae5; }
+
+@media (max-width: 560px) {
+  .about_hero { height: 320px; }
+  .about_section h2 { font-size: 1.4rem; }
+}
