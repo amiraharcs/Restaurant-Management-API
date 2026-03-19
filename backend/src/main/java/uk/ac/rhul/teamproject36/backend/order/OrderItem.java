@@ -28,9 +28,6 @@ public class OrderItem {
     private CustomerOrder order;
 
     @Column(columnDefinition = "TEXT")
-    private String customIngredients;
-    
-    @Column(columnDefinition = "TEXT")
     private String customisations;
     
     public OrderItem() {}
@@ -43,9 +40,6 @@ public class OrderItem {
 
     public CustomerOrder getOrder() { return order; }
     public void setOrder(CustomerOrder order) { this.order = order; }
-
-    public String getCustomIngredients() {return customIngredients; }
-    public void setCustomIngredients(String customIngredients) {this.customIngredients = customIngredients;}
 
     public String getCustomisations() {return customisations;}
     public void setCustomisations(String customisations) {this.customisations = customisations;}
