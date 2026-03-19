@@ -1,7 +1,6 @@
 import "../../css/NavBarKitchen.css";
-import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { LuUserRound } from "react-icons/lu";
+import { NavLink, useNavigate } from "react-router-dom";
+import { LuLogOut } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
 import { clearLoggedInStaffSession } from "./staffSession";
 
@@ -10,8 +9,9 @@ export default function NavBarKitchen() {
   const [show, setShow] = useState(true);
   const lastScrollY = useRef(window.scrollY);
 
-  function toKitchen() {
-    navigate("/kitchen");
+  function handleLogout() {
+    clearLoggedInStaffSession();
+    navigate("/login");
   }
 
   useEffect(() => {
@@ -42,19 +42,11 @@ export default function NavBarKitchen() {
           <NavLink to="/past-order" className="kitchenNavbar__link">
             PAST ORDERS
           </NavLink>
-          <NavLink
-            to="/login"
-            className="kitchenNavbar__link"
-            end
-            onClick={clearLoggedInStaffSession}
-          >
-            LOGOUT
-          </NavLink>
         </div>
 
         <div className="kitchenNavbar__right">
-          <button type="button" className="kitchenIconsButton" onClick={toKitchen}>
-            <LuUserRound className="kitchenIcons" />
+          <button type="button" className="kitchenIconsButton" onClick={handleLogout}>
+            <LuLogOut className="kitchenIcons" />
           </button>
         </div>
       </nav>

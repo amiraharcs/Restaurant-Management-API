@@ -1,37 +1,40 @@
 import "../../css/NavBarWaiter.css";
-import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { LuBell, LuUserRound } from "react-icons/lu";
+import { NavLink, useNavigate } from "react-router-dom";
+import { LuBell, LuLogOut } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
 import { clearLoggedInStaffSession, getLoggedInStaffUsername } from "./staffSession";
-import { setWaiterOffline } from "../../api/waiterApi";
+import { setWaiterOffline, getReadyOrders } from "../../api/waiterApi";
 import { fetchCallWaiterAlerts } from "../../api/alertsApi";
 
 export default function NavBarWaiter() {
   const [notificationCount, setNotificationCount] = useState(0);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [show, setShow] = useState(true);
   const lastScrollY = useRef(window.scrollY);
-
-  function toAccount() {
-    navigate("/waiter");
-  }
 
   function toAlerts() {
     navigate("/alerts");
   }
 
-
+  function handleLogout() {
+    const username = getLoggedInStaffUsername();
+    if (username) setWaiterOffline(username);
+    clearLoggedInStaffSession();
+    navigate("/login");
+  }
 
   useEffect(() => {
-    async function loadAlerts() {
+    async function loadNotifications() {
       try {
-        const alerts = await fetchCallWaiterAlerts();
-        setNotificationCount(alerts.filter(a => !a.handled).length);
+        const [alerts, readyOrders] = await Promise.all([
+          fetchCallWaiterAlerts(),
+          getReadyOrders(),
+        ]);
+        setNotificationCount(alerts.filter(a => !a.handled).length + readyOrders.length);
       } catch {}
     }
-    loadAlerts();
-    const interval = setInterval(loadAlerts, 5000);
+    loadNotifications();
+    const interval = setInterval(loadNotifications, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -65,18 +68,6 @@ export default function NavBarWaiter() {
           <NavLink to="/manage-menu-waiter" className="waiterNavbar__link" end>
             MANAGE MENU
           </NavLink>
-          <NavLink
-            to="/login"
-            className="waiterNavbar__link"
-            end
-            onClick={() => {
-              const username = getLoggedInStaffUsername();
-              if (username) setWaiterOffline(username);
-              clearLoggedInStaffSession();
-            }}
-          >
-            LOGOUT
-          </NavLink>
         </div>
 
         <div className="waiterNavbar__right">
@@ -87,12 +78,8 @@ export default function NavBarWaiter() {
             )}
           </button>
 
-          <button
-            type="button"
-            className="rightIconsButton"
-            onClick={toAccount}
-          >
-            <LuUserRound className="rightIcons" />
+          <button type="button" className="rightIconsButton" onClick={handleLogout}>
+            <LuLogOut className="rightIcons" />
           </button>
         </div>
       </nav>
