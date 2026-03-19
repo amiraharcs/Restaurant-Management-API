@@ -126,6 +126,8 @@
   margin: 0;
   font-size: 1.05rem;
   line-height: 1.2;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
 }
 
 .manage_menu_item_calories {
