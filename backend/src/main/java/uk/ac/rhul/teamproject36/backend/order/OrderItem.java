@@ -30,6 +30,9 @@ public class OrderItem {
     @Column(columnDefinition = "TEXT")
     private String customIngredients;
     
+    @Column(columnDefinition = "TEXT")
+    private String customisations;
+    
     public OrderItem() {}
 
     public MenuItem getMenuItem() { return menuItem; }
@@ -43,5 +46,8 @@ public class OrderItem {
 
     public String getCustomIngredients() {return customIngredients; }
     public void setCustomIngredients(String customIngredients) {this.customIngredients = customIngredients;}
+
+    public String getCustomisations() {return customisations;}
+    public void setCustomisations(String customisations) {this.customisations = customisations;}
 
 }
