@@ -30,11 +30,11 @@ export default function NavBarManager() {
         </NavLink>
 
         <div className="managerNavbar__center">
-          <NavLink to="/manager" className="managerNavbar__link" end>
-            EMPLOYEE DATA
-          </NavLink>
           <NavLink to="/manager/overview" className="managerNavbar__link" end>
             OVERVIEW
+          </NavLink>
+          <NavLink to="/manager" className="managerNavbar__link" end>
+            EMPLOYEE DATA
           </NavLink>
           <NavLink to="/manage-menu-manager" className="managerNavbar__link" end>
             MANAGE MENU

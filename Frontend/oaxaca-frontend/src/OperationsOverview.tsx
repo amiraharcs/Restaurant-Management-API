@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import NavBarManager from "./data/components/NavBarManager";
+import StaffWelcome from "./data/components/StaffWelcome";
 import { fetchAllOrders, fetchManagerrMenu } from "./api/managerApi";
 import type { MenuItemDto } from "./api/managerApi";
 import { fetchCallWaiterAlerts } from "./api/alertsApi";
@@ -151,6 +152,9 @@ export default function OperationsOverview() {
     return (
         <div className="overview_page" style={{ paddingTop: "calc(7% + 80px)" }}>
             <NavBarManager />
+            <div className="manager_header">
+                <StaffWelcome />
+            </div>
 
             <div className="overview_top_toggle">
                 <button
