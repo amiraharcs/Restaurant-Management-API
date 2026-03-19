@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS menu_item (
   is_gluten_free BOOLEAN NOT NULL DEFAULT FALSE,
   item_type TEXT NOT NULL CHECK (item_type IN ('FOOD', 'DESSERT', 'DRINK')),
   allergens TEXT
+  available_customisations TEXT
 );
 
 -- =========================
