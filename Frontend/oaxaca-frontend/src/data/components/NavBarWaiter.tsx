@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { LuBell, LuLogOut } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
 import { clearLoggedInStaffSession, getLoggedInStaffUsername } from "./staffSession";
-import { setWaiterOffline } from "../../api/waiterApi";
+import { setWaiterOffline, getReadyOrders } from "../../api/waiterApi";
 import { fetchCallWaiterAlerts } from "../../api/alertsApi";
 
 export default function NavBarWaiter() {
@@ -24,14 +24,17 @@ export default function NavBarWaiter() {
   }
 
   useEffect(() => {
-    async function loadAlerts() {
+    async function loadNotifications() {
       try {
-        const alerts = await fetchCallWaiterAlerts();
-        setNotificationCount(alerts.filter(a => !a.handled).length);
+        const [alerts, readyOrders] = await Promise.all([
+          fetchCallWaiterAlerts(),
+          getReadyOrders(),
+        ]);
+        setNotificationCount(alerts.filter(a => !a.handled).length + readyOrders.length);
       } catch {}
     }
-    loadAlerts();
-    const interval = setInterval(loadAlerts, 5000);
+    loadNotifications();
+    const interval = setInterval(loadNotifications, 5000);
     return () => clearInterval(interval);
   }, []);
 
