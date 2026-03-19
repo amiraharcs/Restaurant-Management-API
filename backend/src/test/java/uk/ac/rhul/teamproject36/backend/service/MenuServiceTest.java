@@ -268,4 +268,23 @@ class MenuServiceTest {
         item.setIngredients(Set.of(ingredient));
         return item;
     }
+    
+    @Test
+    void addMenuItem_ignoresBlankIngredientName() {
+        MenuItemRepository itemRepo = mock(MenuItemRepository.class);
+        MenuRepository menuRepo = mock(MenuRepository.class);
+        IngredientRepository ingredientRepo = mock(IngredientRepository.class);
+
+        MenuItem item = new MenuItem();
+        item.setName("Test");
+        item.setPrice(new BigDecimal("10"));
+        item.setCostToProduce(new BigDecimal("4"));
+        item.setIngredients(Set.of(new Ingredient())); // no name
+
+        MenuService service = new MenuService(itemRepo, menuRepo, ingredientRepo);
+
+        MenuItem saved = service.addMenuItem(item);
+
+        assertTrue(saved.getIngredients().isEmpty());
+    }
 }
