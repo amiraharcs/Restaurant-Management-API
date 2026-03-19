@@ -24,4 +24,21 @@ class MenuDataSeederTest {
 
         seeder.run();
     }
+
+    @Test
+    void testRunWithResetEnabledDeletesExistingData() throws Exception {
+        MenuItemRepository menuRepo = mock(MenuItemRepository.class);
+        IngredientRepository ingredientRepo = mock(IngredientRepository.class);
+        Environment env = mock(Environment.class);
+
+        when(env.getProperty("APP_SEED_RESET", "false")).thenReturn("true");
+        when(menuRepo.findAll()).thenReturn(List.of());
+
+        MenuDataSeeder seeder = new MenuDataSeeder(menuRepo, ingredientRepo, env);
+
+        seeder.run();
+
+        verify(menuRepo).deleteAllInBatch();
+        verify(ingredientRepo).deleteAllInBatch();
+    }
 }

@@ -99,4 +99,9 @@ public class CustomerOrder {
     public AppUser getAssignedWaiter() { return assignedWaiter; }
     public void setAssignedWaiter(AppUser waiter) { this.assignedWaiter = waiter; }
 
+	public void setItems(List<OrderItem> of) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

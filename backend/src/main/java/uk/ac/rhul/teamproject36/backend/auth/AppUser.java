@@ -95,4 +95,9 @@ public final class AppUser {
   public void setOnShift(final boolean onShift) {
     this.onShift = onShift;
   }
+
+  public void setUserId(long l) {
+	// TODO Auto-generated method stub
+	
+  }
 }

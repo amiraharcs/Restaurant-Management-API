@@ -183,6 +183,45 @@ class MenuServiceTest {
     }
 
     @Test
+    void addMenuItem_acceptsBlankIngredientNameAndSavesIngredient() {
+        MenuItemRepository itemRepo = mock(MenuItemRepository.class);
+        MenuRepository menuRepo = mock(MenuRepository.class);
+        IngredientRepository ingredientRepo = mock(IngredientRepository.class);
+
+        MenuItem item = new MenuItem();
+        item.setName("Test");
+        item.setDescription("desc");
+        item.setPrice(new BigDecimal("10.00"));
+        item.setCostToProduce(new BigDecimal("4.00"));
+        item.setCalories(100);
+        item.setAllergens("");
+        item.setAvailable(true);
+        item.setImageUrl("img");
+        item.setVegetarian(true);
+        item.setMeat(false);
+        item.setVegan(false);
+        item.setGlutenFree(true);
+        item.setItemType(ItemType.FOOD);
+
+        Ingredient blank = new Ingredient();
+        blank.setName("   ");
+        item.setIngredients(Set.of(blank));
+
+        when(ingredientRepo.save(any(Ingredient.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(itemRepo.save(item)).thenReturn(item);
+
+        MenuService service = new MenuService(itemRepo, menuRepo, ingredientRepo);
+
+        MenuItem saved = service.addMenuItem(item);
+
+        assertNotNull(saved);
+        assertEquals(1, saved.getIngredients().size());
+        verify(ingredientRepo).save(any(Ingredient.class));
+        verify(itemRepo).save(item);
+    }
+
+    @Test
     void editMenuItem_success() {
         MenuItemRepository itemRepo = mock(MenuItemRepository.class);
         MenuRepository menuRepo = mock(MenuRepository.class);
@@ -216,7 +255,8 @@ class MenuServiceTest {
 
         MenuService service = new MenuService(itemRepo, menuRepo, ingredientRepo);
 
-        assertThrows(EntityNotFoundException.class, () -> service.editMenuItem(1L, item("X", ItemType.FOOD)));
+        assertThrows(EntityNotFoundException.class,
+                () -> service.editMenuItem(1L, item("X", ItemType.FOOD)));
     }
 
     @Test
