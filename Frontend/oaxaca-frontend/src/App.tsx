@@ -14,6 +14,7 @@ import ResetPassword from './ResetPassword'
 import CreateAccount from './CreateAccount'
 import PaymentPage from './payment_page'
 import Manager from './Manager'
+import OperationsOverview from './OperationsOverview'
 import ManageMenuWaiter from './ManageMenuWaiter'
 import ManageMenuManager from './ManageMenuManager'
 import ManageMenuItemWaiter from '../src/data/components/ManageMenuItemWaiter'
@@ -97,6 +98,11 @@ function App() {
         <Route path="/manager" element={
           <SecureRoute allowedRoles={["MANAGER"]}>
             <Manager />
+          </SecureRoute>
+        } />
+        <Route path="/manager/overview" element={
+          <SecureRoute allowedRoles={["MANAGER"]}>
+            <OperationsOverview />
           </SecureRoute>
         } />     
       </Routes>
