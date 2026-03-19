@@ -24,9 +24,9 @@ class MenuDataSeederTest {
 
         seeder.run();
     }
-    
+
     @Test
-    void testRunWithResetEnabled() throws Exception {
+    void testRunWithResetEnabledDeletesExistingData() throws Exception {
         MenuItemRepository menuRepo = mock(MenuItemRepository.class);
         IngredientRepository ingredientRepo = mock(IngredientRepository.class);
         Environment env = mock(Environment.class);
@@ -39,5 +39,6 @@ class MenuDataSeederTest {
         seeder.run();
 
         verify(menuRepo).deleteAllInBatch();
+        verify(ingredientRepo).deleteAllInBatch();
     }
 }

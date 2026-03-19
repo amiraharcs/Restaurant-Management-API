@@ -446,4 +446,184 @@ class OrderServiceTest {
 
         return order;
     }
+    
+    @Test
+    void markReady_notFound() {
+        OrderRepository orderRepo = mock(OrderRepository.class);
+        when(orderRepo.findById(1L)).thenReturn(Optional.empty());
+
+        OrderService service = new OrderService(
+                orderRepo,
+                mock(MenuItemRepository.class),
+                mock(CustomerRepository.class),
+                mock(AssignmentService.class));
+
+        assertThrows(OrderService.NotFoundException.class, () -> service.markReady(1L));
+    }
+
+    @Test
+    void markReady_badTransition() {
+        OrderRepository orderRepo = mock(OrderRepository.class);
+        CustomerOrder order = buildOrder(OrderStatus.PLACED, PaymentStatus.UNPAID, true);
+        when(orderRepo.findById(1L)).thenReturn(Optional.of(order));
+
+        OrderService service = new OrderService(
+                orderRepo,
+                mock(MenuItemRepository.class),
+                mock(CustomerRepository.class),
+                mock(AssignmentService.class));
+
+        assertThrows(OrderService.BadRequestException.class, () -> service.markReady(1L));
+    }
+
+    @Test
+    void markDelivered_notFound() {
+        OrderRepository orderRepo = mock(OrderRepository.class);
+        when(orderRepo.findById(1L)).thenReturn(Optional.empty());
+
+        OrderService service = new OrderService(
+                orderRepo,
+                mock(MenuItemRepository.class),
+                mock(CustomerRepository.class),
+                mock(AssignmentService.class));
+
+        assertThrows(OrderService.NotFoundException.class, () -> service.markDelivered(1L));
+    }
+
+    @Test
+    void markDelivered_badTransition() {
+        OrderRepository orderRepo = mock(OrderRepository.class);
+        CustomerOrder order = buildOrder(OrderStatus.PLACED, PaymentStatus.UNPAID, true);
+        when(orderRepo.findById(1L)).thenReturn(Optional.of(order));
+
+        OrderService service = new OrderService(
+                orderRepo,
+                mock(MenuItemRepository.class),
+                mock(CustomerRepository.class),
+                mock(AssignmentService.class));
+
+        assertThrows(OrderService.BadRequestException.class, () -> service.markDelivered(1L));
+    }
+
+    @Test
+    void cancelOrder_rejectsCancelled() {
+        OrderRepository orderRepo = mock(OrderRepository.class);
+        CustomerOrder order = buildOrder(OrderStatus.CANCELLED, PaymentStatus.UNPAID, true);
+        when(orderRepo.findById(1L)).thenReturn(Optional.of(order));
+
+        OrderService service = new OrderService(
+                orderRepo,
+                mock(MenuItemRepository.class),
+                mock(CustomerRepository.class),
+                mock(AssignmentService.class));
+
+        assertThrows(OrderService.BadRequestException.class, () -> service.cancelOrder(1L));
+    }
+
+    @Test
+    void addOrderItem_requestNull() {
+        OrderRepository orderRepo = mock(OrderRepository.class);
+        CustomerOrder order = buildOrder(OrderStatus.PLACED, PaymentStatus.UNPAID, true);
+        when(orderRepo.findById(1L)).thenReturn(Optional.of(order));
+
+        OrderService service = new OrderService(
+                orderRepo,
+                mock(MenuItemRepository.class),
+                mock(CustomerRepository.class),
+                mock(AssignmentService.class));
+
+        assertThrows(OrderService.BadRequestException.class, () -> service.addOrderItem(1L, null));
+    }
+
+    @Test
+    void addOrderItem_menuItemIdNull() {
+        OrderRepository orderRepo = mock(OrderRepository.class);
+        CustomerOrder order = buildOrder(OrderStatus.PLACED, PaymentStatus.UNPAID, true);
+        when(orderRepo.findById(1L)).thenReturn(Optional.of(order));
+
+        OrderService service = new OrderService(
+                orderRepo,
+                mock(MenuItemRepository.class),
+                mock(CustomerRepository.class),
+                mock(AssignmentService.class));
+
+        assertThrows(OrderService.BadRequestException.class,
+                () -> service.addOrderItem(1L, new OrderService.AddOrderItemRequest(null, 1)));
+    }
+
+    @Test
+    void addOrderItem_menuItemNotFound() {
+        OrderRepository orderRepo = mock(OrderRepository.class);
+        MenuItemRepository menuRepo = mock(MenuItemRepository.class);
+        CustomerOrder order = buildOrder(OrderStatus.PLACED, PaymentStatus.UNPAID, true);
+
+        when(orderRepo.findById(1L)).thenReturn(Optional.of(order));
+        when(menuRepo.findById(55L)).thenReturn(Optional.empty());
+
+        OrderService service = new OrderService(
+                orderRepo,
+                menuRepo,
+                mock(CustomerRepository.class),
+                mock(AssignmentService.class));
+
+        assertThrows(OrderService.NotFoundException.class,
+                () -> service.addOrderItem(1L, new OrderService.AddOrderItemRequest(55L, 1)));
+    }
+
+    @Test
+    void addOrderItem_menuItemUnavailable() {
+        OrderRepository orderRepo = mock(OrderRepository.class);
+        MenuItemRepository menuRepo = mock(MenuItemRepository.class);
+        CustomerOrder order = buildOrder(OrderStatus.PLACED, PaymentStatus.UNPAID, true);
+
+        MenuItem extra = new MenuItem();
+        extra.setId(99L);
+        extra.setName("Drink");
+        extra.setAvailable(false);
+
+        when(orderRepo.findById(1L)).thenReturn(Optional.of(order));
+        when(menuRepo.findById(99L)).thenReturn(Optional.of(extra));
+
+        OrderService service = new OrderService(
+                orderRepo,
+                menuRepo,
+                mock(CustomerRepository.class),
+                mock(AssignmentService.class));
+
+        assertThrows(OrderService.BadRequestException.class,
+                () -> service.addOrderItem(1L, new OrderService.AddOrderItemRequest(99L, 1)));
+    }
+
+    @Test
+    void markPaid_notFound() {
+        OrderRepository orderRepo = mock(OrderRepository.class);
+        when(orderRepo.findById(1L)).thenReturn(Optional.empty());
+
+        OrderService service = new OrderService(
+                orderRepo,
+                mock(MenuItemRepository.class),
+                mock(CustomerRepository.class),
+                mock(AssignmentService.class));
+
+        assertThrows(OrderService.NotFoundException.class, () -> service.markPaid(1L));
+    }
+
+    @Test
+    void getOrder_includesNullAssignedWaiter() {
+        OrderRepository orderRepo = mock(OrderRepository.class);
+        CustomerOrder order = buildOrder(OrderStatus.PLACED, PaymentStatus.UNPAID, true);
+        order.setAssignedWaiter(null);
+
+        when(orderRepo.findById(1L)).thenReturn(Optional.of(order));
+
+        OrderService service = new OrderService(
+                orderRepo,
+                mock(MenuItemRepository.class),
+                mock(CustomerRepository.class),
+                mock(AssignmentService.class));
+
+        OrderService.OrderDto dto = service.getOrder(1L);
+
+        assertNull(dto.assignedWaiter());
+    }
 }

@@ -1,10 +1,6 @@
 package uk.ac.rhul.teamproject36.backend.service;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 import uk.ac.rhul.teamproject36.backend.auth.AppUser;
 import uk.ac.rhul.teamproject36.backend.order.CustomerOrder;
 import uk.ac.rhul.teamproject36.backend.order.OrderStatus;
@@ -13,6 +9,9 @@ import uk.ac.rhul.teamproject36.backend.repository.OrderRepository;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class AssignmentServiceTest {
@@ -63,17 +62,15 @@ class AssignmentServiceTest {
         when(userRepo.findByRoleAndOnShiftTrue("WAITER"))
                 .thenReturn(List.of(waiter));
 
-        when(orderRepo.countActiveOrders(any(), any()))
-                .thenReturn(0L);
+        when(orderRepo.countActiveOrders(any(), any())).thenReturn(0L);
 
         AssignmentService service = new AssignmentService(orderRepo, userRepo);
 
         service.assignFromBuffer();
 
         verify(orderRepo).save(order);
-        
-        
     }
+
     @Test
     void testAssignsToLeastBusyWaiter() {
         OrderRepository orderRepo = mock(OrderRepository.class);

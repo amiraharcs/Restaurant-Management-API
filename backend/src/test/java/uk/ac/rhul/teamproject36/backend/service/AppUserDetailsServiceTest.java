@@ -66,4 +66,24 @@ class AppUserDetailsServiceTest {
         assertThrows(UsernameNotFoundException.class,
                 () -> service.loadUserByUsername("missing"));
     }
+    
+    @Test
+    void loadUserByUsername_nullRoleStillBuildsUser() {
+        AppUserRepository repo = mock(AppUserRepository.class);
+        AppUserDetailsService service = new AppUserDetailsService(repo);
+
+        AppUser user = new AppUser();
+        user.setUsername("norole");
+        user.setPasswordHash("hash");
+        user.setRole(null);
+        user.setActive(true);
+
+        when(repo.findByUsername("norole")).thenReturn(Optional.of(user));
+
+        UserDetails result = service.loadUserByUsername("norole");
+
+        assertEquals("norole", result.getUsername());
+        assertTrue(result.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_")));
+    }
 }
