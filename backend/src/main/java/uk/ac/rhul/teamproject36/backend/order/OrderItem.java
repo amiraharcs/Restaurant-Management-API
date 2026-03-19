@@ -1,6 +1,12 @@
 package uk.ac.rhul.teamproject36.backend.order;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import uk.ac.rhul.teamproject36.backend.menu.MenuItem;
 
 @Entity
@@ -21,6 +27,9 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private CustomerOrder order;
 
+    @Column(columnDefinition = "TEXT")
+    private String customIngredients;
+    
     public OrderItem() {}
 
     public MenuItem getMenuItem() { return menuItem; }
@@ -31,4 +40,8 @@ public class OrderItem {
 
     public CustomerOrder getOrder() { return order; }
     public void setOrder(CustomerOrder order) { this.order = order; }
+
+    public String getCustomIngredients() {return customIngredients; }
+    public void setCustomIngredients(String customIngredients) {this.customIngredients = customIngredients;}
+
 }
