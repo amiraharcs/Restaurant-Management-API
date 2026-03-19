@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS menu_item (
   is_gluten_free BOOLEAN NOT NULL DEFAULT FALSE,
   item_type TEXT NOT NULL CHECK (item_type IN ('FOOD', 'DESSERT', 'DRINK')),
   allergens TEXT
-  available_customisations TEXT
 );
 
 -- =========================
@@ -67,7 +66,6 @@ CREATE TABLE IF NOT EXISTS order_item (
   order_id BIGINT NOT NULL REFERENCES customer_order (order_id) ON DELETE CASCADE,
   item_id BIGINT NOT NULL REFERENCES menu_item (id),
   quantity INT NOT NULL DEFAULT 1 CHECK (quantity > 0),
-  custom_ingredients TEXT,
   PRIMARY KEY (order_id, item_id)
 );
 
