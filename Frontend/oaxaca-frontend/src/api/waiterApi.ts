@@ -154,7 +154,7 @@ export async function getWaiterOrders(username: string): Promise<OrderResponse[]
 }
 
 export async function setWaiterOffline(username: string): Promise<void> {
-    const res = await fetch(`${API_BASE}/api/auth/logout/${username}`, { method: "POST" });
+    const res = await fetch(`${API_BASE}/api/auth/logout/${username}`, { method: "POST", keepalive: true });
     if (!res.ok) throw new Error(`Logout failed: ${res.status}`);
 }
 
