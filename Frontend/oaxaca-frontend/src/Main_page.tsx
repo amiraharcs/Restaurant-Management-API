@@ -4,6 +4,15 @@ import HelpWidget from "./data/components/Help_widget";
 import Footer from "./data/components/Footer";
 import { Link } from "react-router-dom";
 
+const DISHES = [
+  { img: "/images/menu/beef-tacos.jpg",         name: "Beef Tacos" },
+  { img: "/images/menu/chicken-fajitas.jpg",    name: "Chicken Fajitas" },
+  { img: "/images/menu/beef-burrito.jpg",       name: "Beef Burrito" },
+  { img: "/images/menu/churros.jpg",            name: "Churros" },
+  { img: "/images/menu/tres-leches.jpg",        name: "Tres Leches" },
+  { img: "/images/menu/chicken-quesadilla.jpg", name: "Chicken Quesadilla" },
+];
+
 export default function Home() {
   return (
     <div className="main_page">
@@ -18,6 +27,19 @@ export default function Home() {
           </div>
         </section>
         <HelpWidget />
+
+        <section className="main_food_section">
+          <h2 className="main_food_title">A taste of what's waiting</h2>
+          <div className="main_food_grid">
+            {DISHES.map(d => (
+              <div key={d.name} className="main_food_card">
+                <img src={d.img} alt={d.name} className="main_food_img" />
+                <span className="main_food_name">{d.name}</span>
+              </div>
+            ))}
+          </div>
+          <Link to="/menu" className="main_food_link">See full menu →</Link>
+        </section>
       </main>
       <Footer />
     </div>
