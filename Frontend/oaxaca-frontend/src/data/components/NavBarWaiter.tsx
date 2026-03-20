@@ -16,9 +16,15 @@ export default function NavBarWaiter() {
     navigate("/alerts");
   }
 
-  function handleLogout() {
+  async function handleLogout() {
     const username = getLoggedInStaffUsername();
-    if (username) setWaiterOffline(username);
+    if (username) {
+      try {
+        await setWaiterOffline(username);
+      } catch {
+        // proceed with logout even if the status update fails
+      }
+    }
     clearLoggedInStaffSession();
     navigate("/login");
   }
