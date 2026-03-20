@@ -150,7 +150,7 @@ export default function OperationsOverview() {
     );
 
     return (
-        <div className="overview_page" style={{ paddingTop: "calc(7% + 80px)" }}>
+        <div className="overview_page">
             <NavBarManager />
             <div className="manager_header">
                 <StaffWelcome />

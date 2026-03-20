@@ -40,7 +40,7 @@ console.log("upper role:", (res.role ?? "").toUpperCase());
             } else if (role === "KITCHEN") {
                 navigate("/kitchen", {state: { username: res.username }});
             } else if (role === "MANAGER") {
-                navigate("/manager", {state: { username: res.username }});
+                navigate("/manager/overview", {state: { username: res.username }});
             } else {
                 setLoginError("Your account role is not supported in this app.");
             }
