@@ -1,7 +1,7 @@
 import NavBarManager from "./data/components/NavBarManager";
 import StaffWelcome from "./data/components/StaffWelcome";
 import "./css/Manager.css"
-import { act, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchEmployeeData, type EmployeeDataResponse } from "./api/managerApi";
 import EmployeeDetail from "./data/components/EmployeeDetail";
 import { SiTicktick } from "react-icons/si";
@@ -23,7 +23,7 @@ export default function Manager() {
     const [employeeDataTimeFrame, setEmployeeDataTimeFrame] = useState<string>("today");
 
     useEffect(() => {
-              async function loadEmployeeData() {
+            async function loadEmployeeData() {
               try {
                 setLoading(true);
                 setError("");
@@ -35,8 +35,10 @@ export default function Manager() {
               } finally {
                   setLoading(false)
               }
-          }
-          loadEmployeeData()
+            }
+        loadEmployeeData();
+        const id = setInterval(loadEmployeeData, 5000);
+        return () => clearInterval(id);
     }, []);
 
     function getFilteredOrders(employee: EmployeeDataResponse) {
