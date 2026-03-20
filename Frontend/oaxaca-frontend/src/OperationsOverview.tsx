@@ -173,7 +173,10 @@ export default function OperationsOverview() {
 
             {view === "tables" && (
                 <div className="tables_grid">
-                    {TABLES.map(n => (
+                    {TABLES.filter(n =>
+                        orders.some(o => o.tableNumber === n && isActiveOrder(o)) ||
+                        alerts.some(a => a.tableNumber === n)
+                    ).map(n => (
                         <TableBox key={n} tableNumber={n} orders={orders} alerts={alerts} />
                     ))}
                 </div>
