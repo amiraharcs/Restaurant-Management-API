@@ -6,6 +6,8 @@ import uk.ac.rhul.teamproject36.backend.dataTransferObjects.EmployeeDataResponse
 import uk.ac.rhul.teamproject36.backend.dataTransferObjects.EmployeeOrderInfoResponse;
 import uk.ac.rhul.teamproject36.backend.order.CustomerOrder;
 import uk.ac.rhul.teamproject36.backend.order.OrderItem;
+import uk.ac.rhul.teamproject36.backend.order.OrderStatus;
+import uk.ac.rhul.teamproject36.backend.order.PaymentStatus;
 import uk.ac.rhul.teamproject36.backend.repository.AppUserRepository;
 import uk.ac.rhul.teamproject36.backend.repository.OrderRepository;
 
@@ -43,6 +45,7 @@ public class EmployeeService {
 
             BigDecimal employeeTotalSales = BigDecimal.ZERO;
             Integer employeeTotalItems = 0;
+            Integer employeeTotalOrders = 0;
 
             List<EmployeeOrderInfoResponse> orderInfo = new ArrayList<>();
 
@@ -61,19 +64,26 @@ public class EmployeeService {
                 }
 
                 orderDto.setOrderTotal(total);
+                orderDto.setNumberOfItems(totalItems);
                 orderDto.setOrderDateTime(LocalDateTime.ofInstant(order.getCreatedAt(), ZoneId.systemDefault()));
                 orderDto.setStatus(order.getStatus());
-                orderDto.setNumberOfItems(totalItems);
+                orderDto.setPaymentStatus(order.getPaymentStatus());
 
-                employeeTotalSales = employeeTotalSales.add(total);
-                employeeTotalItems += (totalItems);
+
+                if (order.getPaymentStatus() == PaymentStatus.PAID && !order.getStatus().equals(OrderStatus.CANCELLED)) {
+                    employeeTotalSales = employeeTotalSales.add(total);
+                    employeeTotalItems += (totalItems);
+                }
+                if (!order.getStatus().equals(OrderStatus.CANCELLED)) {
+                    employeeTotalOrders ++;
+                }
 
                 orderInfo.add(orderDto);
             }
 
             dto.setTotalSales(employeeTotalSales);
             dto.setTotalItemsSold(employeeTotalItems);
-            dto.setTotalOrders(employeeOrders.size());
+            dto.setTotalOrders(employeeTotalOrders);
 
             dto.setEmployeeOrders(orderInfo);
 

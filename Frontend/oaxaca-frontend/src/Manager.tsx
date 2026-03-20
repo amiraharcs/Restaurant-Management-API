@@ -74,13 +74,14 @@ export default function Manager() {
     function getEmployeeStats(employee: EmployeeDataResponse) {
         const filteredOrders = getFilteredOrders(employee)
 
-        const totalSales = filteredOrders.reduce(
-        (sum, order) => sum + Number(order.orderTotal),0,
-        );
+        const totalSales = filteredOrders
+        .filter(order => order.paymentStatus == "PAID")
+        .reduce((sum, order) => sum + Number(order.orderTotal),0,);
 
-        const totalItemsSold = filteredOrders.reduce(
-            (sum, order) => sum + Number(order.numberOfItems), 0
-        )
+
+        const totalItemsSold = filteredOrders
+        .filter(order => order.paymentStatus === "PAID")
+        .reduce((sum, order) => sum + Number(order.numberOfItems), 0)
 
         const totalOrders = filteredOrders.length;
 

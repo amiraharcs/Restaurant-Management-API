@@ -31,12 +31,14 @@ export type MenuItemDto = {
 };
 
 export type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
+export type paymentStatus = "UNPAID" | "PAID"
 
 export type EmployeeOrderInfoResponse = {
     orderTotal: number;
     numberOfItems: number;
     orderDateTime: string;
     status: status;
+    paymentStatus: paymentStatus;
 };
 
 export type EmployeeDataResponse = {
