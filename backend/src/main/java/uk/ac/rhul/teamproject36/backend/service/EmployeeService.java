@@ -45,6 +45,7 @@ public class EmployeeService {
 
             BigDecimal employeeTotalSales = BigDecimal.ZERO;
             Integer employeeTotalItems = 0;
+            Integer employeeTotalOrders = 0;
 
             List<EmployeeOrderInfoResponse> orderInfo = new ArrayList<>();
 
@@ -73,13 +74,16 @@ public class EmployeeService {
                     employeeTotalSales = employeeTotalSales.add(total);
                     employeeTotalItems += (totalItems);
                 }
+                if (!order.getStatus().equals(OrderStatus.CANCELLED)) {
+                    employeeTotalOrders ++;
+                }
 
                 orderInfo.add(orderDto);
             }
 
             dto.setTotalSales(employeeTotalSales);
             dto.setTotalItemsSold(employeeTotalItems);
-            dto.setTotalOrders(employeeOrders.size());
+            dto.setTotalOrders(employeeTotalOrders);
 
             dto.setEmployeeOrders(orderInfo);
 
