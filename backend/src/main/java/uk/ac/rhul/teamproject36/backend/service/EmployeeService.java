@@ -6,6 +6,8 @@ import uk.ac.rhul.teamproject36.backend.dataTransferObjects.EmployeeDataResponse
 import uk.ac.rhul.teamproject36.backend.dataTransferObjects.EmployeeOrderInfoResponse;
 import uk.ac.rhul.teamproject36.backend.order.CustomerOrder;
 import uk.ac.rhul.teamproject36.backend.order.OrderItem;
+import uk.ac.rhul.teamproject36.backend.order.OrderStatus;
+import uk.ac.rhul.teamproject36.backend.order.PaymentStatus;
 import uk.ac.rhul.teamproject36.backend.repository.AppUserRepository;
 import uk.ac.rhul.teamproject36.backend.repository.OrderRepository;
 
@@ -61,12 +63,16 @@ public class EmployeeService {
                 }
 
                 orderDto.setOrderTotal(total);
+                orderDto.setNumberOfItems(totalItems);
                 orderDto.setOrderDateTime(LocalDateTime.ofInstant(order.getCreatedAt(), ZoneId.systemDefault()));
                 orderDto.setStatus(order.getStatus());
-                orderDto.setNumberOfItems(totalItems);
+                orderDto.setPaymentStatus(order.getPaymentStatus());
 
-                employeeTotalSales = employeeTotalSales.add(total);
-                employeeTotalItems += (totalItems);
+
+                if (order.getPaymentStatus() == PaymentStatus.PAID && !order.getStatus().equals(OrderStatus.CANCELLED)) {
+                    employeeTotalSales = employeeTotalSales.add(total);
+                    employeeTotalItems += (totalItems);
+                }
 
                 orderInfo.add(orderDto);
             }

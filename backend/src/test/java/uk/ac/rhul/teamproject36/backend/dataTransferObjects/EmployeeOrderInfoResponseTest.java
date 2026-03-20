@@ -2,6 +2,7 @@ package uk.ac.rhul.teamproject36.backend.dataTransferObjects;
 
 import org.junit.jupiter.api.Test;
 import uk.ac.rhul.teamproject36.backend.order.OrderStatus;
+import uk.ac.rhul.teamproject36.backend.order.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,7 +20,8 @@ class EmployeeOrderInfoResponseTest {
                         OrderStatus.PLACED,
                         now,
                         3,
-                        new BigDecimal("25.50")
+                        new BigDecimal("25.50"),
+                        PaymentStatus.PAID
                 );
 
         assertEquals(OrderStatus.PLACED, dto.getStatus());
