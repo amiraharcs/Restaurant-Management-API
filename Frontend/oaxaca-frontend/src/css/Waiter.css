@@ -480,6 +480,16 @@
     align-items: center;
 }
 
+.waitingKitchen {
+    font-size: 12px;
+    font-weight: 600;
+    color: #b07d00;
+    background-color: #fff8e1;
+    border-radius: 6px;
+    padding: 3px 8px;
+    width: fit-content;
+}
+
 .popupBtn {
     width: auto;
     min-width: 130px;
