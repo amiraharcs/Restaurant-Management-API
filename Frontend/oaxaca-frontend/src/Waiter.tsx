@@ -190,6 +190,9 @@ export default function Waiter() {
                                             </div>
                                         </div>
                                         <div className='orderCustomerName'>{order.customerName}</div>
+                                        {order.status === "CONFIRMED" && (
+                                            <div className='waitingKitchen'>⏳ Waiting on Kitchen Staff...</div>
+                                        )}
                                     </div>
 
                                     <div className='orderLine' />
