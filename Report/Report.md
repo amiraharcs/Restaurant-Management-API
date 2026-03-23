@@ -1,7 +1,18 @@
 # Oaxaca Management System Report
 
 ## Technology Choices
-A list of the technologies you used for your front-end, back-end and database development
+
+### Frontend
+- React (Vite)
+- TypeScript
+- CSS
+
+### Backend
+- Spring Boot
+- Java
+
+### Database
+- PostgreSQL / H2
 
 
 ## Architecture
