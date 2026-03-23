@@ -1,5 +1,19 @@
 # Oaxaca Management System Report
 
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Technology Choices](#technology-choices)
+- [Architecture](#architecture)
+- [Database Design](#database-design)
+- [UML Sequence Diagram](#uml-sequence-diagram)
+- [User Stories](#user-stories)
+- [Use of AI](#use-of-ai)
+
+
+## Introduction
+This is the introduction section
+
 ## Technology Choices
 
 ### Frontend
