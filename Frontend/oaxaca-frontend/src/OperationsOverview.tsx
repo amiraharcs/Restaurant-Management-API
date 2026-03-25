@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import NavBarManager from "./data/components/NavBarManager";
 import StaffWelcome from "./data/components/StaffWelcome";
-import { fetchAllOrders, fetchManagerrMenu } from "./api/managerApi";
+import { fetchAllOrders, fetchManagerMenu } from "./api/managerApi";
 import type { MenuItemDto } from "./api/managerApi";
 import { fetchCallWaiterAlerts } from "./api/alertsApi";
 import type { CallWaiterAlert } from "./api/alertsApi";
@@ -133,7 +133,7 @@ export default function OperationsOverview() {
                 const [o, a, m] = await Promise.all([
                     fetchAllOrders(),
                     fetchCallWaiterAlerts(),
-                    fetchManagerrMenu(),
+                    fetchManagerMenu(),
                 ]);
                 setOrders(o);
                 setAlerts(a);

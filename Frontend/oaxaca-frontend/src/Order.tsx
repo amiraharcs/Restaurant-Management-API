@@ -160,13 +160,13 @@ export default function Order() {
                   </div>
                 </div>
               ))}
-              <p className="order_right_total">
+            </div>
+             <p className="order_right_total">
                 Total:{" "}
                 <span className="order_right_total_span">
                   £{total.toFixed(2)}
                 </span>
               </p>
-            </div>
           </div>
         </div>
       </div>
