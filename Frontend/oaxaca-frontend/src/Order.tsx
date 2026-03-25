@@ -64,7 +64,6 @@ export default function Order() {
       try {
         const response = await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
         setOrderResponse(response);
-        console.log(orderResponse)
         showConfirmedOrder(true)
       } catch(e: any) {
         console.error(e)

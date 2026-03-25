@@ -47,7 +47,6 @@ export default function ManageMenu() {
                 dessert: data.filter(item => item.itemType === "DESSERT"),
                 drinks: data.filter(item => item.itemType === "DRINK"),
               }
-              console.log(mapped)
               setProducts(mapped)
           } catch (e: any) {
               setError(e?.message ?? "Failed to load menu")
