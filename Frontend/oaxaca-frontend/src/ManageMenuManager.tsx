@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import AddItem from "./data/components/AddItem.tsx";
 import { SiTicktick } from "react-icons/si";
 import NavBarManager from "./data/components/NavBarManager.tsx";
-import { fetchManagerrMenu } from "./api/managerApi.ts";
+import { fetchManagerMenu } from "./api/managerApi.ts";
 
 
 
@@ -47,7 +47,7 @@ export default function ManageMenu() {
               setLoading(true);
               setError("");
   
-              const data = await fetchManagerrMenu()
+              const data = await fetchManagerMenu()
               const mapped: MenuData = {
                 main: data.filter(item => item.itemType === "FOOD"),
                 dessert: data.filter(item => item.itemType === "DESSERT"),

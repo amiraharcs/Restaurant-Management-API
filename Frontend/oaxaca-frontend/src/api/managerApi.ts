@@ -52,7 +52,7 @@ export type EmployeeDataResponse = {
     employeeOrders: EmployeeOrderInfoResponse[];
 };
 
-export async function fetchManagerrMenu(): Promise<MenuItemDto[]> {
+export async function fetchManagerMenu(): Promise<MenuItemDto[]> {
   const res = await fetch(`${API_BASE}/api/menu/all`);
   if (!res.ok) throw new Error(`Menu fetch failed: ${res.status}`);
   return res.json();
