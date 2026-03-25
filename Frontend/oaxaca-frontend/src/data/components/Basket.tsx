@@ -45,7 +45,7 @@ export default function Basket({basket, setBasket} : any ) {
                     (
                         <div className="basket_items">
                             {basket.map((basketItem : BasketItem) => (
-                            <div className='basket_item'>
+                            <div className='basket_item' key={basketItem.item.name}>
                                 <img src={basketItem.item.image} alt={basketItem.item.name} className='basket_item_image'/>
                                 <div className="basket_item_text">
                                     <p className="basket_item_name">{basketItem.item.name}</p>
