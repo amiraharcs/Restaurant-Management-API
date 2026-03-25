@@ -139,7 +139,7 @@ export default function Order() {
             <h3 className="order_right_title">Your Order</h3>
             <div className="order_right_items">
               {basket.map((basketItem: BasketItem) => (
-                <div className="order_right_item">
+                <div className="order_right_item" key={basketItem.item.name}>
                   <img
                     src={basketItem.item.image}
                     alt={basketItem.item.name}
