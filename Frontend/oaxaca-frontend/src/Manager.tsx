@@ -28,7 +28,6 @@ export default function Manager() {
                 setLoading(true);
                 setError("");
                 const data = await fetchEmployeeData()
-                console.log(data)
                 setEmployees(data)
               } catch (e: any) {
                   setError(e?.message ?? "Failed to load menu")
@@ -67,7 +66,6 @@ export default function Manager() {
                 return true;
             }
 
-            console.log(orderDate)
             return false;
         })
 

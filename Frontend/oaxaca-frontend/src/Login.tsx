@@ -30,9 +30,6 @@ export default function Login() {
 
             const role = (res.role ?? "").toUpperCase();
             setLoggedInStaffRole(role)
-            console.log("login response:", res);
-console.log("raw role:", res.role);
-console.log("upper role:", (res.role ?? "").toUpperCase());
             setLoggedInStaffUsername(res.username ?? "");
 
             if (role === "WAITER") {

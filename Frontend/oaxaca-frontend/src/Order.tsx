@@ -64,7 +64,6 @@ export default function Order() {
       try {
         const response = await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
         setOrderResponse(response);
-        console.log(orderResponse)
         showConfirmedOrder(true)
       } catch(e: any) {
         console.error(e)
@@ -139,7 +138,7 @@ export default function Order() {
             <h3 className="order_right_title">Your Order</h3>
             <div className="order_right_items">
               {basket.map((basketItem: BasketItem) => (
-                <div className="order_right_item">
+                <div className="order_right_item" key={basketItem.item.name}>
                   <img
                     src={basketItem.item.image}
                     alt={basketItem.item.name}
@@ -174,7 +173,12 @@ export default function Order() {
 
       {confirmedOrder && (
         <div className="confirm_order_main">
-          <div className="confirm_order_main_backdrop"></div>
+          <div className="confirm_order_main_backdrop"
+          onClick={() => {
+                showConfirmedOrder(false);
+                navigate("/track-order");
+              }}
+          ></div>
           <div className="confirm_order_main_content">
             <button
               className="confirm_order_main_close"

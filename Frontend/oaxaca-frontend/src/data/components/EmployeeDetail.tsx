@@ -77,8 +77,8 @@ const status_styles = {
                     <p className="employee_detail_no_orders">No orders found for this employee.</p>
                 ) : (
                     <div className="employee_detail_orders_list">
-                        {employee.employeeOrders.map( (order) => (
-                            <div className="employee_detail_order">
+                        {employee.employeeOrders.map( (order, number) => (
+                            <div className="employee_detail_order" key={number}>
                                 <div>
                                     <span className="employee_detail_order_total">
                                         <p>Total:</p>

@@ -13,20 +13,17 @@ export type FilterDto = {
 };
 
 export type MenuItemDto = {
-  id?: number;
+  id: number;
   name: string;
   description: string;
   price: number;
   costToProduce: number;
   calories: number;
-  available: boolean;
-  ingredients: IngredientDto[];
-  allergens: String;
-  vegetarian: Boolean;
-  vegan: Boolean;
-  glutenFree: Boolean;
-  meat: Boolean;
-  imageUrl: string;
+  isAvailable: boolean;
+  ingredients: string[];
+  allergens: string[];
+  filters: string[];
+  image: string;
   itemType: "FOOD" | "DESSERT" | "DRINK";
 };
 
@@ -55,7 +52,7 @@ export type EmployeeDataResponse = {
     employeeOrders: EmployeeOrderInfoResponse[];
 };
 
-export async function fetchManagerrMenu(): Promise<MenuItemDto[]> {
+export async function fetchManagerMenu(): Promise<MenuItemDto[]> {
   const res = await fetch(`${API_BASE}/api/menu/all`);
   if (!res.ok) throw new Error(`Menu fetch failed: ${res.status}`);
   return res.json();

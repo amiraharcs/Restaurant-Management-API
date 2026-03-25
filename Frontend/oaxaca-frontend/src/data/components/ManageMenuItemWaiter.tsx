@@ -22,7 +22,6 @@ export default function ManageMenuItemWaiter() {
     async function loadItem() {
       const data = await fetchMenuItemById(Number(id));
       setItem(data);
-      console.log(data)
     }
     loadItem();
     
