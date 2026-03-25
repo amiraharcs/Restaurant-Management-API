@@ -174,7 +174,12 @@ export default function Order() {
 
       {confirmedOrder && (
         <div className="confirm_order_main">
-          <div className="confirm_order_main_backdrop"></div>
+          <div className="confirm_order_main_backdrop"
+          onClick={() => {
+                showConfirmedOrder(false);
+                navigate("/track-order");
+              }}
+          ></div>
           <div className="confirm_order_main_content">
             <button
               className="confirm_order_main_close"
