@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './css/Login.css'
 import { LuUser, LuLock, LuEye, LuEyeOff } from 'react-icons/lu'
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavBar from "./data/components/NavBar";
 import Footer from "./data/components/Footer";
 import { postLogin } from './api/loginApi';
@@ -104,11 +104,6 @@ export default function Login() {
                         <button className='loginButton' type='submit' disabled={isSubmitting}>
                             {isSubmitting ? 'LOGGING IN...' : 'LOGIN'}
                         </button>
-
-                        <div className='loginLinks'>
-                            <Link className='loginLink' to='/reset-password'>Forgot password?</Link>
-                            <Link className='loginLink' to='/create-account'>Create new Account</Link>
-                        </div>
                     </form>
                 </div>   
             </div>

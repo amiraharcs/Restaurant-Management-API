@@ -3,11 +3,10 @@ import Footer from "./data/components/Footer";
 import HelpWidget from "./data/components/Help_widget";
 import "./css/TrackOrder.css";
 import { useState } from "react";
-import orderData from "./data/waiter.json";
-import { LuChefHat, LuCircleCheck, LuClipboardList, LuThumbsUp, LuUtensils } from "react-icons/lu";
+import { LuChefHat, LuCircleCheck, LuClipboardList, LuThumbsUp, LuUtensils, LuX } from "react-icons/lu";
 import { getOrder } from "./api/waiterApi";
 
-type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED";
+type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
 export type OrderResponse = {
     id: string;
     status: status;
@@ -17,8 +16,6 @@ export type OrderResponse = {
     customerPhoneNumber: string;
     items: { menuItemId: number; name: string; quantity: number }[];
 };
-//type MockData = { orders: OrderResponse[] };
-//onst typedOrderData = orderData as MockData;
 
 const steps = [
     { id: "PLACED", title: "Order received", icon: <LuClipboardList />},
@@ -63,10 +60,6 @@ export default function TrackOrder() {
         } finally {
             setLoading(false);
         }
-        // Mock data
-        /*const foundOrder = typedOrderData.orders.find(
-            (o) => o.orderId === orderNo.trim()
-        );*/
     }
 
     function handleReset() {
@@ -78,7 +71,7 @@ export default function TrackOrder() {
     const activeStep = order?.status ?? null;
     let activeIndex = -1;
     if (activeStep != null) {
-        activeIndex = steps.findIndex((s) => s.id === activeStep);
+        activeIndex = (steps.findIndex((s) => s.id === activeStep) + 1);
     }
 
     const served = activeStep === "DELIVERED";
