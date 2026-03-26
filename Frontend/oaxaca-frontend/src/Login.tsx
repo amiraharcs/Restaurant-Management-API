@@ -106,7 +106,6 @@ export default function Login() {
                         </button>
 
                         <div className='loginLinks'>
-                            <Link className='loginLink' to='/reset-password'>Forgot password?</Link>
                             <Link className='loginLink' to='/create-account'>Create new Account</Link>
                         </div>
                     </form>
