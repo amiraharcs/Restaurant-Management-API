@@ -123,5 +123,4 @@ class EmployeeServiceTest {
 	        user.setOnShift(onShift);
 	        return user;
 	    }
-
 }
