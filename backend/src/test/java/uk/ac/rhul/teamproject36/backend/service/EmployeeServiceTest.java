@@ -88,5 +88,32 @@ class EmployeeServiceTest {
 	        assertEquals(new BigDecimal("20.00"), orderDto.getOrderTotal());
 	        assertNotNull(orderDto.getOrderDateTime());
 	    }
+	  @Test
+	    void getAllEmployeeData_multipleEmployees() {
+	        AppUserRepository userRepo = mock(AppUserRepository.class);
+	        OrderRepository orderRepo = mock(OrderRepository.class);
+
+	        AppUser user1 = new AppUser();
+	        user1.setUsername("emp1");
+	        user1.setRole("WAITER");
+	        user1.setActive(true);
+
+	        AppUser user2 = new AppUser();
+	        user2.setUsername("emp2");
+	        user2.setRole("KITCHEN");
+	        user2.setActive(false);
+
+	        when(userRepo.findByRoleNot("MANAGER")).thenReturn(List.of(user1, user2));
+	        when(orderRepo.findByAssignedWaiterUsername("emp1")).thenReturn(List.of());
+	        when(orderRepo.findByAssignedWaiterUsername("emp2")).thenReturn(List.of());
+
+	        EmployeeService service = new EmployeeService(userRepo, orderRepo);
+
+	        var result = service.getAllEmployeeData();
+
+	        assertEquals(2, result.size());
+	        verify(orderRepo).findByAssignedWaiterUsername("emp1");
+	        verify(orderRepo).findByAssignedWaiterUsername("emp2");
+	    }
 
 }
