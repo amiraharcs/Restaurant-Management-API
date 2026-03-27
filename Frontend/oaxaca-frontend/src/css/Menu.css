@@ -46,6 +46,30 @@
     color: #0b6b4f;
 }
 
+.menu_key {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.menu_key_items {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.menu_key_item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.menu_key_item svg {
+    color: #0b6b4f;
+}
+
 .menu_page_filter:hover {
     color: orange;
     border-color: orange;
