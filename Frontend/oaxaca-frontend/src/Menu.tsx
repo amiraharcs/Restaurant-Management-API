@@ -169,6 +169,29 @@ export default function Menu() {
             <div className='menu_header'>
                 <h1 className='menu_page_title'>Menu</h1>
                 <IoFilter className='menu_page_filter' onClick={() => (setShowFilter(true))} />
+                <div className="menu_key">
+                    <div className="menu_key_items">
+                        <div className="menu_key_item">
+                            <GiMeat className="meatIcon" />
+                            <span>Meat</span>
+                        </div>
+
+                        <div className="menu_key_item">
+                            <FaLeaf />
+                            <span>Vegetarian</span>
+                        </div>
+
+                        <div className="menu_key_item">
+                            <SiVega />
+                            <span>Vegan</span>
+                        </div>
+
+                        <div className="menu_key_item">
+                            <LuWheatOff />
+                            <span>Gluten Free</span>
+                        </div>
+                    </div>
+                </div>
                 <hr className='menu_page_title_br' />
             </div>
 
