@@ -3,6 +3,7 @@ import Footer from "./data/components/Footer";
 import "./css/AboutUs.css";
 
 export default function AboutUs() {
+  //this is the about us page, giving users a better understanding of who we are as a business
   return (
     <div className="about_page">
       <NavBar />
@@ -20,6 +21,7 @@ export default function AboutUs() {
           We believe great food deserves service that keeps up — so we built a system that does exactly that.
         </p>
       </section>
+
 
       <section className="about_section about_green">
         <h2>Your Experience</h2>
