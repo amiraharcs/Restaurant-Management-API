@@ -187,6 +187,7 @@
     width: 100%;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(1px);
+    z-index: 101;
 }
 
 .filter_container {
