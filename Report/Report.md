@@ -41,6 +41,10 @@ An entity relationship (ER) diagram showing the structure of your database (or e
 ## UML Sequence Diagram
 A UML Sequence Diagram for 1 User Story of your choosing, illustrating the flow of messages between the different layers/classes of your architecture
 
+Placing an order sequence:
+
+![Placing an order UML sequence diagram](./images/umlSequenceDiagram.png)
+
 
 ## User Stories
 A list of User Stories (taken from the original Backlog) that are fully implemented in your product
