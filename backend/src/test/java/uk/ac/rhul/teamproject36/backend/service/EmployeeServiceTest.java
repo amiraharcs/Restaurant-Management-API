@@ -123,4 +123,17 @@ class EmployeeServiceTest {
 	        user.setOnShift(onShift);
 	        return user;
 	    }
+	  private CustomerOrder orderWithSingleItem(String price, int quantity) {
+	        MenuItem menuItem = new MenuItem();
+	        menuItem.setPrice(new BigDecimal(price));
+
+	        OrderItem item = new OrderItem();
+	        item.setMenuItem(menuItem);
+	        item.setQuantity(quantity);
+
+	        CustomerOrder order = new CustomerOrder();
+	        order.setStatus(OrderStatus.PLACED);
+	        order.addItem(item);
+	        return order;
+	    }
 }
