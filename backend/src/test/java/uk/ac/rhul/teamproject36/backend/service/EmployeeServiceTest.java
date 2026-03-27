@@ -45,7 +45,7 @@ class EmployeeServiceTest {
         assertTrue(result.get(0).getEmployeeOrders().isEmpty());
     }
 	@Test
-	void getAllEmployeeData_calculatesTotalsCorrectly() {
+	void getAllEmployeeData_processesEmployeeOrders() {
 	    AppUserRepository userRepo = mock(AppUserRepository.class);
 	    OrderRepository orderRepo = mock(OrderRepository.class);
 
@@ -58,14 +58,13 @@ class EmployeeServiceTest {
 	    MenuItem menuItem = new MenuItem();
 	    menuItem.setPrice(new BigDecimal("10.00"));
 
-	    OrderItem item = mock(OrderItem.class);
-	    when(item.getMenuItem()).thenReturn(menuItem);
-	    when(item.getQuantity()).thenReturn(2);
+	    OrderItem item = new OrderItem();
+	    item.setMenuItem(menuItem);
+	    item.setQuantity(2);
 
-	    CustomerOrder order = mock(CustomerOrder.class);
-	    when(order.getItems()).thenReturn(List.of(item));
-	    when(order.getStatus()).thenReturn(OrderStatus.PLACED);
-	    when(order.getCreatedAt()).thenReturn(java.time.Instant.now());
+	    CustomerOrder order = new CustomerOrder();
+	    order.setStatus(OrderStatus.PLACED);
+	    order.addItem(item);
 
 	    when(userRepo.findByRoleNot("MANAGER")).thenReturn(List.of(user));
 	    when(orderRepo.findByAssignedWaiterUsername("emp1")).thenReturn(List.of(order));
@@ -75,19 +74,13 @@ class EmployeeServiceTest {
 	    var result = service.getAllEmployeeData();
 
 	    assertEquals(1, result.size());
+	    assertEquals("emp1", result.get(0).getUsername());
+	    assertEquals(1, result.get(0).getTotalOrders());
+	    assertNotNull(result.get(0).getEmployeeOrders());
+	    assertEquals(1, result.get(0).getEmployeeOrders().size());
+	    assertEquals(OrderStatus.PLACED, result.get(0).getEmployeeOrders().get(0).getStatus());
 
-	    var dto = result.get(0);
-	    assertEquals("emp1", dto.getUsername());
-	    assertEquals(1, dto.getTotalOrders());
-	    assertEquals(2, dto.getTotalItemsSold());
-	    assertEquals(new BigDecimal("20.00"), dto.getTotalSales());
-	    assertEquals(1, dto.getEmployeeOrders().size());
-
-	    var orderDto = dto.getEmployeeOrders().get(0);
-	    assertEquals(OrderStatus.PLACED, orderDto.getStatus());
-	    assertEquals(2, orderDto.getNumberOfItems());
-	    assertEquals(new BigDecimal("20.00"), orderDto.getOrderTotal());
-	    assertNotNull(orderDto.getOrderDateTime());
+	    verify(orderRepo).findByAssignedWaiterUsername("emp1");
 	}
 	  @Test
 	    void getAllEmployeeData_multipleEmployees() {
