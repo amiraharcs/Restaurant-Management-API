@@ -77,4 +77,34 @@ class AppUserDataSeederTest {
         assertEquals("encoded-secret", existing.getPasswordHash());
         verify(repo, times(6)).save(any(AppUser.class));
     }
+    
+    @Test
+    void run_updatesExistingUserWhenFound1() throws Exception {
+        AppUserRepository repo = mock(AppUserRepository.class);
+        PasswordEncoder encoder = mock(PasswordEncoder.class);
+        Environment env = mock(Environment.class);
+
+        AppUser existing = new AppUser();
+        existing.setUsername("waiter01");
+        existing.setEmail("old@test.com");
+        existing.setRole("OLD");
+        existing.setActive(false);
+        existing.setOnShift(true);
+
+        when(env.getProperty("APP_SEED_USERS", "true")).thenReturn("true");
+        when(env.getProperty("APP_DEV_USER_PASSWORD", "Passw0rd!")).thenReturn("secret");
+        when(repo.findByUsername("waiter01")).thenReturn(Optional.of(existing));
+        when(repo.findByUsername(argThat(u -> !"waiter01".equals(u)))).thenReturn(Optional.empty());
+        when(encoder.encode("secret")).thenReturn("encoded-secret");
+        when(repo.save(any(AppUser.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        AppUserDataSeeder seeder = new AppUserDataSeeder(repo, encoder, env);
+        seeder.run();
+
+        assertEquals("waiter01@oaxaca.local", existing.getEmail());
+        assertEquals("WAITER", existing.getRole());
+        assertTrue(existing.isActive());
+        assertFalse(existing.isOnShift());
+        assertEquals("encoded-secret", existing.getPasswordHash());
+    }
 }
