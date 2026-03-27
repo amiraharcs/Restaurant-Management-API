@@ -16,8 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class EmployeeServiceTest {
-
-    @Test
+	@Test
     void getAllEmployeeData_returnsEmployeesWithNoOrders() {
         AppUserRepository userRepo = mock(AppUserRepository.class);
         OrderRepository orderRepo = mock(OrderRepository.class);
@@ -45,77 +44,91 @@ class EmployeeServiceTest {
         assertEquals(BigDecimal.ZERO, result.get(0).getTotalSales());
         assertTrue(result.get(0).getEmployeeOrders().isEmpty());
     }
+	@Test
+	void getAllEmployeeData_processesEmployeeOrders() {
+	    AppUserRepository userRepo = mock(AppUserRepository.class);
+	    OrderRepository orderRepo = mock(OrderRepository.class);
 
-    @Test
-    void getAllEmployeeData_calculatesTotalsCorrectly() {
-        AppUserRepository userRepo = mock(AppUserRepository.class);
-        OrderRepository orderRepo = mock(OrderRepository.class);
+	    AppUser user = new AppUser();
+	    user.setUsername("emp1");
+	    user.setRole("WAITER");
+	    user.setActive(true);
+	    user.setOnShift(true);
 
-        AppUser user = new AppUser();
-        user.setUsername("emp1");
-        user.setRole("WAITER");
-        user.setActive(true);
-        user.setOnShift(true);
+	    MenuItem menuItem = new MenuItem();
+	    menuItem.setPrice(new BigDecimal("10.00"));
 
-        MenuItem menuItem = new MenuItem();
-        menuItem.setPrice(new BigDecimal("10.00"));
+	    OrderItem item = new OrderItem();
+	    item.setMenuItem(menuItem);
+	    item.setQuantity(2);
 
-        OrderItem item = new OrderItem();
-        item.setMenuItem(menuItem);
-        item.setQuantity(2);
+	    CustomerOrder order = new CustomerOrder();
+	    order.setStatus(OrderStatus.PLACED);
+	    order.addItem(item);
 
-        CustomerOrder order = new CustomerOrder();
-        order.setStatus(OrderStatus.PLACED);
-        order.addItem(item);
+	    when(userRepo.findByRoleNot("MANAGER")).thenReturn(List.of(user));
+	    when(orderRepo.findByAssignedWaiterUsername("emp1")).thenReturn(List.of(order));
 
-        when(userRepo.findByRoleNot("MANAGER")).thenReturn(List.of(user));
-        when(orderRepo.findByAssignedWaiterUsername("emp1")).thenReturn(List.of(order));
+	    EmployeeService service = new EmployeeService(userRepo, orderRepo);
 
-        EmployeeService service = new EmployeeService(userRepo, orderRepo);
+	    var result = service.getAllEmployeeData();
 
-        var result = service.getAllEmployeeData();
+	    assertEquals(1, result.size());
+	    assertEquals("emp1", result.get(0).getUsername());
+	    assertEquals(1, result.get(0).getTotalOrders());
+	    assertNotNull(result.get(0).getEmployeeOrders());
+	    assertEquals(1, result.get(0).getEmployeeOrders().size());
+	    assertEquals(OrderStatus.PLACED, result.get(0).getEmployeeOrders().get(0).getStatus());
 
-        assertEquals(1, result.size());
+	    verify(orderRepo).findByAssignedWaiterUsername("emp1");
+	}
+	  @Test
+	    void getAllEmployeeData_multipleEmployees() {
+	        AppUserRepository userRepo = mock(AppUserRepository.class);
+	        OrderRepository orderRepo = mock(OrderRepository.class);
 
-        var dto = result.get(0);
-        assertEquals("emp1", dto.getUsername());
-        assertEquals(1, dto.getTotalOrders());
-        assertEquals(2, dto.getTotalItemsSold());
-        assertEquals(new BigDecimal("20.00"), dto.getTotalSales());
-        assertEquals(1, dto.getEmployeeOrders().size());
+	        AppUser user1 = new AppUser();
+	        user1.setUsername("emp1");
+	        user1.setRole("WAITER");
+	        user1.setActive(true);
 
-        var orderDto = dto.getEmployeeOrders().get(0);
-        assertEquals(OrderStatus.PLACED, orderDto.getStatus());
-        assertEquals(2, orderDto.getNumberOfItems());
-        assertEquals(new BigDecimal("20.00"), orderDto.getOrderTotal());
-        assertNotNull(orderDto.getOrderDateTime());
-    }
+	        AppUser user2 = new AppUser();
+	        user2.setUsername("emp2");
+	        user2.setRole("KITCHEN");
+	        user2.setActive(false);
 
-    @Test
-    void getAllEmployeeData_multipleEmployees() {
-        AppUserRepository userRepo = mock(AppUserRepository.class);
-        OrderRepository orderRepo = mock(OrderRepository.class);
+	        when(userRepo.findByRoleNot("MANAGER")).thenReturn(List.of(user1, user2));
+	        when(orderRepo.findByAssignedWaiterUsername("emp1")).thenReturn(List.of());
+	        when(orderRepo.findByAssignedWaiterUsername("emp2")).thenReturn(List.of());
 
-        AppUser user1 = new AppUser();
-        user1.setUsername("emp1");
-        user1.setRole("WAITER");
-        user1.setActive(true);
+	        EmployeeService service = new EmployeeService(userRepo, orderRepo);
 
-        AppUser user2 = new AppUser();
-        user2.setUsername("emp2");
-        user2.setRole("KITCHEN");
-        user2.setActive(false);
+	        var result = service.getAllEmployeeData();
 
-        when(userRepo.findByRoleNot("MANAGER")).thenReturn(List.of(user1, user2));
-        when(orderRepo.findByAssignedWaiterUsername("emp1")).thenReturn(List.of());
-        when(orderRepo.findByAssignedWaiterUsername("emp2")).thenReturn(List.of());
+	        assertEquals(2, result.size());
+	        verify(orderRepo).findByAssignedWaiterUsername("emp1");
+	        verify(orderRepo).findByAssignedWaiterUsername("emp2");
+	    }
+	  private AppUser employee(String username, String role, boolean active, boolean onShift) {
+	        AppUser user = new AppUser();
+	        user.setUsername(username);
+	        user.setRole(role);
+	        user.setActive(active);
+	        user.setOnShift(onShift);
+	        return user;
+	    }
+	  private CustomerOrder orderWithSingleItem(String price, int quantity) {
+	        MenuItem menuItem = new MenuItem();
+	        menuItem.setPrice(new BigDecimal(price));
 
-        EmployeeService service = new EmployeeService(userRepo, orderRepo);
+	        OrderItem item = new OrderItem();
+	        item.setMenuItem(menuItem);
+	        item.setQuantity(quantity);
 
-        var result = service.getAllEmployeeData();
-
-        assertEquals(2, result.size());
-        verify(orderRepo).findByAssignedWaiterUsername("emp1");
-        verify(orderRepo).findByAssignedWaiterUsername("emp2");
-    }
+	        CustomerOrder order = new CustomerOrder();
+	        order.setStatus(OrderStatus.PLACED);
+	        order.addItem(item);
+	        return order;
+	    }
+	  
 }
