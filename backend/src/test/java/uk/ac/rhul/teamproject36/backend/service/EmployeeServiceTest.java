@@ -44,5 +44,49 @@ class EmployeeServiceTest {
         assertEquals(BigDecimal.ZERO, result.get(0).getTotalSales());
         assertTrue(result.get(0).getEmployeeOrders().isEmpty());
     }
+	  @Test
+	    void getAllEmployeeData_calculatesTotalsCorrectly() {
+	        AppUserRepository userRepo = mock(AppUserRepository.class);
+	        OrderRepository orderRepo = mock(OrderRepository.class);
+
+	        AppUser user = new AppUser();
+	        user.setUsername("emp1");
+	        user.setRole("WAITER");
+	        user.setActive(true);
+	        user.setOnShift(true);
+
+	        MenuItem menuItem = new MenuItem();
+	        menuItem.setPrice(new BigDecimal("10.00"));
+
+	        OrderItem item = new OrderItem();
+	        item.setMenuItem(menuItem);
+	        item.setQuantity(2);
+
+	        CustomerOrder order = new CustomerOrder();
+	        order.setStatus(OrderStatus.PLACED);
+	        order.addItem(item);
+
+	        when(userRepo.findByRoleNot("MANAGER")).thenReturn(List.of(user));
+	        when(orderRepo.findByAssignedWaiterUsername("emp1")).thenReturn(List.of(order));
+
+	        EmployeeService service = new EmployeeService(userRepo, orderRepo);
+
+	        var result = service.getAllEmployeeData();
+
+	        assertEquals(1, result.size());
+
+	        var dto = result.get(0);
+	        assertEquals("emp1", dto.getUsername());
+	        assertEquals(1, dto.getTotalOrders());
+	        assertEquals(2, dto.getTotalItemsSold());
+	        assertEquals(new BigDecimal("20.00"), dto.getTotalSales());
+	        assertEquals(1, dto.getEmployeeOrders().size());
+
+	        var orderDto = dto.getEmployeeOrders().get(0);
+	        assertEquals(OrderStatus.PLACED, orderDto.getStatus());
+	        assertEquals(2, orderDto.getNumberOfItems());
+	        assertEquals(new BigDecimal("20.00"), orderDto.getOrderTotal());
+	        assertNotNull(orderDto.getOrderDateTime());
+	    }
 
 }
