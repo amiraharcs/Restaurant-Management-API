@@ -115,5 +115,13 @@ class EmployeeServiceTest {
 	        verify(orderRepo).findByAssignedWaiterUsername("emp1");
 	        verify(orderRepo).findByAssignedWaiterUsername("emp2");
 	    }
+	  private AppUser employee(String username, String role, boolean active, boolean onShift) {
+	        AppUser user = new AppUser();
+	        user.setUsername(username);
+	        user.setRole(role);
+	        user.setActive(active);
+	        user.setOnShift(onShift);
+	        return user;
+	    }
 
 }
