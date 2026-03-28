@@ -186,6 +186,14 @@
     color: greenyellow;
 }
 
+.stepsItem.cancelled .stepsIcon {
+    color: red;
+}
+
+.stepsItem.cancelled .stepsIconWrap {
+    border-color: red;
+}
+
 .trackOrderDetails {
     transform: translateY(60px);
     width: 92%;

@@ -28,15 +28,26 @@
     gap: 14px;
 }
 
-.inputBox {
-    width: 80%;
-    height: 46px;
-    border-radius: 999px;
+.inputWrap {
+    display: flex;
+    align-items: center;
+    background: white;
     border: 1px solid #ececec;
-    padding: 0 14px 0 44px;
+    border-radius: 999px;
+    padding: 0 12px;
+    height: 46px;
+    gap: 8px;
+}
+
+.inputBox {
+    flex: 1;
+    height: 100%;
+    border: none;
     outline: none;
+    background: transparent;
     font-size: 15px;
     cursor: text;
+    padding: 0;  
 }
 
 .loginButton {
@@ -70,21 +81,14 @@
 }
 
 .inputIcon {
-  position: absolute;
   font-size: 18px;
   color: #0b6b4f;
-  left: 14px;
-  top: 30%;
-}
-
-.inputWrap {
-    position: relative;
+  flex-shrink: 0;
 }
 
 .showPasswordButton {
-    position: absolute;
+    flex-shrink: 0;
     right: 10px;
-    top: 15%;
     height: 34px;
     padding: 0 10px;
     background: #ffffff;

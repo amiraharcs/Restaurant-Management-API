@@ -2,7 +2,7 @@ import NavBar from "./data/components/NavBar";
 import Footer from "./data/components/Footer";
 import HelpWidget from "./data/components/Help_widget";
 import "./css/TrackOrder.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LuChefHat, LuCircleCheck, LuClipboardList, LuThumbsUp, LuUtensils, LuX } from "react-icons/lu";
 import { getOrder } from "./api/waiterApi";
 
@@ -23,6 +23,14 @@ const steps = [
     { id: "PREPARING", title: "Being prepared", icon: <LuChefHat />},
     { id: "READY", title: "Ready for service", icon: <LuUtensils />},
     { id: "DELIVERED", title: "Order served", icon: <LuCircleCheck />},
+]
+
+const cancelledSteps = [
+    { id: "CANCELLED", title: "Order received", icon: <LuX />},
+    { id: "CANCELLED", title: "Order confirmed", icon: <LuX />},
+    { id: "CANCELLED", title: "Being prepared", icon: <LuX />},
+    { id: "CANCELLED", title: "Ready for service", icon: <LuX />},
+    { id: "CANCELLED", title: "Order served", icon: <LuX />},
 ]
 
 export default function TrackOrder() {
@@ -62,6 +70,21 @@ export default function TrackOrder() {
         }
     }
 
+    useEffect(() => {
+        if (!order || order.status === "DELIVERED" || order.status === "CANCELLED") return;
+
+        const interval = setInterval(async () => {
+            try {
+                const updated = await getOrder(Number(orderNo));
+                if (updated) setOrder(updated);
+            } catch {
+                setError('Failed to fetch order details');
+            }
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [order?.status]);
+
     function handleReset() {
         setOrder(null);
         setOrderNo("");
@@ -75,6 +98,7 @@ export default function TrackOrder() {
     }
 
     const served = activeStep === "DELIVERED";
+    const cancelled = activeStep === "CANCELLED";
 
     return (
         <main>
@@ -125,7 +149,7 @@ export default function TrackOrder() {
                             <h1 className="trackOrderTitle">We got your order!</h1>
 
                             <div className="stepsRow">
-                                {steps.map((step, index) => {
+                                {!cancelled && steps.map((step, index) => {
                                     const done = index < activeIndex;
                                     const current = index === activeIndex;
 
@@ -141,10 +165,24 @@ export default function TrackOrder() {
                                         </div>
                                     )
                                 })}
+                                {cancelled && cancelledSteps.map((step) => {
+                                    return (
+                                        <div
+                                            key={step.id}
+                                            className={`stepsItem cancelled`}
+                                        >
+                                            <div className="stepsIconWrap">
+                                                <div className="stepsIcon">{step.icon}</div>
+                                            </div>
+                                            <div className="stepsLabel">{step.title}</div>
+                                        </div>
+                                    )
+                                })}
                             </div>
 
                             <div className="trackOrderDetails">
                                 {served && <h2>Thank you for dining with us!</h2>}
+                                {cancelled && <h2>Your order has been cancelled! Please speak to a member of staff...</h2>}
                                 <button className="trackOrderResetButton" type="button" onClick={handleReset}>
                                     Track another order
                                 </button>
