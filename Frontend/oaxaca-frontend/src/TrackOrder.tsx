@@ -2,8 +2,8 @@ import NavBar from "./data/components/NavBar";
 import Footer from "./data/components/Footer";
 import HelpWidget from "./data/components/Help_widget";
 import "./css/TrackOrder.css";
-import { useState } from "react";
-import { LuChefHat, LuCircleCheck, LuClipboardList, LuThumbsUp, LuUtensils, LuX } from "react-icons/lu";
+import { useState, useEffect } from "react";
+import { LuChefHat, LuCircleCheck, LuClipboardList, LuThumbsUp, LuUtensils } from "react-icons/lu";
 import { getOrder } from "./api/waiterApi";
 
 type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
@@ -61,6 +61,21 @@ export default function TrackOrder() {
             setLoading(false);
         }
     }
+
+    useEffect(() => {
+        if (!order || order.status === "DELIVERED" || order.status === "CANCELLED") return;
+
+        const interval = setInterval(async () => {
+            try {
+                const updated = await getOrder(Number(orderNo));
+                if (updated) setOrder(updated);
+            } catch {
+                setError('Failed to fetch order details');
+            }
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [order?.status]);
 
     function handleReset() {
         setOrder(null);
