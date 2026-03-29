@@ -37,9 +37,6 @@ export default function NavBar() {
           <NavLink to="/track-order" className="mainNavbar__link">
             TRACK ORDER
           </NavLink>
-          <NavLink to="/payment" className="mainNavbar__link">
-            PAY NOW
-          </NavLink>
           <NavLink to="/about-us" end className="mainNavbar__link">
             ABOUT US
           </NavLink>
