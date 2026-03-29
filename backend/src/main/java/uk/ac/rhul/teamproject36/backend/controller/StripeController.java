@@ -29,8 +29,9 @@ public class StripeController {
         this.orderService = orderService;
     }
 
-    public void init() {
-    Stripe.apiKey = stripeSecretKey;
+    @Value("${stripe.secret.key:sk_test_dummy}")
+    public static void setStripeApiKey(String key) {
+        Stripe.apiKey = key;
     }
  
     @PostMapping("/orders/{id}/checkout")
