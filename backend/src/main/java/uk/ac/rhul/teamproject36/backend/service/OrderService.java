@@ -1,5 +1,6 @@
 package uk.ac.rhul.teamproject36.backend.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -92,7 +93,7 @@ public class OrderService {
         public NotFoundException(String msg) { super(msg); }
     }
     
-    public record OrderItemDto(Long menuItemId, String name, Integer quantity) {}
+    public record OrderItemDto(Long menuItemId, String name, Integer quantity, BigDecimal price) {}
 
     public record OrderDto(
         Long id,
@@ -180,7 +181,7 @@ public class OrderService {
       List<OrderItemDto> items = new ArrayList<>();
       for (var it : order.getItems()) {
         items.add(new OrderItemDto(it.getMenuItem().getId(), it.getMenuItem().getName(),
-            it.getQuantity()));
+            it.getQuantity(), it.getMenuItem().getPrice()));
       }
       String waiterUsername = order.getAssignedWaiter() != null
           ? order.getAssignedWaiter().getUsername() : null;
@@ -343,4 +344,3 @@ public class OrderService {
     }
 
 }
-
