@@ -40,7 +40,10 @@ public class SecurityConfig {
     .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
     .requestMatchers(HttpMethod.POST, "/api/auth/logout/**").permitAll()
     .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
-    
+    .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
+    .requestMatchers(HttpMethod.POST, "/api/orders/*/checkout").permitAll()
+    .requestMatchers(HttpMethod.POST, "/api/stripe/webhook").permitAll()
+
     .requestMatchers(HttpMethod.GET, "/api/orders").permitAll()
     .requestMatchers(HttpMethod.GET, "/api/orders/**").permitAll()
     .requestMatchers(HttpMethod.PATCH, "/api/orders/**").permitAll()

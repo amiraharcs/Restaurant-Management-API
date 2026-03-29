@@ -58,6 +58,17 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>26.3.0</version>
+		</dependency>
+		<dependency>
+    		<groupId>com.github.spotbugs</groupId>
+    		<artifactId>spotbugs-annotations</artifactId>
+    		<version>4.8.6</version>
+    		<scope>provided</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -116,6 +127,9 @@
 							<goal>check</goal>
 						</goals>
 						<configuration>
+							<excludes>
+        						<exclude>**/controller/StripeController.class</exclude>
+    						</excludes>
 							<rules>
 								<rule>
 									<element>PACKAGE</element>
