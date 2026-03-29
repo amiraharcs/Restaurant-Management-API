@@ -1,5 +1,6 @@
 package uk.ac.rhul.teamproject36.backend.controller;
  
+import jakarta.annotation.PostConstruct;
 import java.math.BigDecimal;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -19,7 +20,7 @@ public class StripeController {
  
     private final OrderService orderService;
  
-    @Value("${stripe.secret.key}")
+    @Value("${stripe.secret.key:sk_test_dummy}")
     private String stripeSecretKey;
  
     @Value("${frontend.base.url:http://localhost:5173}")
@@ -28,10 +29,16 @@ public class StripeController {
     public StripeController(OrderService orderService) {
         this.orderService = orderService;
     }
+
+    @PostConstruct
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
+    public void init() {
+        Stripe.apiKey = stripeSecretKey;
+    }   
  
     @PostMapping("/orders/{id}/checkout")
     public ResponseEntity<?> createCheckoutSession(@PathVariable Long id) {
-        Stripe.apiKey = stripeSecretKey;
+
  
         // Load the order to build line items
         OrderDto order;
