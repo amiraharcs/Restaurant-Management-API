@@ -1,5 +1,6 @@
 package uk.ac.rhul.teamproject36.backend.controller;
  
+import jakarta.annotation.PostConstruct;
 import java.math.BigDecimal;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -29,9 +30,10 @@ public class StripeController {
         this.orderService = orderService;
     }
 
-    @Value("${stripe.secret.key:sk_test_dummy}")
-    public static void setStripeApiKey(String key) {
-        Stripe.apiKey = key;
+    @PostConstruct
+    @SuppressWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
+    public void init() {
+        Stripe.apiKey = stripeSecretKey;
     }
  
     @PostMapping("/orders/{id}/checkout")
