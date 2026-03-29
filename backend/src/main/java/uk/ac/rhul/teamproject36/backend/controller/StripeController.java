@@ -19,7 +19,7 @@ public class StripeController {
  
     private final OrderService orderService;
  
-    @Value("${stripe.secret.key}")
+    @Value("${stripe.secret.key:sk_test_dummy}")
     private String stripeSecretKey;
  
     @Value("${frontend.base.url:http://localhost:5173}")
