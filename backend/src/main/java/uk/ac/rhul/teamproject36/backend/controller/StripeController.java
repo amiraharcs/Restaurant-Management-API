@@ -31,10 +31,10 @@ public class StripeController {
     }
 
     @PostConstruct
-    @SuppressWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public void init() {
         Stripe.apiKey = stripeSecretKey;
-    }
+    }   
  
     @PostMapping("/orders/{id}/checkout")
     public ResponseEntity<?> createCheckoutSession(@PathVariable Long id) {
