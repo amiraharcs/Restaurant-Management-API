@@ -28,10 +28,14 @@ public class StripeController {
     public StripeController(OrderService orderService) {
         this.orderService = orderService;
     }
+
+    public void init() {
+    Stripe.apiKey = stripeSecretKey;
+    }
  
     @PostMapping("/orders/{id}/checkout")
     public ResponseEntity<?> createCheckoutSession(@PathVariable Long id) {
-        Stripe.apiKey = stripeSecretKey;
+
  
         // Load the order to build line items
         OrderDto order;
