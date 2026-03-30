@@ -5,14 +5,13 @@ import NavBar from "./data/components/NavBar";
 import { useState } from "react";
 import Footer from "./data/components/Footer";
 import { placeOrder } from "./api/orderApi";
+import { SiTicktick } from "react-icons/si";
 
 export default function Order() {
   const location = useLocation();
   const basket = location.state?.basket;
 
   const navigate = useNavigate();
-
-  const [ payment_method, setPaymentMethod] = useState<"cash" | "card" | null>(null);
 
   type MenuItem = {
     id?: number;
@@ -52,54 +51,25 @@ export default function Order() {
 
   async function submitOrder(formData: FormData) {
       if (loading) return;
-    setLoading(true);
 
-    const name = formData.get("name");
-    const phoneNumber = formData.get("phoneNumber");
-    const tableNumberRaw = formData.get("tableNumber");
+      setLoading(true);
+      const name = formData.get("name");
+      const phoneNumber = formData.get("phoneNumber");
+      const tableNumberRaw = formData.get("tableNumber");
 
-    const items = basket.map((item: BasketItem) => ({
-      menuItemId: item.item.id,
-      quantity: item.quantity,
-    }));
+      const items = basket.map( (item: BasketItem) => ({
+        menuItemId: item.item.id, quantity: item.quantity
+      }))
 
-    try {
-      const response = await placeOrder({
-        name,
-        phoneNumber,
-        tableNumber: Number(tableNumberRaw),
-        items,
-        paymentStatus: "UNPAID",
-      });
-
-      const newOrderId = response.orderId;
-
-      if (payment_method === "card") {
-        const res = await fetch(`/api/orders/${newOrderId}/checkout`, {
-          method: "POST",
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to create Stripe session");
-        }
-
-        const { checkoutUrl } = await res.json();
-
-        await fetch(`/api/orders/${newOrderId}/paid`, {
-          method: "PATCH",
-        });
-
-        window.location.href = checkoutUrl;
-      } else {
+      try {
+        const response = await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
         setOrderResponse(response);
-        showConfirmedOrder(true);
+        showConfirmedOrder(true)
+      } catch(e: any) {
+        console.error(e)
+      } finally {
+        setLoading(false);
       }
-    } catch (e: any) {
-      console.error(e);
-      alert("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
   }
 
   return (
@@ -158,54 +128,9 @@ export default function Order() {
               />
             </div>
 
-            <h2>Payment Method</h2> 
-
-            <div className="payment_options">
-                <button
-                  type="button"
-                  className={payment_method == "cash" ? "selected" : ""}
-                  onClick={() => setPaymentMethod("cash")}
-                >
-                    Pay in cash
-                </button>
-
-                <button
-                    type="button"
-                    className={payment_method == "card" ? "selected" : ""}
-                    onClick={() => setPaymentMethod("card")}
-                >
-                    Pay by card
-                </button>
-              </div>
-
-              {payment_method == "cash" && (
-                  <div className="cash_payment">
-                      <input 
-                          type="number"
-                          placeholder="Table number (0-15)"
-                          min="0"
-                          max="15"
-                      />
-                  </div>    
-              )}
-
-              {payment_method == "card" &&(
-                  <div className="card_payment_info">
-                    <p>You'll be redirected to Stripe's secure payment page to complete your payment</p>
-                  </div>
-              )}
-
-            <button
-              type="submit"
-              className="order_button"
-              disabled={loading || !payment_method}
-            >
-              {loading
-                ? "Processing..."
-                : payment_method === "card"
-                ? "Proceed to payment"
-                : "Place Order"}
-            </button> 
+            <button type="submit" className="order_button" disabled={loading}>
+              {loading ? 'Placing Order...' : 'Place Order'}
+            </button>
           </form>
         </div>
         <div className="order_right">
@@ -213,7 +138,7 @@ export default function Order() {
             <h3 className="order_right_title">Your Order</h3>
             <div className="order_right_items">
               {basket.map((basketItem: BasketItem) => (
-                <div className="order_right_item">
+                <div className="order_right_item" key={basketItem.item.name}>
                   <img
                     src={basketItem.item.image}
                     alt={basketItem.item.name}
@@ -235,38 +160,53 @@ export default function Order() {
                   </div>
                 </div>
               ))}
-              <p className="order_right_total">
+            </div>
+             <p className="order_right_total">
                 Total:{" "}
                 <span className="order_right_total_span">
                   £{total.toFixed(2)}
                 </span>
               </p>
-            </div>
           </div>
         </div>
       </div>
 
       {confirmedOrder && (
         <div className="confirm_order_main">
-          <div className="confirm_order_main_backdrop"></div>
+          <div className="confirm_order_main_backdrop"
+          onClick={() => {
+                showConfirmedOrder(false);
+                navigate("/track-order");
+              }}
+          ></div>
           <div className="confirm_order_main_content">
             <button
               className="confirm_order_main_close"
               onClick={() => {
                 showConfirmedOrder(false);
-                navigate("/");
+                navigate("/track-order");
               }}
             >
               x
             </button>
-            <h3 className="confirm_order_main_title">Order Confirmed!</h3>
-            <p>Thank you for ordering with us.</p>
-            <p>Your order Id: {orderResponse?.orderId}</p>
-            <p>Your food will be ready soon.</p>
+            <div className="confirm_order_container">
+              <div className="confirm_order_card">
+                <SiTicktick className="confirm_order_tick"/>
+                <h3 className="confirm_order_main_title">Order Confirmed!</h3>
+                <p>Thank you for ordering with us.</p>
+                <p>Your food is being prepared and will be ready soon.</p>
+                <div className="confirm_order_id_box">
+                  <span className="confirm_order_id_label">Order ID:</span>
+                  <span className="confirm_order_id_value">
+                    #{orderResponse?.orderId}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
       <Footer />
     </div>
   );
-} 
+}

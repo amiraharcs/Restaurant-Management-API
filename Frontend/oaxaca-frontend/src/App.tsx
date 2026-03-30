@@ -18,7 +18,6 @@ import ManageMenuManager from './ManageMenuManager'
 import ManageMenuItemWaiter from '../src/data/components/ManageMenuItemWaiter'
 import ManageMenuItemManager from '../src/data/components/ManageMenuItemManager'
 import { getLoggedInStaffRole, getLoggedInStaffUsername } from './data/components/staffSession'
-import PaymentSuccess from './paymentSuccess'
 
 interface SecureRouteType {
   children: React.ReactNode;
@@ -92,7 +91,6 @@ function App() {
           </SecureRoute>
         } />
         <Route path='/payment' element={<PaymentPage />} />
-        <Route path='/payment-success' element={<PaymentSuccess />} />
         <Route path="/manager" element={
           <SecureRoute allowedRoles={["MANAGER"]}>
             <Manager />
