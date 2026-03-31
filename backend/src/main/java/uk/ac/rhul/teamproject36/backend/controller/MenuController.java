@@ -39,10 +39,7 @@ public final class MenuController {
      * Returns the menu items available to customers, with optional filters.
      *
      * @param itemType filter by item type (optional)
-     * @param vegetarian show only vegetarian items (optional)
-     * @param halal show only halal items (optional)
-     * @param vegan show only vegan items (optional)
-     * @param glutenFree show only gluten-free items (optional)
+     * @param filters list of dietary filters (optional)
      * @param maxCalories maximum calories filter (optional)
      * @param allergen allergen filter (optional)
      * @return filtered list of available menu items
