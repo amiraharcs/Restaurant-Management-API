@@ -81,5 +81,9 @@ CREATE TABLE IF NOT EXISTS call_waiter_alert (
   handled BOOLEAN NOT NULL DEFAULT FALSE
 );
 
+-- =========================
+-- Waiter Assignment, this runs after the initial schema creation to avoid circular dependencies
+-- =========================  
+
 ALTER TABLE customer_order
 ADD COLUMN IF NOT EXISTS assigned_waiter_id BIGINT REFERENCES app_user (user_id) ON DELETE SET NULL;
