@@ -46,6 +46,8 @@ public final class MenuItem {
     /** The price of the menu item. */
     @Column(nullable = false, precision = PRICE_PRECISION, scale = PRICE_SCALE)
     private BigDecimal price;
+
+    @Column(name = "cost_to_produce", nullable = false, precision = PRICE_PRECISION, scale = PRICE_SCALE)
     private BigDecimal costToProduce;
 
     /** The calorie count of the menu item. */

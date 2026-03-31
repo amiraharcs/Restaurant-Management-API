@@ -98,42 +98,6 @@ public final class MenuService {
     }
 
 
-    /**
-     * Builds a list of active filter names based on Boolean values.
-     *
-     * @param vegetarian vegetarian flag
-     * @param meat meat flag
-     * @param vegan vegan flag
-     * @param glutenFree gluten-free flag
-     * @return list of active filter names
-     */
-    private List<String> buildActiveFilters(
-            final Boolean vegetarian,
-            final Boolean meat,
-            final Boolean vegan,
-            final Boolean glutenFree) {
-
-        final List<String> filters = new ArrayList<>();
-
-        if (Boolean.TRUE.equals(vegetarian)) {
-            filters.add("is_vegetarian");
-        }
-
-        if (Boolean.TRUE.equals(meat)) {
-            filters.add("is_meat");
-        }
-
-        if (Boolean.TRUE.equals(vegan)) {
-            filters.add("is_vegan");
-        }
-
-        if (Boolean.TRUE.equals(glutenFree)) {
-            filters.add("is_gluten_free");
-        }
-
-        return filters;
-    }
-
     private Map<String, List<MenuItemDto>> group(final List<MenuItem> items) {
         final Map<ItemType, List<MenuItemDto>> grouped =
                 new EnumMap<>(ItemType.class);
