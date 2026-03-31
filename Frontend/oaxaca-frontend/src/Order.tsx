@@ -1,17 +1,18 @@
 import "./css/Order.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaLock } from "react-icons/fa";
+import { SiTicktick } from "react-icons/si";
 import NavBar from "./data/components/NavBar";
 import { useState } from "react";
 import Footer from "./data/components/Footer";
 import { placeOrder } from "./api/orderApi";
-import { SiTicktick } from "react-icons/si";
 
 export default function Order() {
   const location = useLocation();
   const basket = location.state?.basket;
-
   const navigate = useNavigate();
+
+  const [payment_method, setPaymentMethod] = useState<"cash" | "card" | null>(null);
 
   type MenuItem = {
     id?: number;
@@ -33,11 +34,13 @@ export default function Order() {
   };
 
   type OrderResponse = {
-  orderId: number;
-  status: string;
-};
+    orderId: number;
+    status: string;
+  };
 
   const [confirmedOrder, showConfirmedOrder] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [orderResponse, setOrderResponse] = useState<OrderResponse | null>(null);
 
   const total = basket.reduce(
     (sum: number, basketItem: BasketItem) =>
@@ -45,31 +48,56 @@ export default function Order() {
     0,
   );
 
-  const [loading, setLoading] = useState(false);
-
-  const [orderResponse, setOrderResponse] = useState<OrderResponse | null>(null); 
-
   async function submitOrder(formData: FormData) {
-      if (loading) return;
+    if (loading) return;
+    setLoading(true);
 
-      setLoading(true);
-      const name = formData.get("name");
-      const phoneNumber = formData.get("phoneNumber");
-      const tableNumberRaw = formData.get("tableNumber");
+    const name = formData.get("name");
+    const phoneNumber = formData.get("phoneNumber");
+    const tableNumberRaw = formData.get("tableNumber");
 
-      const items = basket.map( (item: BasketItem) => ({
-        menuItemId: item.item.id, quantity: item.quantity
-      }))
+    const items = basket.map((item: BasketItem) => ({
+      menuItemId: item.item.id,
+      quantity: item.quantity,
+    }));
 
-      try {
-        const response = await placeOrder({name, phoneNumber, tableNumber: Number(tableNumberRaw), items})
+    try {
+      const response = await placeOrder({
+        name,
+        phoneNumber,
+        tableNumber: Number(tableNumberRaw),
+        items,
+        paymentStatus: "UNPAID",
+      });
+
+      const newOrderId = response.orderId;
+
+      if (payment_method === "card") {
+        const res = await fetch(`/api/orders/${newOrderId}/checkout`, {
+          method: "POST",
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to create Stripe session");
+        }
+
+        const { checkoutUrl } = await res.json();
+
+        await fetch(`/api/orders/${newOrderId}/paid`, {
+          method: "PATCH",
+        });
+
+        window.location.href = checkoutUrl;
+      } else {
         setOrderResponse(response);
-        showConfirmedOrder(true)
-      } catch(e: any) {
-        console.error(e)
-      } finally {
-        setLoading(false);
+        showConfirmedOrder(true);
       }
+    } catch (e: any) {
+      console.error(e);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -89,10 +117,8 @@ export default function Order() {
               e.preventDefault();
               const formData = new FormData(e.currentTarget);
               submitOrder(formData);
-
             }}
           >
-            <div className="inputWrap">
               <input
                 className="input_box"
                 type="text"
@@ -103,7 +129,6 @@ export default function Order() {
                 minLength={1}
                 title="Enter a name"
               />
-            </div>
             <div>
               <input
                 className="input_box"
@@ -128,11 +153,45 @@ export default function Order() {
               />
             </div>
 
-            <button type="submit" className="order_button" disabled={loading}>
-              {loading ? 'Placing Order...' : 'Place Order'}
+            <h2>Payment Method</h2>
+
+            <div className="payment_options">
+              <button
+                type="button"
+                className={payment_method === "cash" ? "selected" : ""}
+                onClick={() => setPaymentMethod("cash")}
+              >
+                Pay in cash
+              </button>
+              <button
+                type="button"
+                className={payment_method === "card" ? "selected" : ""}
+                onClick={() => setPaymentMethod("card")}
+              >
+                Pay by card
+              </button>
+            </div>
+
+            {payment_method === "card" && (
+              <div className="card_payment_info">
+                <p>🔒 You'll be redirected to Stripe's secure payment page to complete your payment.</p>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="order_button"
+              disabled={loading || !payment_method}
+            >
+              {loading
+                ? "Processing..."
+                : payment_method === "card"
+                ? "Proceed to Payment →"
+                : "Place Order"}
             </button>
           </form>
         </div>
+
         <div className="order_right">
           <div>
             <h3 className="order_right_title">Your Order</h3>
@@ -154,30 +213,30 @@ export default function Order() {
                       </p>
                     </div>
                     <p className="order_right_item_price">
-                      £
-                      {(basketItem.item.price * basketItem.quantity).toFixed(2)}
+                      £{(basketItem.item.price * basketItem.quantity).toFixed(2)}
                     </p>
                   </div>
                 </div>
               ))}
             </div>
-             <p className="order_right_total">
-                Total:{" "}
-                <span className="order_right_total_span">
-                  £{total.toFixed(2)}
-                </span>
-              </p>
+            <p className="order_right_total">
+              Total:{" "}
+              <span className="order_right_total_span">
+                £{total.toFixed(2)}
+              </span>
+            </p>
           </div>
         </div>
       </div>
 
       {confirmedOrder && (
         <div className="confirm_order_main">
-          <div className="confirm_order_main_backdrop"
-          onClick={() => {
-                showConfirmedOrder(false);
-                navigate("/track-order");
-              }}
+          <div
+            className="confirm_order_main_backdrop"
+            onClick={() => {
+              showConfirmedOrder(false);
+              navigate("/track-order");
+            }}
           ></div>
           <div className="confirm_order_main_content">
             <button
@@ -191,7 +250,7 @@ export default function Order() {
             </button>
             <div className="confirm_order_container">
               <div className="confirm_order_card">
-                <SiTicktick className="confirm_order_tick"/>
+                <SiTicktick className="confirm_order_tick" />
                 <h3 className="confirm_order_main_title">Order Confirmed!</h3>
                 <p>Thank you for ordering with us.</p>
                 <p>Your food is being prepared and will be ready soon.</p>
