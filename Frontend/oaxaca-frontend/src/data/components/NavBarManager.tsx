@@ -53,6 +53,9 @@ export default function NavBarManager() {
           <NavLink to="/manage-menu-manager" className="managerNavbar__link" end>
             MANAGE MENU
           </NavLink>
+          <NavLink to="/past-order" className="managerNavbar__link" end>
+            PAST ORDERS
+          </NavLink>
         </div>
 
         <div className="managerNavbar__right">
