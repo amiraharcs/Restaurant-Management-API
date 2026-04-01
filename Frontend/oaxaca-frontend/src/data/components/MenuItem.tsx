@@ -107,6 +107,7 @@ export default function MenuItem({item, setBasket, onClose}: any) {
                                 }
                                 return [...prevBasket, {item, quantity: 1}]
                             })
+                            onClose()
                         }}
                         >
                         <p className='menu_item__main_add_add'>Add</p>
