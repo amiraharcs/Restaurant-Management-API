@@ -87,7 +87,7 @@ function App() {
           </SecureRoute>
         } />
         <Route path="/past-order" element={
-          <SecureRoute allowedRoles={["WAITER", "KITCHEN"]}>
+          <SecureRoute allowedRoles={["WAITER", "KITCHEN", "MANAGER"]}>
             <PastOrder />
           </SecureRoute>
         } />
