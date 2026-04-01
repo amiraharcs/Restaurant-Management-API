@@ -4,10 +4,13 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 
 export default function EditItem({item, onClose} : any ) {
 
+    // Stores validation and API errors
     const [errors, setErrors] = useState({})
 
+    // Handles form submission and validation
     async function submitForm(formData : FormData) {
 
+        //structure for validation errors
         type FormErrors = {
         name?: string;
         description?: string;
@@ -25,6 +28,7 @@ export default function EditItem({item, onClose} : any ) {
 
         let validationErrors: FormErrors = {};
 
+        //validate name
         const name = formData.get("name")?.toString().trim() ?? "";
         if (!name) {
             validationErrors.name = "Name is required";
@@ -32,6 +36,7 @@ export default function EditItem({item, onClose} : any ) {
             validationErrors.name = "Name must be at least 2 characters";
         }
 
+        //validate description
         const description = formData.get("description")?.toString().trim() ?? "";
         if (!description) {
             validationErrors.description = "Description is required";
@@ -39,6 +44,7 @@ export default function EditItem({item, onClose} : any ) {
             validationErrors.description = "Description must be at least 10 characters";
         }
 
+        //validate price
         const priceRaw = formData.get("price")?.toString().trim() ?? "";
         const price = Number(priceRaw);
         if (!priceRaw) {
@@ -49,6 +55,7 @@ export default function EditItem({item, onClose} : any ) {
             validationErrors.price = "Price must be greater than 0";
         }
 
+        //validate cost to produce
         const costRaw = formData.get("costToProduce")?.toString().trim() ?? "";
         const cost = Number(costRaw);
 
@@ -63,6 +70,7 @@ export default function EditItem({item, onClose} : any ) {
                 "Cost must be at most 40% of the price (minimum 60% profit margin)";
         }
 
+        //validate calories
         const caloriesRaw = formData.get("calories")?.toString().trim() ?? "";
         const calories = Number(caloriesRaw);
         if (!caloriesRaw) {
@@ -73,6 +81,7 @@ export default function EditItem({item, onClose} : any ) {
             validationErrors.calories = "Calories cannot be negative";
         }
 
+        //validate ingredients, there must be at least 1
         const ingredientsRaw = formData.get("ingredients")?.toString().trim() ?? "";
         if (!ingredientsRaw) {
             validationErrors.ingredients = "Ingredients are required";
@@ -87,6 +96,7 @@ export default function EditItem({item, onClose} : any ) {
             }
         }
 
+        //validate allergens (optional but must be valid if provided)
         const allergensRaw = formData.get("allergens")?.toString().trim() ?? "";
         if (allergensRaw) {
             const allergens = allergensRaw
@@ -99,11 +109,13 @@ export default function EditItem({item, onClose} : any ) {
             }
         }
 
+        //checkbox filters
         const vegetarian = formData.get("vegetarian") === "on";
         const vegan = formData.get("vegan") === "on";
         const glutenFree = formData.get("glutenFree") === "on";
         const meat = formData.get("meat") === "on";
 
+        // validate iteme type
         const itemType = formData.get("itemType")?.toString().trim() ?? "";
         if (!itemType) {
             validationErrors.itemType = "Item type is required";
@@ -114,6 +126,7 @@ export default function EditItem({item, onClose} : any ) {
             }
         }
 
+        // validate image path
         const image = formData.get("image")?.toString().trim() ?? "";
         if (!image) {
             validationErrors.image = "Image path is required";
@@ -121,7 +134,7 @@ export default function EditItem({item, onClose} : any ) {
             validationErrors.image = "Image path must start with '/'";
         }
 
-
+        // validate availability
         const isAvailableRaw = formData.get("isAvailable")?.toString().trim() ?? "";
         if (!isAvailableRaw) {
             validationErrors.isAvailable = "Availability is required";
@@ -131,6 +144,7 @@ export default function EditItem({item, onClose} : any ) {
 
         setErrors(validationErrors);
 
+        // Stop submission if validation fails
         if (Object.keys(validationErrors).length > 0) {
             return;
         }
@@ -163,6 +177,8 @@ export default function EditItem({item, onClose} : any ) {
         };
 
         await editMenuItem(item.id, updatedItem)
+
+        //refresh page
         window.location.reload()
     } catch (error: any) {
         setErrors({
@@ -172,11 +188,12 @@ export default function EditItem({item, onClose} : any ) {
 
     }
 
+    // State for live pricing feedback
     const [costToProduce, changeCostToProduce] = useState<number> (item.costToProduce)
     const [minimumPrice, changeMinimumPrice] = useState<number | null>(null)
     const [pricePercentage, changePricePercentage] = useState<number | null>()
     
-
+    // Calculate minimum allowed price (60% margin rule)
     const giveMinimumPrice = (e : any) =>  {
         const costToProduce = Number(e.target.value);
         if (!isNaN(costToProduce)) {
@@ -188,6 +205,7 @@ export default function EditItem({item, onClose} : any ) {
     } 
     }
 
+    // Calculate profit margin percentage
     const givePricePercentage = (e : any) => {
         const price = Number(e.target.value);
         if (!isNaN(price)) {
@@ -212,6 +230,8 @@ export default function EditItem({item, onClose} : any ) {
                         const formData = new FormData(e.currentTarget);
                         submitForm(formData);}}
                     className="edit_item_form">
+
+                        {/* Basic fields */}
                         <label className="edit_item_form_label" htmlFor="name">Name</label>
                         <input
                             className="edit_item_form_input"
@@ -230,6 +250,8 @@ export default function EditItem({item, onClose} : any ) {
                             name="description"
                             required
                         />
+
+                        {/* Cost + price with live feedback */}
                         <label className="edit_item_form_label" htmlFor="costToProduce">Cost To Produce (£)</label>
                         <input
                             className="edit_item_form_input"
@@ -256,6 +278,8 @@ export default function EditItem({item, onClose} : any ) {
                             {minimumPrice && <p className="edit_item_form_minimum_price_text">Minimum allowed price: £{minimumPrice.toFixed(2)}</p>}
                             {pricePercentage != null && <p className={`edit_item_form_percentage ${pricePercentage < 60 ? `negative_percentage` : `positive_percentage`}`}><FaArrowTrendUp /> {pricePercentage.toFixed(2)}%</p>}
                         </div>
+
+                         {/* Calroies */}
                         <label className="edit_item_form_label" htmlFor="calories">Calories (kcal)</label>
                         <input
                             className="edit_item_form_input"
@@ -265,6 +289,8 @@ export default function EditItem({item, onClose} : any ) {
                             name="calories"
                             required
                         />
+
+                         {/* Ingredients */}
                         <label className="edit_item_form_label" htmlFor="ingredients">Ingredients (comma separated if multiple)</label>
                         <input
                             className="edit_item_form_input"
@@ -274,6 +300,8 @@ export default function EditItem({item, onClose} : any ) {
                             name="ingredients"
                             required
                         />
+
+                         {/* Allergens */}
                         <label className="edit_item_form_label" htmlFor="allergens">Allergens (optional - comma separated if multiple)</label>
                         <input
                             className="edit_item_form_input"
@@ -282,6 +310,8 @@ export default function EditItem({item, onClose} : any ) {
                             defaultValue={item.allergens}
                             name="allergens"
                         />
+
+                         {/* Filters */}
                         <label className="edit_item_form_label" htmlFor="filters">Dietary Filters (optional - comma separated if multiple)</label>
                         <div className="edit_item_form_filter">
                             <label>
@@ -317,12 +347,16 @@ export default function EditItem({item, onClose} : any ) {
                             Meat
                             </label>
                         </div>
+
+                        {/* Dropdown for item type*/}
                         <label className="edit_item_form_label" htmlFor="itemType">Item Type</label>
                         <select name="itemType" id="itemType" defaultValue={item.itemType} className="edit_item_form_select">
                             <option value="FOOD">FOOD</option>
                             <option value="DESSERT">DESSERT</option>
                             <option value="DRINK">DRINK</option>
                         </select>
+
+                        {/* Image */}
                         <label className="edit_item_form_label" htmlFor="image">Image (must lead with a /)</label>
                         <input
                             className="edit_item_form_input"
@@ -332,6 +366,8 @@ export default function EditItem({item, onClose} : any ) {
                             name="image"
                             required
                         />
+
+                        {/* Availability */}
                         <label className="edit_item_form_label">Availability</label>
                         <div className="edit_item_radio_group" key={item.id}>
                         <label className="edit_item_radio_label">
@@ -353,6 +389,8 @@ export default function EditItem({item, onClose} : any ) {
                             Not Available
                         </label>
                         </div>
+
+                        {/* Error display */}
                         {Object.keys(errors).length > 0 && (
                             <div className="error_box">
                                 <p className="error_box_title">Please fix the following errors:</p>

@@ -13,6 +13,8 @@ import { SiTicktick } from "react-icons/si";
 import { fetchWaiterMenu } from "./api/waiterApi.ts";
 
 export default function ManageMenu() {
+
+      //Structure of menu item
       type MenuItemType = {
           id?: number;
           name: string;
@@ -28,13 +30,17 @@ export default function ManageMenu() {
           itemType?: string;
       };
   
-      type MenuData = Record<string, MenuItemType[]>; // category -> items
+      //MenuData contains the FOOD/DESSERT/DRINK as string and items as MenuItemType array
+      type MenuData = Record<string, MenuItemType[]>;
   
       // Backend provides FOOD/DESSERT/DRINK. Frontend UI uses main/dessert/drinks.
       const [products, setProducts] = useState<MenuData>({ main: [], dessert: [], drinks: [] });
+
+      // Loading state
       const [loading, setLoading] = useState<boolean>(true);
       const [error, setError] = useState<string>("");
   
+      //Fetch menu when page loads
       useEffect(() => {
           async function loadMenu() {
           try {
@@ -42,6 +48,7 @@ export default function ManageMenu() {
               setError("");
   
               const data = await fetchWaiterMenu()
+              //convert the backend strucuture to frontend format
               const mapped: MenuData = {
                 main: data.filter(item => item.itemType === "FOOD"),
                 dessert: data.filter(item => item.itemType === "DESSERT"),
@@ -74,15 +81,18 @@ export default function ManageMenu() {
             </div>
              <div className='manage_menu_layout'>
                 <div className='manage_menu_content'>
+                    {/*Render each category*/}
                     {Object.entries(products).map(([category, items]) => (
                         <section key={category}>
                             <h2 className='category_title'>
                                 {category === "main" ? "Main" : category === "dessert" ? "Dessert" : "Drinks"}
                             </h2>
+                            {/*Shown when ther are no items*/}
                             {items.length === 0 && (
                                 <div>No items available</div>
                             )}
                             <div className='manage_menu_items_div'>
+                                {/*When user clicks on item they are taken to the manage menu waiter for the item */}
                                 {items.map((item) =>
                                         <div key={item.id ?? item.name} className='manage_menu_item'
                                         onClick={() => navigate(`/manage-menu-waiter/${item.id}`)}
@@ -91,6 +101,7 @@ export default function ManageMenu() {
                                             <div className='manage_menu_item_text'>
                                                 <div className='manage_menu_item_title'>
                                                     <h3>{item.name}</h3>
+                                                    {/* Dietary filter icons */}
                                                     <div className='manage_menu_item_filters'>
                                                         {item.filters.map((filter, index) => (
                                                             <div key={index}>
@@ -111,13 +122,15 @@ export default function ManageMenu() {
                                                     </div>
                                                 </div>
                                                 <div className="manage_menu_item_calories_price">
+                                                    {/* Calories */}
                                                   <div className='manage_menu_item_calories'>
                                                       <FaFire className='calorie_icon' />
                                                       <p className='calorie_text'>{item.calories}kcal</p>
                                                   </div>
+                                                  {/* Price */}
                                                   <p className='manage_menu_item_price'>£{item.price.toFixed(2)}</p>
                                                 </div>
-          
+                                                
                                                 <div className={`manage_menu_item_view ${!item.isAvailable ? "manage_menu_item_view_disabled" : ""}`}>
                                                     <p className='manage_menu_item_view_text'>View</p>
                                                     {item.isAvailable ? <SiTicktick className="manage_menu_item_icon"/> : <GiCancel className="manage_menu_item_icon"/>}

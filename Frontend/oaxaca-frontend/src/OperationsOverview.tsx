@@ -8,8 +8,10 @@ import type { CallWaiterAlert } from "./api/alertsApi";
 import type { OrderResponse } from "./api/waiterApi";
 import "./css/Manager.css";
 
+//Restuarant table numbers
 const TABLES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+//Labels for order statuses
 const STATUS_LABELS: Record<string, string> = {
     PLACED: "New",
     CONFIRMED: "Accepted",
@@ -19,6 +21,7 @@ const STATUS_LABELS: Record<string, string> = {
     CANCELLED: "Cancelled",
 };
 
+// CSS classes for order status badges
 const STATUS_CLASSES: Record<string, string> = {
     PLACED: "status_new",
     CONFIRMED: "status_accepted",
@@ -28,6 +31,7 @@ const STATUS_CLASSES: Record<string, string> = {
     CANCELLED: "status_cancelled",
 };
 
+// CSS classes for order status badges
 function timeAgo(isoString: string): string {
     const diff = Math.floor((Date.now() - new Date(isoString).getTime()) / 1000);
     if (diff < 60) return `${diff}s ago`;
@@ -35,6 +39,7 @@ function timeAgo(isoString: string): string {
     return `${Math.floor(diff / 3600)}h ago`;
 }
 
+// Decide whether an order should still be shown as active
 function isActiveOrder(order: OrderResponse): boolean {
     if (order.status === "CANCELLED") return false;
     if (order.status === "DELIVERED" && order.paymentStatus === "PAID") return false;
@@ -48,7 +53,11 @@ type TableBoxProps = {
 };
 
 function TableBox({ tableNumber, orders, alerts }: TableBoxProps) {
+
+    // Toggle between orders and requests
     const [tab, setTab] = useState<"orders" | "requests">("orders");
+
+    // Orders and alerts for each table
     const activeOrders = orders.filter(o => o.tableNumber === tableNumber && isActiveOrder(o));
     const tableAlerts = alerts.filter(a => a.tableNumber === tableNumber);
     const isEmpty = activeOrders.length === 0 && tableAlerts.length === 0;
@@ -61,6 +70,7 @@ function TableBox({ tableNumber, orders, alerts }: TableBoxProps) {
                     <span className="table_order_count">{activeOrders.length + tableAlerts.length}</span>
                 )}
             </div>
+            {/* Each table tab toggle */}
             <div className="table_inner_toggle">
                 <button
                     className={`table_inner_tab${tab === "orders" ? " active" : ""}`}
@@ -76,6 +86,7 @@ function TableBox({ tableNumber, orders, alerts }: TableBoxProps) {
                 </button>
             </div>
             <div className="table_box_body">
+                {/* Inner tab toggle */}
                 {tab === "orders" && (
                     activeOrders.length === 0
                         ? <span className="table_empty_msg">No active orders</span>
@@ -99,6 +110,7 @@ function TableBox({ tableNumber, orders, alerts }: TableBoxProps) {
                             </div>
                         ))
                 )}
+                {/* Requests view */}
                 {tab === "requests" && (
                     tableAlerts.length === 0
                         ? <span className="table_empty_msg">No requests</span>
@@ -121,12 +133,18 @@ function TableBox({ tableNumber, orders, alerts }: TableBoxProps) {
 }
 
 export default function OperationsOverview() {
+    // Top-level view toggle
     const [view, setView] = useState<"tables" | "stock">("tables");
+
+    // Stock tab toggle
     const [stockTab, setStockTab] = useState<"in" | "out">("in");
+
+    // API data
     const [orders, setOrders] = useState<OrderResponse[]>([]);
     const [alerts, setAlerts] = useState<CallWaiterAlert[]>([]);
     const [menuItems, setMenuItems] = useState<MenuItemDto[]>([]);
 
+    // Fetch overview data on load and refresh every 5 seconds
     useEffect(() => {
         async function load() {
             try {
@@ -145,6 +163,7 @@ export default function OperationsOverview() {
         return () => clearInterval(id);
     }, []);
 
+    // Filter stock items based on selected stock tab
     const filteredStock = menuItems.filter((item: any) =>
         stockTab === "in" ? item.isAvailable : !item.isAvailable
     );
@@ -171,6 +190,7 @@ export default function OperationsOverview() {
                 </button>
             </div>
 
+            {/* Tables overview */}
             {view === "tables" && (
                 <div className="tables_grid">
                     {TABLES.filter(n =>
@@ -182,6 +202,7 @@ export default function OperationsOverview() {
                 </div>
             )}
 
+            {/* Stock overview */}
             {view === "stock" && (
                 <div>
                     <div className="stock_inner_toggle">

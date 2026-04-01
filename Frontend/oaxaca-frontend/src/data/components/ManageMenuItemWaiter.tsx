@@ -1,23 +1,21 @@
-import { useNavigate, useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { deleteMenuItem, fetchMenuItemById } from "../../api/managerApi";
+import {fetchMenuItemById } from "../../api/managerApi";
 import NavBarWaiter from "./NavBarWaiter";
 import StaffFooter from "./StaffFooter";
 import { SiTicktick } from "react-icons/si";
-import EditItem from "./EditItem";
-import { getLoggedInStaffRole } from "./staffSession";
 import { updateMenuItemAvailability } from "../../api/waiterApi";
 import { GiCancel } from "react-icons/gi";
 
 export default function ManageMenuItemWaiter() {
-    const navigate = useNavigate();
 
   const { id } = useParams();
   const [item, setItem] = useState<any>(null);
 
+  //error state
   const [error, setError] = useState<string | null>(null);
 
-
+  //Fetch item details when page loads
   useEffect(() => {
     async function loadItem() {
       const data = await fetchMenuItemById(Number(id));
@@ -31,7 +29,7 @@ export default function ManageMenuItemWaiter() {
   return <div>Loading...</div>;
 }
 
-
+  // Toggle item availability
   async function changeAvailability(id: number, availability: boolean) {
     try {
         await updateMenuItemAvailability(id, availability)
@@ -46,9 +44,11 @@ export default function ManageMenuItemWaiter() {
     <NavBarWaiter />
 
     <div className="manage_item_content">
+        {/*Shows all item info*/}
       <div className="manage_item_card">
             <div className="manage_item_header">
                 <h1 className="manage_item_title">{item.name}</h1>
+                {/*Tick when item is available and cross when item is unavailable*/}
                 {item.isAvailable ? <SiTicktick className="manage_item_tick"/> : <GiCancel className="manage_item_cross"/>}
             </div>
             <div className="manage_item_important_info">
@@ -69,6 +69,8 @@ export default function ManageMenuItemWaiter() {
                 <p className="manage_item_description_title">Description</p>
                 <p className="manage_item_description_text">{item.description}</p>
             </div>
+
+            {/* Ingredients */}
             <div className="manage_item_ingredients">
                 <p className="manage_item_ingredients_title">Ingredients</p>
                 <div className="manage_item_ingredients_list">
@@ -77,7 +79,9 @@ export default function ManageMenuItemWaiter() {
                     ))}
                 </div>
             </div>
+
             <div className="manage_item_allergen_filter">
+                {/* Allergens */}
                 <div className="manage_item_box">
                     <p className="manage_item_allergen_filter_title">Allergens</p>
                     <div className="manage_item_tags">
@@ -86,6 +90,8 @@ export default function ManageMenuItemWaiter() {
                         )) : <p className="manage_item_tag">None</p>}
                     </div>
                 </div>
+
+                {/* Filters */}
                 <div className="manage_item_box">
                     <p className="manage_item_allergen_filter_title">Filter</p>
                     <div className="manage_item_tags">
@@ -95,13 +101,19 @@ export default function ManageMenuItemWaiter() {
                     </div>
                 </div>
             </div>
+
+            {/* Price and calories data*/}
             <div className="manage_item_price_calories_waiter">
                 <p className="manage_item_calories_waiter">{item.calories} kcal</p>
                 <p className="manage_item_price_waiter">£{Number(item.price).toFixed(2)}</p>
             </div>
+
+            {/* Change availability of item*/}
             <div className="manage_item_buttons">
                 <button className="btn btn_availability" onClick={() => {changeAvailability(item.id, !item.isAvailable)}}>Change Availability</button>
             </div>
+
+            {/* Error message shows when there is an error*/}
             {error && (
                 <div className="error_box">
                     <p className="error_box_title" style={{ fontSize: "1rem"}}>There was an error in updating the item: {error}</p>

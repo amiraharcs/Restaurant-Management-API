@@ -1,11 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { deleteMenuItem, fetchMenuItemById } from "../../api/managerApi";
-import NavBarWaiter from "./NavBarWaiter";
 import StaffFooter from "./StaffFooter";
 import { SiTicktick } from "react-icons/si";
 import EditItem from "./EditItem";
-import { getLoggedInStaffRole } from "./staffSession";
 import { updateMenuItemAvailability } from "../../api/waiterApi";
 import { GiCancel } from "react-icons/gi";
 import NavBarManager from "./NavBarManager";
@@ -24,6 +22,7 @@ export default function ManageMenuItemManager() {
 
   const [showCostInfo, setShowCostInfo] = useState(false);
 
+  // Delete item after confirmation
   const handleConfirmDelete = async () => {
     try {
         await deleteMenuItem(item.id);
@@ -34,6 +33,7 @@ export default function ManageMenuItemManager() {
     }
 };
 
+  // Fetch item details when page loads
   useEffect(() => {
     async function loadItem() {
       const data = await fetchMenuItemById(Number(id));
@@ -43,11 +43,13 @@ export default function ManageMenuItemManager() {
     
   }, [id]);
 
+    // Controls edit popup
     const [showItem, setShowItem] = useState(false);
     const [selectedItem, setSelectedItem] = useState<any>({});
 
   if (!item) return <p>Loading...</p>;
 
+  // Toggle item availability
   async function changeAvailability(id: number, availability: boolean) {
     try {
         await updateMenuItemAvailability(id, availability)
@@ -62,9 +64,11 @@ export default function ManageMenuItemManager() {
     <NavBarManager />
 
     <div className="manage_item_content">
+        {/*Shows all item info*/}
       <div className="manage_item_card">
             <div className="manage_item_header">
                 <h1 className="manage_item_title">{item.name}</h1>
+                {/*Tick when item is available and cross when item is unavailable*/}
                 {item.isAvailable ? <SiTicktick className="manage_item_tick"/> : <GiCancel className="manage_item_cross"/>}
             </div>
             <div className="manage_item_important_info">
@@ -85,6 +89,8 @@ export default function ManageMenuItemManager() {
                 <p className="manage_item_description_title">Description</p>
                 <p className="manage_item_description_text">{item.description}</p>
             </div>
+
+            {/* Ingredients */}
             <div className="manage_item_ingredients">
                 <p className="manage_item_ingredients_title">Ingredients</p>
                 <div className="manage_item_ingredients_list">
@@ -94,6 +100,7 @@ export default function ManageMenuItemManager() {
                 </div>
             </div>
             <div className="manage_item_allergen_filter">
+                {/* Allergens */}
                 <div className="manage_item_box">
                     <p className="manage_item_allergen_filter_title">Allergens</p>
                     <div className="manage_item_tags">
@@ -102,6 +109,8 @@ export default function ManageMenuItemManager() {
                         )) : <p className="manage_item_tag">None</p>}
                     </div>
                 </div>
+
+                {/* Filters */}
                 <div className="manage_item_box">
                     <p className="manage_item_allergen_filter_title">Filter</p>
                     <div className="manage_item_tags">
@@ -111,6 +120,7 @@ export default function ManageMenuItemManager() {
                     </div>
                 </div>
             </div>
+                {/* Price and optional cost/profit info */}
                 <div className="manage_item_price_calories_manager">
                     <p className="manage_item_calories_manager">{item.calories} kcal</p>
                     <div className="manage_item_price_manager" onClick={() => setShowCostInfo(!showCostInfo)}>
@@ -126,6 +136,8 @@ export default function ManageMenuItemManager() {
                     </p>
                     </div>
                 )}
+
+            {/* Main actions */}
             <div className="manage_item_buttons">
                 <button className="btn btn_availability" onClick={() => {changeAvailability(item.id, !item.isAvailable)}}>Change Availability</button>
             </div>
@@ -133,6 +145,8 @@ export default function ManageMenuItemManager() {
                 <button className="btn btn_edit" onClick={() => { setShowItem(true); setSelectedItem(item); }}>Edit</button>
                 <button className="btn btn_delete" onClick={() => {setShowDeleteConfirm(true)}}>Delete</button>
             </div>
+
+            {/* Error message shows when there is an error*/}
             {error && (
                 <div className="error_box">
                     <p className="error_box_title" style={{ fontSize: "1rem"}}>There was an error in updating the item: {error}</p>
@@ -143,11 +157,13 @@ export default function ManageMenuItemManager() {
 
     <StaffFooter />
 
+    {/* Edit popup */}
     {showItem && <EditItem item={selectedItem} onClose={() => {
                 setShowItem(false)
                 setSelectedItem({})
             }} />}
 
+    {/* Delete confirmation popup */}
     {showDeleteConfirm && (
     <div className="confirm_delete_main">
         <div className="confirm_delete_main_backdrop" onClick={() => {setShowDeleteConfirm(false)}}></div>
@@ -175,6 +191,8 @@ export default function ManageMenuItemManager() {
                     Yes, Delete
                 </button>
             </div>
+
+            {/* Delete error message */}
             {error && (
                 <div className="error_box">
                     <p className="error_box_title" style={{ fontSize: "1rem"}}>There was an error in deleting the item: {error}</p>
