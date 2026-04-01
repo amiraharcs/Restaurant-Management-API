@@ -20,7 +20,7 @@ export default function Menu() {
     const [selectedItem, setSelectedItem] = useState<any>({});
     const [showFilter, setShowFilter] = useState(false);
 
-    //structore of a basket item
+    //Structore of a basket item
     type BasketItem = {
         item: MenuItemType;
         quantity: number;
@@ -28,7 +28,7 @@ export default function Menu() {
 
     const [basket, setBasket] = useState<BasketItem[]>([])
 
-    //structure of a menu item
+    //Structure of a menu item
     type MenuItemType = {
         id?: number;
         name: string;
