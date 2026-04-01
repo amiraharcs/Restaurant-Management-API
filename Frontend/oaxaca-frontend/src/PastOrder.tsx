@@ -9,6 +9,7 @@ import { LuChevronRight } from 'react-icons/lu';
 import "./css/Waiter.css";
 import { getLoggedInStaffRole } from "./data/components/staffSession.ts";
 import NavBarKitchen from "./data/components/NavBarKitchen.tsx";
+import NavBarManager from "./data/components/NavBarManager.tsx";
 
 type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
 type paymentStatus = "UNPAID" | "PAID";
@@ -131,7 +132,7 @@ export default function PastOrder() {
 
     return (
         <main>
-            {getLoggedInStaffRole() === "WAITER" ? <NavBarWaiter /> : <NavBarKitchen />}
+            {getLoggedInStaffRole() === "WAITER" ? <NavBarWaiter /> : (getLoggedInStaffRole() === "KITCHEN" ? <NavBarKitchen /> : <NavBarManager />)}
 
             <div className='waiterPage'>
                 <div className='waiterHeader'>
