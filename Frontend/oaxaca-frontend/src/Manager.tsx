@@ -105,7 +105,7 @@ export default function Manager() {
                 </div>
                  <div className='employee_Container'>
                     <div className='employee_Tabs'>
-                        <button className={`employee_Tab ${activeTab === "WAITER" ? `active` : ``}`} onClick={() => setActiveTab("WAITER")}>Employee Staff</button>
+                        <button className={`employee_Tab ${activeTab === "WAITER" ? `active` : ``}`} onClick={() => setActiveTab("WAITER")}>Waiter Staff</button>
                         <button className={`employee_Tab ${activeTab === "KITCHEN" ? `active` : ``}`} onClick={() => setActiveTab("KITCHEN")}>Kitchen Staff</button>
                     </div>
                     <div className='employee_Title'>
