@@ -8,7 +8,7 @@ export default function PaymentSuccess() {
   const navigate = useNavigate();
   const orderId = searchParams.get("orderId");
 
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(15);
 
   useEffect(() => {
     if (countdown === 0) {
@@ -46,7 +46,7 @@ export default function PaymentSuccess() {
           Redirecting to home in {countdown}s…
         </p>
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/track-order")}
           style={{
             marginTop: "1rem",
             padding: "0.75rem 2rem",
@@ -58,7 +58,7 @@ export default function PaymentSuccess() {
             cursor: "pointer",
           }}
         >
-          Back to Home
+          Track your order
         </button>
       </div>
       <Footer />
