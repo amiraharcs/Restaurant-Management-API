@@ -20,6 +20,7 @@ function pendingItemsSum(items: { quantity: number }[]) {
     return count;
 }
 
+// calculates the timer
 function calculatePlacedAt(ms: number) {
     const totalMins = Math.floor(ms / 60000);
     const totalHours = Math.floor(totalMins / 60);
@@ -51,6 +52,7 @@ export default function PastOrder() {
     const [error, setError] = useState("");
     const [isInitialLoad, setIsInitialLoad] = useState(true);
 
+    // fetches the orders from the API
     async function fetchOrders(isInitial = false) {
         try {
             setLoading(true);
@@ -66,6 +68,7 @@ export default function PastOrder() {
         }
     }
 
+    // 5 second interval to update the page with any new orders
     useEffect(() => {
         fetchOrders(true);
 
@@ -76,6 +79,7 @@ export default function PastOrder() {
         };
     }, []);
 
+    // depending on what status it is, it will filter the orders
     function filterOrders(tab: status | paymentStatus) {
         if (tab === "PLACED") {
             return orders.filter((order) =>
@@ -91,6 +95,7 @@ export default function PastOrder() {
         return activeOrders;
     }
 
+    // function to calculate how many orders are in each tab
     function calculateTabs() {
         const count = {
             PLACED: 0,
@@ -106,6 +111,7 @@ export default function PastOrder() {
         return count;
     }
 
+    // function to calculate how many orders are in each payment tab
     function calculatePaymentTabs() {
         const count = {
             UNPAID: 0,
@@ -121,6 +127,7 @@ export default function PastOrder() {
 
     const [now, setNow] = useState(Date.now())
 
+    // 1 second interval to update the timer
     useEffect(() => {
         const timer = setInterval(() => setNow(Date.now()), 1000);
         return () => clearInterval(timer);
@@ -132,14 +139,17 @@ export default function PastOrder() {
 
     return (
         <main>
+            {/* Depending on who accesses the page, the NavBar will also update */}
             {getLoggedInStaffRole() === "WAITER" ? <NavBarWaiter /> : (getLoggedInStaffRole() === "KITCHEN" ? <NavBarKitchen /> : <NavBarManager />)}
 
+            {/* Past Order Page */}
             <div className='waiterPage'>
                 <div className='waiterHeader'>
                     <StaffWelcome />
                 </div>
 
                 <div className='orderContainer'>
+                    {/* Status Tabs */}
                     <div className='orderTabs'>
                         <button className={`orderTab ${activeTab === "PAID" ? "active" : ""}`} onClick={() => setActiveTab("PAID")}>
                             Completed & Paid ({calculatePaymentTabs().PAID})
@@ -167,6 +177,7 @@ export default function PastOrder() {
 
                         {error && <div className='emptyList'> {error} </div>}
 
+                        {/* All the orders in a list UI */}
                         {filterOrders(activeTab).map((order) => {
                             const placedMs = new Date(order.createdAt).getTime();
                             const ageMs = now - placedMs;
@@ -207,6 +218,7 @@ export default function PastOrder() {
                     </div>
                 </div>
             </div>
+            {/* Order details popup */}
             {showOrderDetails && <OrderDetails order={selectedOrder} placedAtTime={orderDetailsPlacedAt} onOrderUpdated={fetchOrders} onClose={() => {
                 setShowOrderDetails(false)
                 setSelectedOrder({})

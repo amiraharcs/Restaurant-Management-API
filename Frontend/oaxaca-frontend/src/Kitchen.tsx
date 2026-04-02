@@ -14,6 +14,7 @@ function pendingItemsSum(items: { quantity: number }[]) {
     return items.reduce((sum, item) => sum + item.quantity, 0);
 }
 
+// calculates the timer
 function calculatePlacedAt(ms: number) {
     const totalMins = Math.floor(ms / 60000);
     const totalHours = Math.floor(totalMins / 60);
@@ -49,6 +50,7 @@ export default function Kitchen() {
     const [selectedOrder, setSelectedOrder] = useState<OrderResponse | null>(null);
     const [orderDetailsPlacedAt, setOrderDetailsPlacedAt] = useState("");
 
+    // fetches all orders from the API
     async function fetchOrders(isInitial = false) {
         try {
             setLoading(true);
@@ -64,22 +66,26 @@ export default function Kitchen() {
         }
     }
 
+    // 5 second interval to update the page with any new orders
     useEffect(() => {
         fetchOrders(true);
         const interval = setInterval(fetchOrders, 5000);
         return () => clearInterval(interval);
     }, []);
 
+    // 1 second interval to update the timer
     useEffect(() => {
         const timer = setInterval(() => setNow(Date.now()), 1000);
         return () => clearInterval(timer);
     }, []);
 
+    // depending on what status it is, it will filter the orders
     function filterOrders(tab: KitchenStatus) {
         if (tab === "new") return orders.filter((o) => o.status === "CONFIRMED");
         return orders.filter((o) => o.status === "PREPARING");
     }
 
+    // function to calculate how many orders are in each tab
     function calculateTabs() {
         return {
             new: orders.filter((o) => o.status === "CONFIRMED").length,
@@ -91,10 +97,12 @@ export default function Kitchen() {
         <main>
             <NavBarKitchen />
 
+            {/* Kitchen Staff Page */}
             <div className="alertsPage">
                 <StaffWelcome />
 
                 <div className="orderContainer">
+                    {/* Status Tabs */}
                     <div className="orderTabs">
                         <button
                             className={`orderTab ${activeTab === "new" ? "active" : ""}`}
@@ -128,7 +136,8 @@ export default function Kitchen() {
                         )}
 
                         {error && <div className="emptyList">{error}</div>}
-
+                        
+                        {/* All the orders in a list UI */}
                         {filterOrders(activeTab).map((order) => {
                             const placedMs = new Date(order.createdAt).getTime();
                             const ageMs = now - placedMs;
@@ -178,7 +187,8 @@ export default function Kitchen() {
                     </div>
                 </div>
             </div>
-
+            
+            {/* Order details popup */}
             {showOrderDetails && selectedOrder && (
                 <KitchenOrderDetails
                     order={selectedOrder}

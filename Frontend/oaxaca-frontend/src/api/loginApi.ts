@@ -10,6 +10,7 @@ export type LoginResponse = {
     role: string;
 };
 
+// Function to send login details to the API
 export async function postLogin(requestData : LoginRequest): Promise<LoginResponse> {
     const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: "POST",

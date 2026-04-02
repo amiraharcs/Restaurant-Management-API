@@ -16,6 +16,7 @@ export default function NavBarWaiter() {
     navigate("/alerts");
   }
 
+  // Clear session and redirect to login
   async function handleLogout() {
     const username = getLoggedInStaffUsername();
     if (username) {
@@ -29,6 +30,7 @@ export default function NavBarWaiter() {
     navigate("/login");
   }
 
+  // Listen for new notifications in the bell icon
   useEffect(() => {
     async function loadNotifications() {
       try {
@@ -44,6 +46,7 @@ export default function NavBarWaiter() {
     return () => clearInterval(interval);
   }, []);
 
+  // Listen for scroll to hide/show navbar. scrolling down make navbar hide, and scrolling up makes navbar show
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY.current && window.scrollY > 60) {
@@ -59,11 +62,13 @@ export default function NavBarWaiter() {
 
   return (
     <main>
+      {/* Logo / home link */}
       <nav className={`waiterNavbar${show ? "" : " waiterNavbar--hidden"}`}>
         <NavLink to="/waiter" className="waiterNavbar__brand">
           <img src="/images/main/logo.png" alt="OAXACA" className="waiterNavbar__logoImg" />
         </NavLink>
 
+        {/* Navigation links */}
         <div className="waiterNavbar__center">
           <NavLink to="/waiter" className="waiterNavbar__link" end>
             ORDERS
@@ -77,6 +82,7 @@ export default function NavBarWaiter() {
         </div>
 
         <div className="waiterNavbar__right">
+          {/* Alerts bell icon */}
           <button type="button" className="rightIconsButton" onClick={toAlerts}>
             <LuBell className="rightIcons" />
             {notificationCount > 0 && (
@@ -84,6 +90,7 @@ export default function NavBarWaiter() {
             )}
           </button>
 
+          {/* Log out account */}
           <button type="button" className="rightIconsButton" onClick={handleLogout}>
             <LuLogOut className="rightIcons" />
           </button>

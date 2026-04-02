@@ -9,6 +9,7 @@ export type CallWaiterAlert = {
   handled: boolean;
 };
 
+// Function to create alerts from one waiter to another
 export async function createCallWaiterAlert(data: {
   tableNumber: number;
   customerName: string;
@@ -23,12 +24,14 @@ export async function createCallWaiterAlert(data: {
   return res.json();
 }
 
+// Function to call for any alerts from waiters
 export async function fetchCallWaiterAlerts(): Promise<CallWaiterAlert[]> {
   const res = await fetch(`${API_BASE}/api/alerts/call-waiter`);
   if (!res.ok) throw new Error(`Fetch alerts failed: ${res.status}`);
   return res.json();
 }
 
+// Function to dismiss a waiter alert
 export async function markCallWaiterAlertHandled(id: number): Promise<CallWaiterAlert> {
   const res = await fetch(`${API_BASE}/api/alerts/call-waiter/${id}/handled`, {
     method: "PATCH",

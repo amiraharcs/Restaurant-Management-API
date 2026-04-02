@@ -16,6 +16,7 @@ export default function Login() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [loginError, setLoginError] = useState("");
 
+    // Function to handle the login data
     async function submitLogin(formData: FormData) {
         setIsSubmitting(true);
         setLoginError("");
@@ -32,6 +33,7 @@ export default function Login() {
             setLoggedInStaffRole(role)
             setLoggedInStaffUsername(res.username ?? "");
 
+            // Response will send a role depending on who logged in, this will then navigate the staff to the correct page
             if (role === "WAITER") {
                 navigate("/waiter", {state: { username: res.username }});
             } else if (role === "KITCHEN") {
@@ -52,10 +54,11 @@ export default function Login() {
         <main>
             <NavBar />
 
+            {/* Login page */}
             <div className='loginPage'>
                 <div className='loginBox'>
                     <h1 className='loginTitle'> Staff Login </h1>
-
+                    
                     <form 
                         className='loginForm' 
                         onSubmit={async (e) => {

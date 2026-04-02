@@ -10,7 +10,6 @@ import Order from './Order'
 import TrackOrder from './TrackOrder'
 import AboutUs from './AboutUs'
 import PastOrder from './PastOrder'
-import PaymentPage from './payment_page'
 import Manager from './Manager'
 import OperationsOverview from './OperationsOverview'
 import ManageMenuWaiter from './ManageMenuWaiter'
@@ -25,6 +24,7 @@ interface SecureRouteType {
   allowedRoles: string[];
 };
 
+// functions checks if the username and role logged in right now are the same when accessing the page
 function SecureRoute({ children, allowedRoles } : SecureRouteType) {
   const username = getLoggedInStaffUsername();
   const role = getLoggedInStaffRole();
@@ -45,6 +45,7 @@ function App() {
 
     <BrowserRouter>
       <Routes>
+        {/* All the routes and staff pages with secure route */}
         <Route path="/" element={<MainPage />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/login" element={<Login />} />
@@ -91,7 +92,6 @@ function App() {
             <PastOrder />
           </SecureRoute>
         } />
-        <Route path='/payment' element={<PaymentPage />} />
         <Route path='/Payment-success' element={<PaymentSuccess />} />
         <Route path="/manager" element={
           <SecureRoute allowedRoles={["MANAGER"]}>

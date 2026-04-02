@@ -4,6 +4,7 @@ import { LuPhone, LuMail, LuMapPin } from "react-icons/lu";
 
 const Footer: React.FC = () => (
   <footer className="footer">
+    {/* Footer component */}
     <div className="footer-grid">
 
       <div className="footer-brand">
@@ -11,6 +12,7 @@ const Footer: React.FC = () => (
         <p className="footer-tagline">Fresh flavours, bold bites — every time.</p>
       </div>
 
+      {/* Quick Links */}
       <div>
         <h4 className="footer-col-heading">Quick Links</h4>
         <nav className="footer-nav">
@@ -21,6 +23,7 @@ const Footer: React.FC = () => (
         </nav>
       </div>
 
+      {/* Contact Us Links */}
       <div>
         <h4 className="footer-col-heading">Contact Us</h4>
         <ul className="footer-contact">

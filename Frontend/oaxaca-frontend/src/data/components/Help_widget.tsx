@@ -11,12 +11,14 @@ const HelpWidget: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
+  // Toggling the popup will close or open
   const togglePopup = () => {
     setIsOpen((prev) => !prev);
     setConfirmation(false);
     setSubmitError("");
   };
 
+  // Function to handle info submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -54,6 +56,7 @@ const HelpWidget: React.FC = () => {
           style={{ width: 90, height: 90, objectFit: 'contain' }}
         />
       </button>
+      {/* Depending if the widget has been toggled, it will open it or close it */}
       {isOpen && (
         <div className="popup">
           <button className="close-popup" onClick={togglePopup} aria-label="Close popup">&times;</button>

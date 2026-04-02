@@ -16,6 +16,7 @@ export type MenuItemDto = {
 
 export type MenuGrouped = Record<"FOOD" | "DESSERT" | "DRINK", MenuItemDto[]>;
 
+// Function to call for all menu items inside the menu
 export async function fetchMenu(): Promise<MenuGrouped> {
   const res = await fetch(`${API_BASE}/api/menu`);
   if (!res.ok) throw new Error(`Menu fetch failed: ${res.status}`);
