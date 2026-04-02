@@ -59,6 +59,28 @@
     cursor: text;
 }
 
+
+.payment_options {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.payment_options button {
+  flex: 1;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  background: #f9f9f9;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.payment_options button.selected {
+  border: 2px solid #1b7a57;
+  background: #e6f4ef;
+}
+
 .order_button {
     height: 46px;
     border: none;
