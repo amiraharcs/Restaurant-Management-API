@@ -28,6 +28,23 @@ export type MenuItemDto = {
   itemType: "FOOD" | "DESSERT" | "DRINK";
 };
 
+export type AddMenuItemDto = {
+  name: string;
+  description: string;
+  price: number;
+  costToProduce: number;
+  calories: number;
+  ingredients: { name: string }[];
+  allergens: string;
+  vegetarian: boolean;
+  vegan: boolean;
+  glutenFree: boolean;
+  meat: boolean;
+  itemType: "FOOD" | "DESSERT" | "DRINK";
+  available: boolean;
+  imageUrl: string;
+};
+
 export type status = "PLACED" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
 export type paymentStatus = "UNPAID" | "PAID"
 
@@ -103,7 +120,7 @@ export async function deleteMenuItem(id: number): Promise<void> {
 }
 
 // Function to send details of a new menu item to be added
-export async function addMenuItem(itemData: MenuItemDto): Promise<MenuItemDto> {
+export async function addMenuItem(itemData: AddMenuItemDto): Promise<MenuItemDto> {
   const res = await fetch(`${API_BASE}/api/menu/menuItem/add`, {
     method: "POST",
     headers: {
