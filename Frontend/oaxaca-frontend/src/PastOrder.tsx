@@ -177,7 +177,7 @@ export default function PastOrder() {
 
                         {error && <div className='emptyList'> {error} </div>}
 
-                        {/* All the orders */}
+                        {/* All the orders in a list UI */}
                         {filterOrders(activeTab).map((order) => {
                             const placedMs = new Date(order.createdAt).getTime();
                             const ageMs = now - placedMs;
