@@ -10,7 +10,6 @@ import Order from './Order'
 import TrackOrder from './TrackOrder'
 import AboutUs from './AboutUs'
 import PastOrder from './PastOrder'
-import PaymentPage from './payment_page'
 import Manager from './Manager'
 import OperationsOverview from './OperationsOverview'
 import ManageMenuWaiter from './ManageMenuWaiter'
@@ -93,7 +92,6 @@ function App() {
             <PastOrder />
           </SecureRoute>
         } />
-        <Route path='/payment' element={<PaymentPage />} />
         <Route path='/Payment-success' element={<PaymentSuccess />} />
         <Route path="/manager" element={
           <SecureRoute allowedRoles={["MANAGER"]}>
