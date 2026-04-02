@@ -1,6 +1,7 @@
 import '../../css/Waiter.css';
 
 export default function AlertDetails({ alert, onClose, onMarkHandled, isOrderReady }: any) {
+  // calculates the timer
   function timeAgo(iso: string) {
     const now = Date.now();
     const createdMs = new Date(iso).getTime();
@@ -26,6 +27,7 @@ export default function AlertDetails({ alert, onClose, onMarkHandled, isOrderRea
 
   return (
     <main className="orderDetailsMain">
+      {/* Alert popup */}
       <div className="orderDetailsBackdrop" onClick={onClose} />
       <div className="orderDetailsContent">
         <div className='orderDetailsHeader'>
@@ -33,6 +35,7 @@ export default function AlertDetails({ alert, onClose, onMarkHandled, isOrderRea
           <button className="orderDetailsClose" onClick={onClose}>×</button>
         </div>
         <div className='orderDetailsMainBody'>
+          {/* Depending on order status, the popup details will change */}
           {isOrderReady ? (
             <>
               <div className='orderDetailsInfo'>
