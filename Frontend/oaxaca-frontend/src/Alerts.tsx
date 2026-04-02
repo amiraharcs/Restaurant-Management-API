@@ -22,7 +22,7 @@ type CallWaiterAlert = {
   handled: boolean;
 };
 
-
+// calculates the timer
 function timeAgo(iso: string, nowMs = Date.now()) {
   const createdMs = new Date(iso).getTime();
   const mins = Math.max(0, Math.floor((nowMs - createdMs) / 60000));
@@ -78,6 +78,7 @@ export default function Alerts() {
     loadAlerts();
   }, []);
 
+  // 5 second interval to update the page with any new requests
   useEffect(() => {
     const refreshTimer = window.setInterval(async () => {
       try {
@@ -130,9 +131,11 @@ export default function Alerts() {
     <main>
       <NavBarWaiter />
 
+      {/* Alerts page */}
       <div className="alertsPage">
         <StaffWelcome />
         <div className="orderContainer">
+          {/* Status tabs -*/}
           <div className="alertTabs">
             <button
               className={`alertTab ${activeTab === "callWaiter" ? "active" : ""}`}
@@ -246,6 +249,7 @@ export default function Alerts() {
               )}
             </div>
           )}
+          {/* Show details */}
           {showDetails && selectedAlert && (
             <AlertDetails
               alert={selectedAlert}
