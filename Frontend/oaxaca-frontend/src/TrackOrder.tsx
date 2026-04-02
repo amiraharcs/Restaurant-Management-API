@@ -17,6 +17,7 @@ export type OrderResponse = {
     items: { menuItemId: number; name: string; quantity: number }[];
 };
 
+// Steps of each order status stored in a dictionary
 const steps = [
     { id: "PLACED", title: "Order received", icon: <LuClipboardList />},
     { id: "CONFIRMED", title: "Order confirmed", icon: <LuThumbsUp />},
@@ -25,6 +26,7 @@ const steps = [
     { id: "DELIVERED", title: "Order served", icon: <LuCircleCheck />},
 ]
 
+// Steps of each order status but all cancelled if order status is cancelled
 const cancelledSteps = [
     { id: "CANCELLED", title: "Order received", icon: <LuX />},
     { id: "CANCELLED", title: "Order confirmed", icon: <LuX />},
@@ -39,7 +41,9 @@ export default function TrackOrder() {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
+    // Function to handle submitted order id
     async function submitTrackOrder() {
+        // few validation steps
         if (!orderNo.trim()) {
             setError("Invalid order number format");
             return;
@@ -70,7 +74,9 @@ export default function TrackOrder() {
         }
     }
 
+    // 5 second interval to update the page whenever the order status changes
     useEffect(() => {
+        // If order status is delivered and cancelled, there wont be an interval to save memory
         if (!order || order.status === "DELIVERED" || order.status === "CANCELLED") return;
 
         const interval = setInterval(async () => {
@@ -85,12 +91,14 @@ export default function TrackOrder() {
         return () => clearInterval(interval);
     }, [order?.status]);
 
+    // resets the page back to the form
     function handleReset() {
         setOrder(null);
         setOrderNo("");
         setError(null);
     }
-
+    
+    // calculates if there is an active status and which index that status is at
     const activeStep = order?.status ?? null;
     let activeIndex = -1;
     if (activeStep != null) {
@@ -104,14 +112,16 @@ export default function TrackOrder() {
         <main>
         <NavBar />
 
+        {/* Track order page */}
         <div className="trackOrderPage">
             <section className="panel">
                 <div className="innerPanel">
                     {!order ? (
-                        <>
+                        <>  
+                            {/* Original page asking to enter order id */}
                             <h1 className="trackOrderTitle">Please enter your</h1>
                             <h1 className="trackOrderTitle">order number:</h1>
-
+                            
                             <form 
                                 className="trackOrderForm" 
                                 onSubmit={async (e) => {
@@ -144,7 +154,8 @@ export default function TrackOrder() {
                             </form>
                         </>
                     ) : (
-                        <>
+                        <>  
+                            {/* Order status page once order id has been submitted */}
                             <h1 className="trackOrderTitle">No Stress...</h1>
                             <h1 className="trackOrderTitle">We got your order!</h1>
 
@@ -179,7 +190,8 @@ export default function TrackOrder() {
                                     )
                                 })}
                             </div>
-
+                            
+                            {/* Messages depending on if order has been completed or cancelled */}
                             <div className="trackOrderDetails">
                                 {served && <h2>Thank you for dining with us!</h2>}
                                 {cancelled && <h2>Your order has been cancelled! Please speak to a member of staff...</h2>}
@@ -192,6 +204,7 @@ export default function TrackOrder() {
                 </div>
             </section>
 
+            {/* Customer help widget if in need of assistance */}
             <HelpWidget />
         </div>
 
