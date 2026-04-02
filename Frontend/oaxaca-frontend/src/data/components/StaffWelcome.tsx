@@ -9,6 +9,7 @@ type StaffLocationState = {
   username?: string;
 };
 
+// Depending on who is logged in, they will be greeted with a message with their username
 export default function StaffWelcome() {
   const location = useLocation();
   const state = (location.state as StaffLocationState | null) ?? null;

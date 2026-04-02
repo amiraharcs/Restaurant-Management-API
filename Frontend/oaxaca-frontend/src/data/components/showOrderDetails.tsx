@@ -12,6 +12,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
     const [showAddItem, setShowAddItem] = useState(false);
     const [menuItems, setMenuItems] = useState<MenuData>({ main: [], dessert: [], drinks: [] });
 
+    // types used to display menu items
     type MenuItemType = {
         id?: number;
         name: string;
@@ -27,6 +28,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
     };
     type MenuData = Record<string, MenuItemType[]>;
 
+    // Function to load menu items from menu API so waiters can add new items
     useEffect(() => {
         async function loadMenu() {
             try {
@@ -49,6 +51,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
         loadMenu()
     }, []);
 
+    // Function to call order confirmed API
     async function orderConfirmed() {
         try {
             setLoading(true);
@@ -62,6 +65,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
         }
     }
 
+    // Function to call order delivered API
     async function orderDelivered() {
         try {
             setLoading(true);
@@ -75,6 +79,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
         }
     }
 
+    // Function to call order cancelled API
     async function orderCancelled() {
         try {
             setLoading(true);
@@ -88,6 +93,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
         }
     }
 
+    // Function to call order PAID API
     async function orderPaid() {
         try {
             setLoading(true);
@@ -101,6 +107,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
         }
     }
 
+    // Function to handle the menu items when added to existing order
     async function handleAddItem(item : MenuItemType) {
         if (!item.id) return;
 
@@ -113,6 +120,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
             }
 
             await addItemToOrder(order.id, requestType);
+            // If order already PAID, change to UNPAID since new items added
             if (order.paymentStatus === "PAID") {
                 await markUnpaidOrder(order.id);
             }
@@ -128,6 +136,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
 
     return (
         <main className="orderDetailsMain">
+            {/* Order Details popup */}
             <div className="orderDetailsBackdrop" onClick={onClose} />
             <div className="orderDetailsContent">
                 <div className='orderDetailsHeader'>
@@ -137,6 +146,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                     </button>
                 </div>
 
+                {/* Customer details */}
                 <div className='orderDetailsMainBody'>
                     <div className='orderDetailsInfo'>
                         <div className='infoRow'>
@@ -165,6 +175,7 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                         <p className='itemsTitle'>Order Items</p>
 
                         <div className='itemsList'>
+                            {/* List of menu items and add menu button */}
                             {order.items.map((item: any, index: number) => (
                                 <div key={`${item.name}${index}`} className='itemsRow'>
                                     <p className='itemQuantity'>{item.quantity}x</p>
@@ -215,7 +226,8 @@ export default function OrderDetails({order, placedAtTime, onClose, onOrderUpdat
                     </div>
 
                     {error && <div className='orderDetailsButtons'> {error} </div>}
-
+                    
+                    {/* Depending on order status, buttons will change */}
                     {order.status === "PLACED" && (
                         <div className='orderDetailsButtons'>
                             <button className='popupBtn confirmBtn' onClick={orderConfirmed} disabled={loading}>
