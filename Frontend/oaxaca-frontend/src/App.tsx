@@ -25,6 +25,7 @@ interface SecureRouteType {
   allowedRoles: string[];
 };
 
+// functions checks if the username and role logged in right now are the same when accessing the page
 function SecureRoute({ children, allowedRoles } : SecureRouteType) {
   const username = getLoggedInStaffUsername();
   const role = getLoggedInStaffRole();
@@ -45,6 +46,7 @@ function App() {
 
     <BrowserRouter>
       <Routes>
+        {/* All the routes and staff pages with secure route */}
         <Route path="/" element={<MainPage />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/login" element={<Login />} />
