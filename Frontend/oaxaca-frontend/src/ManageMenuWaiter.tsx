@@ -35,18 +35,11 @@ export default function ManageMenu() {
   
       // Backend provides FOOD/DESSERT/DRINK. Frontend UI uses main/dessert/drinks.
       const [products, setProducts] = useState<MenuData>({ main: [], dessert: [], drinks: [] });
-
-      // Loading state
-      const [loading, setLoading] = useState<boolean>(true);
-      const [error, setError] = useState<string>("");
   
       //Fetch menu when page loads
       useEffect(() => {
           async function loadMenu() {
           try {
-              setLoading(true);
-              setError("");
-  
               const data = await fetchWaiterMenu()
               //convert the backend strucuture to frontend format
               const mapped: MenuData = {
@@ -56,9 +49,6 @@ export default function ManageMenu() {
               }
               setProducts(mapped)
           } catch (e: any) {
-              setError(e?.message ?? "Failed to load menu")
-          } finally {
-              setLoading(false)
           }
       }
       loadMenu()
