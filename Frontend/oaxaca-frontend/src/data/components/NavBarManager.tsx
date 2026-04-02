@@ -5,10 +5,16 @@ import { useEffect, useRef, useState } from "react";
 import "../../css/NavBarManager.css"
 
 export default function NavBarManager() {
+
+    // Controls navbar visibility (hide on scroll down)
     const [show, setShow] = useState(true);
+    
+    // Controls navbar visibility (hide on scroll down)
     const lastScrollY = useRef(window.scrollY);
+    
     const navigate = useNavigate();
 
+    // Listen for scroll to hide/show navbar. scrolling down make navbar hide, and scrolling up makes navbar show
     useEffect(() => {
         const handleScroll = () => {
         if (window.scrollY > lastScrollY.current && window.scrollY > 60) {
@@ -22,6 +28,7 @@ export default function NavBarManager() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    // Clear session and redirect to login
     function handleLogout() {
         clearLoggedInStaffSession();
         navigate("/login");
@@ -29,11 +36,13 @@ export default function NavBarManager() {
 
     return (
     <main>
+      {/* Logo / home link */}
       <nav className={`managerNavbar${show ? "" : " managerNavbar--hidden"}`}>
         <NavLink to="/manager" className="managerNavbar__brand">
           <img src="/images/main/logo.png" alt="OAXACA" className="managerNavbar__logoImg" />
         </NavLink>
 
+        {/* Navigation links */}
         <div className="managerNavbar__center">
           <NavLink to="/manager/overview" className="managerNavbar__link" end>
             OVERVIEW
@@ -43,6 +52,9 @@ export default function NavBarManager() {
           </NavLink>
           <NavLink to="/manage-menu-manager" className="managerNavbar__link" end>
             MANAGE MENU
+          </NavLink>
+          <NavLink to="/past-order" className="managerNavbar__link" end>
+            PAST ORDERS
           </NavLink>
         </div>
 

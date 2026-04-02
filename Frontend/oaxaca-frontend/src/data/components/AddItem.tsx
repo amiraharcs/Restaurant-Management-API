@@ -3,9 +3,14 @@ import { addMenuItem } from "../../api/managerApi";
 import { FaArrowTrendUp } from "react-icons/fa6";
 
 export default function AddItem({ onClose }: any) {
+
+  // Stores validation and API errors
   const [errors, setErrors] = useState({} as Record<string, string>);
 
+  // Handles form submission and validation
   async function submitForm(formData: FormData) {
+
+    //structure for validation errors
     type FormErrors = {
       name?: string;
       description?: string;
@@ -23,6 +28,7 @@ export default function AddItem({ onClose }: any) {
 
     let validationErrors: FormErrors = {};
 
+    //validate name
     const name = formData.get("name")?.toString().trim() ?? "";
     if (!name) {
       validationErrors.name = "Name is required";
@@ -30,6 +36,7 @@ export default function AddItem({ onClose }: any) {
       validationErrors.name = "Name must be at least 2 characters";
     }
 
+    //validate description
     const description = formData.get("description")?.toString().trim() ?? "";
     if (!description) {
       validationErrors.description = "Description is required";
@@ -37,6 +44,7 @@ export default function AddItem({ onClose }: any) {
       validationErrors.description = "Description must be at least 10 characters";
     }
 
+    //validate price
     const priceRaw = formData.get("price")?.toString().trim() ?? "";
     const price = Number(priceRaw);
     if (!priceRaw) {
@@ -47,6 +55,7 @@ export default function AddItem({ onClose }: any) {
       validationErrors.price = "Price must be greater than 0";
     }
 
+    //validate cost to produce
     const costRaw = formData.get("costToProduce")?.toString().trim() ?? "";
     const cost = Number(costRaw);
 
@@ -61,6 +70,7 @@ export default function AddItem({ onClose }: any) {
             "Cost must be at most 40% of the price (minimum 60% profit margin)";
     }
 
+    //validate calories
     const caloriesRaw = formData.get("calories")?.toString().trim() ?? "";
     const calories = Number(caloriesRaw);
     if (!caloriesRaw) {
@@ -71,6 +81,7 @@ export default function AddItem({ onClose }: any) {
       validationErrors.calories = "Calories cannot be negative";
     }
 
+    //validate ingredients, there must be at least 1
     const ingredientsRaw = formData.get("ingredients")?.toString().trim() ?? "";
     if (!ingredientsRaw) {
       validationErrors.ingredients = "Ingredients are required";
@@ -85,24 +96,27 @@ export default function AddItem({ onClose }: any) {
       }
     }
 
+    // Validate allergens (optional but must be valid if provided)
     const allergensRaw = formData.get("allergens")?.toString().trim() ?? "";
     if (allergensRaw && allergensRaw.length > 0) {
-  const allergens = allergensRaw
-    .split(",")
-    .map((v) => v.trim())
-    .filter((v) => v.length > 0);
+    const allergens = allergensRaw
+      .split(",")
+      .map((v) => v.trim())
+      .filter((v) => v.length > 0);
 
-  if (allergens.length === 0) {
-    validationErrors.allergens =
-      "Please enter valid allergens separated by commas";
-  }
-}
+    if (allergens.length === 0) {
+      validationErrors.allergens =
+        "Please enter valid allergens separated by commas";
+      }
+    }
 
+    // Checkbox filters
     const vegetarian = formData.get("vegetarian") === "on";
     const vegan = formData.get("vegan") === "on";
     const glutenFree = formData.get("glutenFree") === "on";
     const meat = formData.get("meat") === "on";
 
+    // Validate item type
     const itemType = formData.get("itemType")?.toString().trim() ?? "";
     if (!itemType) {
       validationErrors.itemType = "Item type is required";
@@ -113,6 +127,7 @@ export default function AddItem({ onClose }: any) {
       }
     }
 
+    // Validate image path
     const image = formData.get("image")?.toString().trim() ?? "";
     if (!image) {
       validationErrors.image = "Image path is required";
@@ -120,6 +135,7 @@ export default function AddItem({ onClose }: any) {
       validationErrors.image = "Image path must start with '/'";
     }
 
+    // Validate availability
     const isAvailableRaw = formData.get("isAvailable")?.toString().trim() ?? "";
     if (!isAvailableRaw) {
       validationErrors.isAvailable = "Availability is required";
@@ -129,6 +145,7 @@ export default function AddItem({ onClose }: any) {
 
     setErrors(validationErrors as any);
 
+    // Stop submission if validation fails
     if (Object.keys(validationErrors).length > 0) return;
 
     try {
@@ -158,6 +175,8 @@ export default function AddItem({ onClose }: any) {
       };
 
       await addMenuItem(newItem);
+
+      //close and refresh page
       onClose?.();
       window.location.reload();
     } catch (error: any) {
@@ -167,11 +186,12 @@ export default function AddItem({ onClose }: any) {
     }
   }
 
-      const [costToProduce, changeCostToProduce] = useState<number> (0)
+    // State for live pricing feedback
+    const [costToProduce, changeCostToProduce] = useState<number> (0)
     const [minimumPrice, changeMinimumPrice] = useState<number | null>(null)
     const [pricePercentage, changePricePercentage] = useState<number | null>()
     
-
+    // Calculate minimum allowed price (60% margin rule)
     const giveMinimumPrice = (e : any) =>  {
         const costToProduce = Number(e.target.value);
         if (!isNaN(costToProduce)) {
@@ -183,6 +203,7 @@ export default function AddItem({ onClose }: any) {
     } 
     }
 
+    // Calculate profit margin percentage
     const givePricePercentage = (e : any) => {
         const price = Number(e.target.value);
         if (!isNaN(price)) {
@@ -213,6 +234,7 @@ export default function AddItem({ onClose }: any) {
             }}
             className="add_item_form"
           >
+            {/* Basic fields */}
             <label className="add_item_form_label" htmlFor="name">
               Name
             </label>
@@ -235,6 +257,7 @@ export default function AddItem({ onClose }: any) {
               required
             />
 
+            {/* Cost + price with live feedback */}
             <label className="add_item_form_label" htmlFor="costToProduce">Cost To Produce (£)</label>
             <input
                 className="add_item_form_input"
@@ -263,6 +286,7 @@ export default function AddItem({ onClose }: any) {
                 {pricePercentage != null && <p className={`edit_item_form_percentage ${pricePercentage < 60 ? `negative_percentage` : `positive_percentage`}`}><FaArrowTrendUp /> {pricePercentage.toFixed(2)}%</p>}
             </div>
 
+            {/*calories*/}
             <label className="add_item_form_label" htmlFor="calories">
               Calories (kcal)
             </label>
@@ -274,6 +298,7 @@ export default function AddItem({ onClose }: any) {
               required
             />
 
+            {/*ingredients*/}
             <label className="add_item_form_label" htmlFor="ingredients">
               Ingredients (comma separated if multiple)
             </label>
@@ -285,6 +310,7 @@ export default function AddItem({ onClose }: any) {
               required
             />
 
+            {/*Allergens*/}
             <label className="add_item_form_label" htmlFor="allergens">
               Allergens (optional - comma separated if multiple)
             </label>
@@ -295,6 +321,7 @@ export default function AddItem({ onClose }: any) {
               name="allergens"
             />
 
+            {/* Filters */}
             <label className="add_item_form_label" htmlFor="filters">Dietary Filters (optional - comma separated if multiple)</label>
               <div className="add_item_form_filter">
                   <label>
@@ -327,6 +354,7 @@ export default function AddItem({ onClose }: any) {
                   </label>
               </div>
 
+             {/* Dropdown for item type*/}
             <label className="add_item_form_label" htmlFor="itemType">
               Item Type
             </label>
@@ -341,6 +369,7 @@ export default function AddItem({ onClose }: any) {
               <option value="DRINK">DRINK</option>
             </select>
 
+            {/*Image*/}
             <label className="add_item_form_label" htmlFor="image">
               Image (must lead with a /)
             </label>
@@ -352,6 +381,7 @@ export default function AddItem({ onClose }: any) {
               required
             />
 
+            {/*availability */}
             <label className="add_item_form_label">Availability</label>
             <div className="add_item_radio_group">
               <label className="add_item_radio_label">
@@ -364,6 +394,7 @@ export default function AddItem({ onClose }: any) {
               </label>
             </div>
 
+            {/* Error display */}
             {Object.keys(errors).length > 0 && (
               <div className="error_box">
                 <p className="error_box_title">Please fix the following errors:</p>

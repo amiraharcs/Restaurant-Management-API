@@ -13,14 +13,14 @@ import HelpWidget from "./data/components/Help_widget";
 import Footer from "./data/components/Footer";
 import { fetchMenu } from './api/menuApi';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
-
 export default function Menu() {
 
+    //UI state
     const [showItem, setShowItem] = useState(false);
     const [selectedItem, setSelectedItem] = useState<any>({});
     const [showFilter, setShowFilter] = useState(false);
 
+    //Structore of a basket item
     type BasketItem = {
         item: MenuItemType;
         quantity: number;
@@ -28,6 +28,7 @@ export default function Menu() {
 
     const [basket, setBasket] = useState<BasketItem[]>([])
 
+    //Structure of a menu item
     type MenuItemType = {
         id?: number;
         name: string;
@@ -42,13 +43,15 @@ export default function Menu() {
         itemType?: string;
     };
 
-    type MenuData = Record<string, MenuItemType[]>; // category -> items
+     // The MenuData contains the FOOD/DESSERT/DRINK as string and items as MenuItemType array
+    type MenuData = Record<string, MenuItemType[]>;
 
     // Backend provides FOOD/DESSERT/DRINK. Frontend UI uses main/dessert/drinks.
     const [products, setProducts] = useState<MenuData>({ main: [], dessert: [], drinks: [] });
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
 
+    //Fetches menu once the webpage is loaded
     useEffect(() => {
         async function loadMenu() {
         try {
@@ -56,6 +59,7 @@ export default function Menu() {
             setError("");
 
             const data = await fetchMenu()
+            //convert the backend strucuture to frontend format
             const mapped: MenuData = {
                 main: data.FOOD ?? [],
                 dessert: data.DESSERT ?? [],
@@ -71,12 +75,14 @@ export default function Menu() {
     loadMenu()
     }, []);
 
+    //Filter state
     const [selectedAllergen, setSelectedAllergen] = useState<string>("");
     const [selectedDietFilter, setSelectedDietFilter] = useState<string>("");
 
     const [minPrice, setMinPrice] = useState<number | undefined>(undefined)
     const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined)
 
+    //Filtering logic
     function filterProducts(products: MenuData, selectedAllergen: string, selectedDietFilter: string, minPrice: any, maxPrice: any): MenuData {
         const result: MenuData = {};
 
@@ -102,8 +108,10 @@ export default function Menu() {
         return result;
     }
 
+    //Function is used to apply all filters
     const filteredProducts = filterProducts(products, selectedAllergen, selectedDietFilter, minPrice, maxPrice);
 
+    //Array contains unique allergens
     const allergensArray: string[] = [];
     Object.values(products).map((items) => {
         items.forEach((item) => {
@@ -115,6 +123,7 @@ export default function Menu() {
         })
     })
 
+    //Array contains unique dietary filters
     const filtersArray: string[] = [];
     Object.values(products).map((items) => {
         items.forEach((item) => {
@@ -126,6 +135,7 @@ export default function Menu() {
         })
     })
 
+    //Loading UI
     if (loading) {
         return (
             <main className='menu_main'>
@@ -144,6 +154,7 @@ export default function Menu() {
         );
     }
 
+    //Error UI
     if (error) {
         return (
             <main className='menu_main'>
@@ -168,7 +179,10 @@ export default function Menu() {
 
             <div className='menu_header'>
                 <h1 className='menu_page_title'>Menu</h1>
+                {/*Toggle the filter side bar*/}
                 <IoFilter className='menu_page_filter' onClick={() => (setShowFilter(true))} />
+                
+                {/*Key for the icons shown on the menu items*/}
                 <div className="menu_key">
                     <div className="menu_key_items">
                         <div className="menu_key_item">
@@ -197,6 +211,8 @@ export default function Menu() {
 
             <div className='menu_layout'>
                 <div className='menu_content'>
+
+                    {/*Render each category*/}
                     {Object.entries(filteredProducts).map(([category, items]) => (
                         <section key={category}>
                             <h2 className='category_title'>
@@ -210,6 +226,7 @@ export default function Menu() {
                             <div className='menu_items_div'>
                                 {items.map((item) =>
                                     item.isAvailable && (
+                                        //Menu item box
                                         <div key={item.id ?? item.name} className='menu_item'
                                             onClick={() => { setShowItem(true); setSelectedItem(item); }}>
                                             <img className='menu_item_image' src={item.image} alt={item.name} />
@@ -235,12 +252,14 @@ export default function Menu() {
                                                         ))}
                                                     </div>
                                                 </div>
-
+                                                
+                                                {/*Calories*/}
                                                 <div className='menu_item_calories'>
                                                     <FaFire className='calorie_icon' />
                                                     <p className='calorie_text'>{item.calories}kcal</p>
                                                 </div>
-
+                                                
+                                                {/*Add item to basket*/}
                                                 <div className='menu_item_add' onClick={(e) => {
                                                     e.stopPropagation();
                                                     setBasket(prevBasket => {
@@ -273,6 +292,7 @@ export default function Menu() {
                 <Basket basket={basket} setBasket={setBasket} />
             </div>
 
+            {/*Filter sidebar*/}
             {showFilter &&
                 <div className='filter' onClick={() => (setShowFilter(false))}>
                     <button className="filter_close" onClick={() => (setShowFilter(false))}>x</button>
@@ -283,6 +303,7 @@ export default function Menu() {
                         </div>
                         <form>
                             <div>
+                                {/*Allergen filter*/}
                                 <div>
                                     <label className='filter_prompt'>Have any allergens?</label>
                                     <select
@@ -297,7 +318,7 @@ export default function Menu() {
                                         ))}
                                     </select>
                                 </div>
-
+                                {/*Dietary Requirements filter*/}
                                 <div>
                                     <label className='filter_prompt'>Dietary Requirements</label>
                                     <select
@@ -312,7 +333,7 @@ export default function Menu() {
                                         ))}
                                     </select>
                                 </div>
-
+                                {/*Price filter*/}
                                 <div>
                                     <label className='filter_prompt'>Price (£)</label>
                                     <div className='filter_price_inputs'>
@@ -330,6 +351,7 @@ export default function Menu() {
                 </div>
             }
 
+            {/*Detailed item view popup*/}
             {showItem && <MenuItem item={selectedItem} setBasket={setBasket} onClose={() => {
                 setShowItem(false)
                 setSelectedItem({})

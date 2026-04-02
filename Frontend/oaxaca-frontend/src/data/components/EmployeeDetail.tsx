@@ -4,6 +4,7 @@ import { GiCancel } from "react-icons/gi";
 
 export default function EmployeeDetail({setShowDetail, employee} : {setShowDetail: any; employee: EmployeeDataResponse;}) {
     
+// Status has a specific colour, mapping for order badges
 const status_styles = {
   PLACED: "#93C5FD",
   CONFIRMED: "#A5B4FC",
@@ -28,6 +29,7 @@ const status_styles = {
             <div className="employee_detail_header">
                 <h3 className="employee_detail_title">{employee.username}</h3>
             </div>
+            {/* Shift + active status */}
             <div className="employee_detail_header_box">
                     <span className="employee_detail_header_box_span">
                         <p>On Shift</p>
@@ -37,7 +39,9 @@ const status_styles = {
                         <p>Active</p>
                         {employee.active ? <SiTicktick className="employee_tick"/> : <GiCancel className="employee_cross"/>}
                     </span>
-                </div>
+            </div>
+            
+            {/* Basic employee info */}
             <div className="employee_detail_info">
                 <div className="employee_detail_info_row">
                     <span className="employee_detail_info_label">Employee ID</span>
@@ -53,6 +57,7 @@ const status_styles = {
                 </div>
             </div>
 
+              {/* Employee Stats */}
              <div className="employee_detail_stats">
                 <div className="employee_detail_stat_card">
                     <p className="employee_detail_stat_label">Total Sales</p>
@@ -70,6 +75,8 @@ const status_styles = {
                 </div>
             </div>
             <p className="employee_detail_stat_notice">* The stats are all time</p>
+
+            {/* Orders list */}
             <div className="employee_detail_orders_section">
                 <h3 className="employee_detail_orders_title">Recent Orders</h3>
 
@@ -79,11 +86,14 @@ const status_styles = {
                     <div className="employee_detail_orders_list">
                         {employee.employeeOrders.map( (order, number) => (
                             <div className="employee_detail_order" key={number}>
+                                {/* Order total */}
                                 <div>
                                     <span className="employee_detail_order_total">
                                         <p>Total:</p>
                                         <p className="employee_detail_order_price">£{order.orderTotal}</p>
                                     </span>
+
+                                {/* Items + date */}
                                 <div className="employee_detail_order_items_date">
                                     <span className="employee_detail_order_items">
                                         {order.numberOfItems} item{order.numberOfItems !== 1 ? "s" : ""}
@@ -96,6 +106,8 @@ const status_styles = {
                                     </span>
                                 </div>
                                 </div>
+
+                                {/* Status badge */}
                                 <div className="employee_detail_order_status">
                                     <p className="employee_detail_order_status_text" style={{backgroundColor: status_styles[order.status]}}>{order.status}</p>
                                 </div>

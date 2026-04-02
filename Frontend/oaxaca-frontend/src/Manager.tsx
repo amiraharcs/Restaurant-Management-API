@@ -9,19 +9,24 @@ import { GiCancel } from "react-icons/gi";
 
 export default function Manager() {
 
+    //Staff tabs shown on the page
     type employee = "WAITER" | "KITCHEN"
 
     const [activeTab, setActiveTab] = useState<employee>("WAITER")
 
+    //API state
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
     const [employees, setEmployees] = useState<EmployeeDataResponse[]>([]);
 
+    //Employee detail popup state
     const [showDetail, setShowDetail] = useState<boolean>(false)
     const [selectedEmployee, setSelectedEmployee] = useState<EmployeeDataResponse | null>(null);
 
+    //Time filter for waiter stats
     const [employeeDataTimeFrame, setEmployeeDataTimeFrame] = useState<string>("today");
 
+    // Fetch employee data on load and refresh every 5 seconds
     useEffect(() => {
             async function loadEmployeeData() {
               try {
@@ -30,7 +35,7 @@ export default function Manager() {
                 const data = await fetchEmployeeData()
                 setEmployees(data)
               } catch (e: any) {
-                  setError(e?.message ?? "Failed to load menu")
+                  setError(e?.message ?? "Failed to load employee data")
               } finally {
                   setLoading(false)
               }
@@ -40,6 +45,7 @@ export default function Manager() {
         return () => clearInterval(id);
     }, []);
 
+    // Filter employee orders by selected time frame
     function getFilteredOrders(employee: EmployeeDataResponse) {
         const now = new Date()
 
@@ -71,12 +77,13 @@ export default function Manager() {
 
     }    
 
+    // Calculate stats for a waiter
     function getEmployeeStats(employee: EmployeeDataResponse) {
         const filteredOrders = getFilteredOrders(employee)
 
         const totalSales = filteredOrders
         .filter(order => order.paymentStatus == "PAID")
-        .reduce((sum, order) => sum + Number(order.orderTotal),0,);
+        .reduce((sum, order) => sum + Number(order.orderTotal), 0);
 
 
         const totalItemsSold = filteredOrders
@@ -88,6 +95,7 @@ export default function Manager() {
         return {totalSales, totalItemsSold, totalOrders};
     }
 
+
     return (
         <main>
             <NavBarManager />
@@ -97,7 +105,7 @@ export default function Manager() {
                 </div>
                  <div className='employee_Container'>
                     <div className='employee_Tabs'>
-                        <button className={`employee_Tab ${activeTab === "WAITER" ? `active` : ``}`} onClick={() => setActiveTab("WAITER")}>Employee Staff</button>
+                        <button className={`employee_Tab ${activeTab === "WAITER" ? `active` : ``}`} onClick={() => setActiveTab("WAITER")}>Waiter Staff</button>
                         <button className={`employee_Tab ${activeTab === "KITCHEN" ? `active` : ``}`} onClick={() => setActiveTab("KITCHEN")}>Kitchen Staff</button>
                     </div>
                     <div className='employee_Title'>
@@ -107,6 +115,7 @@ export default function Manager() {
                     <hr />
 
                    <div className="employee_main">
+                    {/* Time frame filter only shown for waiters */}
                        {activeTab === "WAITER" &&<div className="employee-filter">
                             <label className="employee-filter_label" htmlFor="timeFrame">
                                 Time Frame
@@ -123,12 +132,25 @@ export default function Manager() {
                                 <option value="total">Total</option>
                             </select>
                         </div>}
-                        <div className="employee_data">
+
+                        {/* Loading state */}
+                        {loading && <div className="employee_data"> 
+                            <p>Loading employee data</p>    
+                        </div>}
+
+                        {/* Error state */}
+                        {error && <div className="employee_data"> 
+                            <p>{error}</p>    
+                        </div>}
+
+                        {/* Employee boxes */}
+                        {!loading && <div className="employee_data">
                             {employees.filter((employee) => employee.role === activeTab)
                             .map( (employee) =>  {
                                 const isWaiter = employee.role === "WAITER";
                                 const stats = getEmployeeStats(employee);
                                 return (
+                                //green sidebar if employee is onshift and red sidebar if employee is not on shift
                                 <div className={`employee_individual ${employee.onShift ? `OnShift` : `notOnShift`}`} key={employee.employeeId}
                                 onClick={
                                     isWaiter
@@ -176,11 +198,12 @@ export default function Manager() {
                                     )}
                                 </div>
                             )})}
-                        </div>
+                        </div>}
                    </div>
                 </div>
             </div>
 
+            {/* Employee detail popup */}
             {showDetail && selectedEmployee && (
                 <EmployeeDetail
                     setShowDetail={setShowDetail}

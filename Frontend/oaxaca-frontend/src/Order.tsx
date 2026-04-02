@@ -12,8 +12,10 @@ export default function Order() {
   const basket = location.state?.basket;
   const navigate = useNavigate();
 
+  //Store user selected payment method
   const [payment_method, setPaymentMethod] = useState<"cash" | "card" | null>(null);
 
+  //Structure of a menu item
   type MenuItem = {
     id?: number;
     name: string;
@@ -28,26 +30,31 @@ export default function Order() {
     itemType?: string;
   };
 
+  //Structure of a basket item
   type BasketItem = {
     item: MenuItem;
     quantity: number;
   };
 
+  //Strucutre of backend order response
   type OrderResponse = {
     orderId: number;
     status: string;
   };
 
+  //Controls confirmation popup and loading state
   const [confirmedOrder, showConfirmedOrder] = useState(false);
   const [loading, setLoading] = useState(false);
   const [orderResponse, setOrderResponse] = useState<OrderResponse | null>(null);
 
+  //Calculate total order price
   const total = basket.reduce(
     (sum: number, basketItem: BasketItem) =>
       sum + basketItem.item.price * basketItem.quantity,
     0,
   );
 
+  //Submit order to backend
   async function submitOrder(formData: FormData) {
     if (loading) return;
     setLoading(true);
@@ -56,6 +63,7 @@ export default function Order() {
     const phoneNumber = formData.get("phoneNumber");
     const tableNumberRaw = formData.get("tableNumber");
 
+    //Convert basket into API order item format
     const items = basket.map((item: BasketItem) => ({
       menuItemId: item.item.id,
       quantity: item.quantity,
@@ -72,6 +80,7 @@ export default function Order() {
 
       const newOrderId = response.orderId;
 
+      // Card payments redirect user to Stripe checkout
       if (payment_method === "card") {
         const res = await fetch(`/api/orders/${newOrderId}/checkout`, {
           method: "POST",
@@ -89,6 +98,7 @@ export default function Order() {
 
         window.location.href = checkoutUrl;
       } else {
+        // Cash payments show confirmation immediately
         setOrderResponse(response);
         showConfirmedOrder(true);
       }
@@ -111,6 +121,7 @@ export default function Order() {
       <div className="order_main">
         <div className="order_left">
           <h3 className="order_left_title">Your Details</h3>
+          {/* Customer details form */}
           <form
             className="order_form"
             onSubmit={(e) => {
@@ -155,6 +166,7 @@ export default function Order() {
 
             <h2>Payment Method</h2>
 
+            {/* Payment method selection */}
             <div className="payment_options">
               <button
                 type="button"
@@ -172,12 +184,14 @@ export default function Order() {
               </button>
             </div>
 
+            {/* Extra message for card payments */}
             {payment_method === "card" && (
               <div className="card_payment_info">
                 <p>🔒 You'll be redirected to Stripe's secure payment page to complete your payment.</p>
               </div>
             )}
 
+            {/* Submit order */}
             <button
               type="submit"
               className="order_button"
@@ -195,6 +209,7 @@ export default function Order() {
         <div className="order_right">
           <div>
             <h3 className="order_right_title">Your Order</h3>
+            {/* Basket summary */}
             <div className="order_right_items">
               {basket.map((basketItem: BasketItem) => (
                 <div className="order_right_item" key={basketItem.item.name}>
@@ -219,6 +234,7 @@ export default function Order() {
                 </div>
               ))}
             </div>
+            {/* Total price */}
             <p className="order_right_total">
               Total:{" "}
               <span className="order_right_total_span">
@@ -229,6 +245,7 @@ export default function Order() {
         </div>
       </div>
 
+      {/* Confirmation popup for cash orders */}
       {confirmedOrder && (
         <div className="confirm_order_main">
           <div
@@ -254,6 +271,8 @@ export default function Order() {
                 <h3 className="confirm_order_main_title">Order Confirmed!</h3>
                 <p>Thank you for ordering with us.</p>
                 <p>Your food is being prepared and will be ready soon.</p>
+
+                {/* Display generated order ID */}
                 <div className="confirm_order_id_box">
                   <span className="confirm_order_id_label">Order ID:</span>
                   <span className="confirm_order_id_value">
