@@ -89,7 +89,7 @@ export async function fetchMenuItemById(id: number): Promise<MenuItemDto> {
 }
 
 // Function to send details of a menu item to edit it
-export async function editMenuItem(id: number, itemData: MenuItemDto): Promise<MenuItemDto> {
+export async function editMenuItem(id: number, itemData: AddMenuItemDto): Promise<MenuItemDto> {
   const res = await fetch(`${API_BASE}/api/menu/menuItem/edit/${id}`, {
     method: "PUT",
     headers: {
