@@ -8,8 +8,10 @@ export default function PaymentSuccess() {
   const navigate = useNavigate();
   const orderId = searchParams.get("orderId");
 
+  // countdown for when you finished ordering
   const [countdown, setCountdown] = useState(15);
 
+  // When countdown finishes, you will be navigated back to the home page
   useEffect(() => {
     if (countdown === 0) {
       navigate("/");
@@ -21,6 +23,7 @@ export default function PaymentSuccess() {
 
   return (
     <div className="order">
+      {/* Payment success page */}
       <NavBar />
       <div
         style={{
